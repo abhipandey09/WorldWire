@@ -1,0 +1,14 @@
+services:
+  - type: web
+    name: worldwire
+    env: docker
+    plan: free
+    region: ohio
+    branch: main
+    dockerfilePath: Dockerfile
+    healthCheckPath: /_stcore/health
+    envVars:
+      - key: DATABASE_URL
+        sync: false
+      - key: GOOGLE_GEMINI_API_KEY
+        sync: false
