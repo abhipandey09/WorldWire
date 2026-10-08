@@ -21,8 +21,27 @@ st.set_page_config(
 # Initialize background 5-hour news ingestion daemon silently
 scheduler.start_scheduler()
 
+# Ensure GoatCounter analytics script is present in Streamlit's static index.html
+def ensure_analytics_injected():
+    try:
+        import streamlit, os
+        p = os.path.join(os.path.dirname(streamlit.__file__), 'static', 'index.html')
+        if os.path.exists(p):
+            with open(p, 'r', encoding='utf-8') as f:
+                html = f.read()
+            tag = '<script data-goatcounter="https://worldwire.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>'
+            if "worldwire.goatcounter.com" not in html:
+                html = html.replace("</head>", f"{tag}</head>")
+                with open(p, 'w', encoding='utf-8') as f:
+                    f.write(html)
+    except Exception:
+        pass
+
+ensure_analytics_injected()
+
 # Silent automatic background synchronization (every 60 seconds) without any UI clutter
 st_autorefresh(interval=60 * 1000, key="silent_feed_sync")
+
 
 # Custom Advanced Editorial CSS with Razor-Sharp High Contrast
 st.markdown("""
@@ -703,3 +722,11 @@ st.markdown("""
     </div>
 </div>
 """, unsafe_allow_html=True)
+
+# GoatCounter Analytics Beacon
+import streamlit.components.v1 as components
+components.html("""
+<script data-goatcounter="https://worldwire.goatcounter.com/count"
+        async src="//gc.zgo.at/count.js"></script>
+""", height=0, width=0)
+
