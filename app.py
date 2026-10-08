@@ -23,48 +23,53 @@ scheduler.start_scheduler()
 # Silent automatic background synchronization (every 60 seconds) without any UI clutter
 st_autorefresh(interval=60 * 1000, key="silent_feed_sync")
 
-# Custom Advanced Editorial CSS
+# Custom Advanced Editorial CSS with Razor-Sharp High Contrast
 st.markdown("""
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;0,800;0,900;1,600&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,600;1,6..72,400&display=swap');
 
-    /* Global Polish */
+    /* Global Typography & Light Background */
     html, body, [class*="css"] {
         font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+        color: #0f172a !important;
     }
-    #MainMenu, footer, header, [data-testid="stSidebar"] { display: none; }
+    .stApp {
+        background-color: #f8fafc !important;
+    }
+    #MainMenu, footer, header, [data-testid="stSidebar"] { display: none !important; }
     .block-container {
         padding-top: 1.2rem !important;
         padding-bottom: 3.5rem !important;
         max-width: 1320px !important;
     }
 
-    /* Top Intelligence Bar */
+    /* Top Intelligence Bar (Dark Navy Container with Crisp White/Green Text) */
     .intel-bar {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        background: #0f172a;
-        color: #94a3b8;
-        padding: 8px 18px;
+        background: #0f172a !important;
+        color: #e2e8f0 !important;
+        padding: 9px 20px;
         border-radius: 8px;
         font-size: 0.78rem;
         font-weight: 600;
         letter-spacing: 0.05em;
         text-transform: uppercase;
-        margin-bottom: 12px;
-        border: 1px solid rgba(255, 255, 255, 0.08);
+        margin-bottom: 14px;
+        box-shadow: 0 2px 8px rgba(15, 23, 42, 0.12);
     }
     .intel-market-pill {
         display: inline-flex;
         gap: 16px;
         font-family: monospace;
         font-size: 0.8rem;
+        color: #ffffff !important;
     }
-    .market-up { color: #34d399; }
-    .market-down { color: #f87171; }
+    .market-up { color: #34d399 !important; }
+    .market-down { color: #f87171 !important; }
 
-    /* Masthead Header */
+    /* Masthead Header (High Contrast Ink Black on White) */
     .masthead-wrapper {
         border-bottom: 3px solid #dc2626;
         padding: 10px 0 18px 0;
@@ -77,43 +82,41 @@ st.markdown("""
     }
     .masthead-title {
         font-family: 'Playfair Display', Georgia, serif;
-        font-size: 3.4rem;
+        font-size: 3.5rem;
         font-weight: 900;
         letter-spacing: -0.04em;
         line-height: 1;
         margin: 0;
-        background: linear-gradient(120deg, #ffffff 40%, #cbd5e1 100%);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
+        color: #0f172a !important;
         display: inline-block;
     }
     .masthead-sub {
-        font-size: 0.82rem;
-        color: #94a3b8;
+        font-size: 0.84rem;
+        color: #475569 !important;
         letter-spacing: 0.12em;
         text-transform: uppercase;
-        margin-top: 4px;
-        font-weight: 600;
+        margin-top: 5px;
+        font-weight: 700;
     }
 
     /* Live Animated Breaking Ticker */
     .ticker-container {
         display: flex;
         align-items: center;
-        background: linear-gradient(90deg, #7f1d1d 0%, #991b1b 100%);
-        color: white;
+        background: #991b1b !important;
+        color: #ffffff !important;
         border-radius: 8px;
-        padding: 7px 14px;
+        padding: 8px 16px;
         margin-bottom: 22px;
-        box-shadow: 0 4px 14px rgba(220, 38, 38, 0.25);
+        box-shadow: 0 4px 14px rgba(185, 28, 28, 0.25);
     }
     .ticker-badge {
-        background: #ef4444;
-        color: white;
+        background: #ef4444 !important;
+        color: #ffffff !important;
         font-size: 0.72rem;
         font-weight: 800;
         letter-spacing: 0.08em;
-        padding: 3px 8px;
+        padding: 3px 9px;
         border-radius: 4px;
         display: inline-flex;
         align-items: center;
@@ -125,7 +128,7 @@ st.markdown("""
     .pulse-dot {
         width: 7px;
         height: 7px;
-        background-color: white;
+        background-color: #ffffff !important;
         border-radius: 50%;
         animation: pulse 1.4s infinite;
     }
@@ -135,29 +138,31 @@ st.markdown("""
         100% { opacity: 0.3; transform: scale(0.85); }
     }
     .ticker-headline {
-        font-size: 0.88rem;
+        font-size: 0.9rem;
         font-weight: 600;
+        color: #ffffff !important;
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
     }
 
-    /* Editorial Hero Card */
+    /* Editorial Hero Card (Crisp White Card with Deep Black Headlines) */
     .hero-box {
-        background: rgba(255, 255, 255, 0.02);
-        border: 1px solid rgba(255, 255, 255, 0.1);
+        background: #ffffff !important;
+        border: 1px solid #e2e8f0 !important;
         border-radius: 16px;
         padding: 22px;
         margin-bottom: 28px;
-        transition: transform 0.2s ease, box-shadow 0.2s ease;
+        box-shadow: 0 4px 16px -2px rgba(15, 23, 42, 0.05);
+        transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
     }
     .hero-box:hover {
-        border-color: rgba(239, 68, 68, 0.4);
-        box-shadow: 0 12px 30px -8px rgba(0, 0, 0, 0.35);
+        border-color: #dc2626 !important;
+        box-shadow: 0 10px 25px -4px rgba(220, 38, 38, 0.12);
     }
     .hero-kicker {
-        color: #ef4444;
-        font-size: 0.75rem;
+        color: #dc2626 !important;
+        font-size: 0.76rem;
         font-weight: 800;
         letter-spacing: 0.1em;
         text-transform: uppercase;
@@ -165,37 +170,38 @@ st.markdown("""
     }
     .hero-headline {
         font-family: 'Playfair Display', Georgia, serif;
-        font-size: 2.2rem;
+        font-size: 2.15rem;
         font-weight: 800;
-        line-height: 1.22;
+        line-height: 1.25;
         margin-bottom: 12px;
-        color: #f8fafc;
+        color: #0f172a !important;
     }
     .hero-summary {
-        font-size: 1.04rem;
+        font-size: 1.05rem;
         line-height: 1.65;
-        color: #94a3b8;
+        color: #334155 !important;
         margin-bottom: 16px;
     }
 
     /* Trending Top Stories Sidebar (Right of Hero) */
     .trending-list {
-        background: rgba(255, 255, 255, 0.02);
-        border: 1px solid rgba(255, 255, 255, 0.08);
+        background: #ffffff !important;
+        border: 1px solid #e2e8f0 !important;
         border-radius: 16px;
-        padding: 20px;
+        padding: 22px;
         height: 100%;
         display: flex;
         flex-direction: column;
         justify-content: space-between;
+        box-shadow: 0 4px 16px -2px rgba(15, 23, 42, 0.05);
     }
     .trending-header {
         font-size: 0.82rem;
         font-weight: 800;
         letter-spacing: 0.1em;
         text-transform: uppercase;
-        color: #ef4444;
-        border-bottom: 2px solid #ef4444;
+        color: #dc2626 !important;
+        border-bottom: 2px solid #dc2626;
         padding-bottom: 8px;
         margin-bottom: 16px;
         display: flex;
@@ -206,7 +212,7 @@ st.markdown("""
         gap: 14px;
         padding-bottom: 14px;
         margin-bottom: 14px;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+        border-bottom: 1px solid #f1f5f9;
     }
     .trending-item:last-child {
         border-bottom: none;
@@ -215,97 +221,98 @@ st.markdown("""
     }
     .trend-number {
         font-family: 'Playfair Display', serif;
-        font-size: 1.8rem;
+        font-size: 1.85rem;
         font-weight: 900;
-        color: #ef4444;
+        color: #dc2626 !important;
         line-height: 1;
-        opacity: 0.8;
     }
     .trend-text h4 {
-        font-size: 0.95rem;
+        font-size: 0.98rem;
         font-weight: 700;
         line-height: 1.35;
         margin: 0 0 4px 0;
-        color: #f1f5f9;
+        color: #0f172a !important;
     }
     .trend-meta {
-        font-size: 0.72rem;
-        color: #64748b;
+        font-size: 0.74rem;
+        color: #64748b !important;
+        font-weight: 500;
     }
 
     /* ROW-WISE NEWS FEED (HORIZONTAL MAGAZINE ROW CARDS) */
     .row-card {
-        background: rgba(255, 255, 255, 0.02);
-        border: 1px solid rgba(255, 255, 255, 0.08);
+        background: #ffffff !important;
+        border: 1px solid #e2e8f0 !important;
         border-radius: 14px;
-        padding: 16px;
+        padding: 18px;
         margin-bottom: 18px;
+        box-shadow: 0 2px 10px rgba(15, 23, 42, 0.04);
         transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
     }
     .row-card:hover {
-        background: rgba(255, 255, 255, 0.04);
-        border-color: rgba(239, 68, 68, 0.35);
+        border-color: #dc2626 !important;
         transform: translateY(-2px);
-        box-shadow: 0 10px 24px -6px rgba(0, 0, 0, 0.3);
+        box-shadow: 0 10px 25px -4px rgba(220, 38, 38, 0.1);
     }
     .row-kicker {
-        font-size: 0.72rem;
+        font-size: 0.74rem;
         font-weight: 800;
-        color: #ef4444;
+        color: #dc2626 !important;
         text-transform: uppercase;
         letter-spacing: 0.08em;
         margin-bottom: 4px;
     }
     .row-headline {
         font-family: 'Playfair Display', Georgia, serif;
-        font-size: 1.35rem;
+        font-size: 1.38rem;
         font-weight: 700;
         line-height: 1.32;
         margin: 4px 0 8px 0;
-        color: #f8fafc;
+        color: #0f172a !important;
     }
     .row-summary {
-        font-size: 0.92rem;
+        font-size: 0.94rem;
         line-height: 1.6;
-        color: #94a3b8;
+        color: #334155 !important;
         margin-bottom: 12px;
     }
     .row-footer {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        font-size: 0.76rem;
-        color: #64748b;
+        font-size: 0.78rem;
+        color: #64748b !important;
+        font-weight: 500;
     }
 
-    /* Special Feature / Sponsor Ribbon Banner */
+    /* Special Feature Banner */
     .feature-banner {
-        background: linear-gradient(135deg, #1e1b4b 0%, #0f172a 60%, #1e293b 100%);
+        background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 60%, #1e293b 100%) !important;
         border: 1px solid rgba(99, 102, 241, 0.3);
         border-radius: 14px;
-        padding: 20px 24px;
+        padding: 22px 26px;
         margin: 28px 0;
         display: flex;
         align-items: center;
         justify-content: space-between;
         flex-wrap: wrap;
         gap: 16px;
-        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.25);
+        box-shadow: 0 8px 25px rgba(15, 23, 42, 0.2);
     }
     .banner-title {
-        font-size: 1.25rem;
+        font-size: 1.28rem;
         font-weight: 800;
-        color: #ffffff;
+        color: #ffffff !important;
         margin-bottom: 4px;
     }
     .banner-subtitle {
-        font-size: 0.88rem;
-        color: #cbd5e1;
+        font-size: 0.9rem;
+        color: #cbd5e1 !important;
     }
     .banner-btn {
-        background: #ef4444;
-        color: white !important;
-        padding: 8px 18px;
+        background: #dc2626 !important;
+        color: #ffffff !important;
+        padding: 9px 20px;
         border-radius: 6px;
         font-weight: 700;
         font-size: 0.82rem;
@@ -313,9 +320,10 @@ st.markdown("""
         text-transform: uppercase;
         letter-spacing: 0.05em;
         transition: background 0.2s ease;
+        display: inline-block;
     }
     .banner-btn:hover {
-        background: #dc2626;
+        background: #b91c1c !important;
     }
 
     /* Full Article Reader Layout */
@@ -330,20 +338,20 @@ st.markdown("""
         font-weight: 800;
         line-height: 1.2;
         margin: 12px 0 16px 0;
-        color: #f8fafc;
+        color: #0f172a !important;
     }
     .reader-lead {
         font-size: 1.22rem;
         line-height: 1.6;
-        color: #cbd5e1;
+        color: #334155 !important;
         font-style: italic;
         margin-bottom: 24px;
     }
     .reader-prose {
         font-family: 'Newsreader', Georgia, serif;
-        font-size: 1.18rem;
+        font-size: 1.2rem;
         line-height: 1.85;
-        color: #e2e8f0;
+        color: #1e293b !important;
         margin-bottom: 1.6rem;
     }
 
@@ -353,8 +361,8 @@ st.markdown("""
         margin-top: 48px;
         padding: 30px 0 20px 0;
         text-align: center;
-        color: #64748b;
-        font-size: 0.82rem;
+        color: #64748b !important;
+        font-size: 0.84rem;
     }
     .footer-links {
         display: flex;
@@ -368,11 +376,11 @@ st.markdown("""
         letter-spacing: 0.06em;
     }
     .footer-links a {
-        color: #94a3b8;
+        color: #475569 !important;
         text-decoration: none;
     }
     .footer-links a:hover {
-        color: #ef4444;
+        color: #dc2626 !important;
     }
 </style>
 """, unsafe_allow_html=True)
@@ -422,8 +430,8 @@ st.markdown("""
         <h1 class="masthead-title">WORLDWIRE</h1>
         <div class="masthead-sub">The Global Newspaper of Real-Time Intelligence & International Affairs</div>
     </div>
-    <div style="text-align: right; color: #94a3b8; font-size: 0.8rem;">
-        <div>🔴 <b>LIVE WIRE DISPATCH</b></div>
+    <div style="text-align: right; color: #475569; font-size: 0.8rem; font-weight: 600;">
+        <div style="color: #dc2626;">🔴 <b>LIVE WIRE DISPATCH</b></div>
         <div>Updated Autonomously Every 5 Hours</div>
     </div>
 </div>
@@ -464,7 +472,7 @@ if st.session_state.selected_article_id is not None:
             </div>
             <h1 class="reader-head">{current_art['title']}</h1>
             <p class="reader-lead">{current_art['summary']}</p>
-            <div style="font-size: 0.82rem; color: #94a3b8; border-top: 1px solid rgba(255,255,255,0.1); border-bottom: 1px solid rgba(255,255,255,0.1); padding: 10px 0; margin-bottom: 24px;">
+            <div style="font-size: 0.82rem; color: #64748b; border-top: 1px solid #e2e8f0; border-bottom: 1px solid #e2e8f0; padding: 10px 0; margin-bottom: 24px;">
                 ⏱️ Published <b>{format_time_ago(current_art['published_at'])}</b> &nbsp;|&nbsp; 
                 Reporting by <b>{current_art.get('source_name', 'WorldWire International Bureau')}</b>
             </div>
@@ -483,8 +491,8 @@ if st.session_state.selected_article_id is not None:
         
         if current_art.get("source_url"):
             st.markdown(f"""
-            <div style="border-top: 1px solid rgba(255,255,255,0.1); padding-top: 18px; margin-top: 30px; font-size: 0.88rem; color: #94a3b8;">
-                🔗 <b>Original Reference:</b> <a href="{current_art['source_url']}" target="_blank" style="color: #ef4444; font-weight: 600; text-decoration: underline;">Read primary coverage at {current_art.get('source_name', 'Source')} ↗</a>
+            <div style="border-top: 1px solid #e2e8f0; padding-top: 18px; margin-top: 30px; font-size: 0.88rem; color: #475569;">
+                🔗 <b>Original Reference:</b> <a href="{current_art['source_url']}" target="_blank" style="color: #dc2626; font-weight: 700; text-decoration: underline;">Read primary coverage at {current_art.get('source_name', 'Source')} ↗</a>
             </div>
             """, unsafe_allow_html=True)
         st.markdown('</div>', unsafe_allow_html=True)
@@ -535,7 +543,7 @@ else:
                     <div class="hero-kicker">🔥 FEATURED LEAD • {hero.get('category', 'WORLD').upper()} • {hero.get('region', 'GLOBAL').upper()}</div>
                     <h2 class="hero-headline">{hero['title']}</h2>
                     <p class="hero-summary">{hero['summary']}</p>
-                    <div style="font-size: 0.78rem; color: #64748b; margin-bottom: 12px;">
+                    <div style="font-size: 0.8rem; color: #64748b; margin-bottom: 14px;">
                         ⏱️ {format_time_ago(hero['published_at'])} &nbsp;|&nbsp; 📰 <b>{hero.get('source_name', 'WorldWire')}</b>
                     </div>
                 </div>
@@ -561,7 +569,7 @@ else:
                     <div class="trending-item">
                         <div class="trend-number">0{idx}</div>
                         <div class="trend-text">
-                            <div style="font-size: 0.68rem; font-weight: 800; color: #ef4444; text-transform: uppercase;">{t_art.get('category', 'WORLD')}</div>
+                            <div style="font-size: 0.72rem; font-weight: 800; color: #dc2626; text-transform: uppercase;">{t_art.get('category', 'WORLD')}</div>
                             <h4>{t_art['title']}</h4>
                             <div class="trend-meta">⏱️ {format_time_ago(t_art['published_at'])} • {t_art.get('source_name', 'WorldWire')}</div>
                         </div>
@@ -577,7 +585,7 @@ else:
         st.markdown("""
         <div class="feature-banner">
             <div>
-                <div style="font-size: 0.72rem; font-weight: 800; color: #f87171; letter-spacing: 0.1em; text-transform: uppercase;">SPECIAL INVESTIGATION SERIES</div>
+                <div style="font-size: 0.75rem; font-weight: 800; color: #f87171; letter-spacing: 0.1em; text-transform: uppercase;">SPECIAL INVESTIGATION SERIES</div>
                 <div class="banner-title">The Global AI Infrastructure Surge & Power Grid Realities</div>
                 <div class="banner-subtitle">How hyperscalers and international energy ministries are navigating the trillion-dollar semiconductor pivot.</div>
             </div>
@@ -594,11 +602,11 @@ else:
         
         if stream_articles:
             st.markdown(f"""
-            <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #ef4444; padding-bottom: 8px; margin-bottom: 20px;">
-                <h3 style="font-family: 'Playfair Display', serif; font-size: 1.45rem; font-weight: 800; margin: 0; color: #f8fafc;">
+            <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #dc2626; padding-bottom: 8px; margin-bottom: 20px;">
+                <h3 style="font-family: 'Playfair Display', serif; font-size: 1.45rem; font-weight: 800; margin: 0; color: #0f172a !important;">
                     LATEST WIRE DISPATCHES — {st.session_state.active_category.upper()}
                 </h3>
-                <span style="font-size: 0.8rem; color: #94a3b8; font-weight: 600;">{len(stream_articles)} Stories In Feed</span>
+                <span style="font-size: 0.82rem; color: #64748b; font-weight: 700;">{len(stream_articles)} Stories In Feed</span>
             </div>
             """, unsafe_allow_html=True)
 
