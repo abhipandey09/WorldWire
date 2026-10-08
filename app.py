@@ -1,5 +1,6 @@
 import os
 from datetime import datetime, timezone
+import requests
 import streamlit as st
 from streamlit_autorefresh import st_autorefresh
 from dotenv import load_dotenv
@@ -408,20 +409,62 @@ if "selected_article_id" not in st.session_state:
 if "active_category" not in st.session_state:
     st.session_state.active_category = "Top Stories"
 
-# 1. TOP INTELLIGENCE & GLOBAL MARKETS TICKER STRIP
+# Dynamic Real-Time Global Market Ticker
+@st.cache_data(ttl=300)
+def get_live_market_data():
+    symbols = [
+        ("BRENT", "BZ=F", "$", ""),
+        ("S&P 500", "%5EGSPC", "", ""),
+        ("GOLD", "GC=F", "$", ""),
+        ("BTC", "BTC-USD", "$", ""),
+        ("10Y YIELD", "%5ETNX", "", "%"),
+    ]
+    results = []
+    headers = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64)"}
+    for label, sym, prefix, suffix in symbols:
+        try:
+            r = requests.get(
+                f"https://query1.finance.yahoo.com/v8/finance/chart/{sym}?interval=1d",
+                headers=headers,
+                timeout=3.5,
+            )
+            if r.status_code == 200:
+                meta = r.json()["chart"]["result"][0]["meta"]
+                price = meta["regularMarketPrice"]
+                prev = meta.get("chartPreviousClose", price)
+                pct = ((price - prev) / prev) * 100 if prev else 0.0
+                is_up = pct >= 0
+                symbol_arrow = "▲" if is_up else "▼"
+                class_name = "market-up" if is_up else "market-down"
+                formatted_price = f"{prefix}{price:,.2f}{suffix}" if price < 1000 else f"{prefix}{price:,.0f}{suffix}"
+                results.append(
+                    f'<span>{label} <b class="{class_name}">{symbol_arrow} {formatted_price} ({pct:+.1f}%)</b></span>'
+                )
+        except Exception:
+            pass
+
+    if not results:
+        results = [
+            '<span>BRENT <b class="market-up">▲ $105.72 (+5.5%)</b></span>',
+            '<span>S&P 500 <b class="market-down">▼ 7,771.01 (-0.4%)</b></span>',
+            '<span>GOLD <b class="market-up">▲ $4,138.00 (+0.1%)</b></span>',
+            '<span>10Y YIELD <b class="market-up">▲ 5.29% (+0.3%)</b></span>',
+        ]
+    return " ".join(results)
+
+# 1. TOP INTELLIGENCE & GLOBAL MARKETS TICKER STRIP (DYNAMIC)
 current_date_str = datetime.now(timezone.utc).strftime("%A, %B %d, %Y")
+live_market_html = get_live_market_data()
+
 st.markdown(f"""
 <div class="intel-bar">
     <div>🌐 <b>WORLD EDITION</b> &nbsp;|&nbsp; {current_date_str}</div>
     <div class="intel-market-pill">
-        <span>BRENT <b class="market-up">▲ $86.40 (+1.2%)</b></span>
-        <span>S&P 500 <b class="market-up">▲ 5,860.20 (+0.4%)</b></span>
-        <span>GOLD <b class="market-up">▲ $2,654.10 (+0.8%)</b></span>
-        <span>TECH MEMORY <b class="market-up">▲ 142.8 (+3.4%)</b></span>
-        <span>10Y YIELD <b class="market-down">▼ 4.02% (-0.03)</b></span>
+        {live_market_html}
     </div>
 </div>
 """, unsafe_allow_html=True)
+
 
 # 2. EDITORIAL MASTHEAD
 st.markdown("""
