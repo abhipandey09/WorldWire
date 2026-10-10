@@ -310,17 +310,14 @@ live_market_html = get_live_market_data()
 html_block(f"""
 <div class="intel-bar">
     <div>
-        🌐 <b>WORLD EDITION</b> &nbsp;|&nbsp; {current_date_str} &nbsp;|&nbsp; 
-        <a href="?page=about" style="color: #cbd5e1; text-decoration: underline; margin-left: 6px;">About Us</a> &nbsp;•&nbsp; 
-        <a href="?page=contact" style="color: #cbd5e1; text-decoration: underline;">Contact</a> &nbsp;•&nbsp; 
-        <a href="?page=privacy" style="color: #cbd5e1; text-decoration: underline;">Privacy Policy</a> &nbsp;•&nbsp; 
-        <a href="?page=terms" style="color: #cbd5e1; text-decoration: underline;">Terms</a>
+        🌐 <b>WORLD EDITION</b> &nbsp;|&nbsp; {current_date_str}
     </div>
     <div class="intel-market-pill">
         {live_market_html}
     </div>
 </div>
 """)
+
 
 # 2. EDITORIAL MASTHEAD
 html_block("""
@@ -521,31 +518,8 @@ else:
 
                     st.divider()
 
-# Quick legal navigation buttons
-st.markdown("<br>", unsafe_allow_html=True)
-foot_c1, foot_c2, foot_c3, foot_c4 = st.columns(4)
-with foot_c1:
-    if st.button("📄 About WorldWire", key="foot_about", use_container_width=True):
-        st.session_state.current_page = "about"
-        st.query_params["page"] = "about"
-        st.rerun()
-with foot_c2:
-    if st.button("✉️ Contact Bureau", key="foot_contact", use_container_width=True):
-        st.session_state.current_page = "contact"
-        st.query_params["page"] = "contact"
-        st.rerun()
-with foot_c3:
-    if st.button("🔒 Privacy Policy", key="foot_privacy", use_container_width=True):
-        st.session_state.current_page = "privacy"
-        st.query_params["page"] = "privacy"
-        st.rerun()
-with foot_c4:
-    if st.button("⚖️ Terms of Service", key="foot_terms", use_container_width=True):
-        st.session_state.current_page = "terms"
-        st.query_params["page"] = "terms"
-        st.rerun()
-
 # 9. CONSUMER MEDIA FOOTER
+
 html_block("""
 <div class="footer-box">
     <div class="footer-links">
