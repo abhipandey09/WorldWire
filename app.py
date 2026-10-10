@@ -7,8 +7,10 @@ from dotenv import load_dotenv
 
 import database
 import scheduler
+import pages_content
 
 load_dotenv()
+
 
 # Streamlit Page Config - Consumer Media Site
 st.set_page_config(
@@ -422,6 +424,13 @@ def format_time_ago(dt: datetime) -> str:
     else:
         return f"{seconds // 86400}d ago"
 
+# Page routing: support direct URL parameters (?page=about, ?page=contact, ?page=privacy, ?page=terms)
+url_page = st.query_params.get("page", None)
+if "current_page" not in st.session_state:
+    st.session_state.current_page = url_page if url_page in ["about", "contact", "privacy", "terms"] else "news"
+elif url_page in ["about", "contact", "privacy", "terms"]:
+    st.session_state.current_page = url_page
+
 # Manage reader view state in session_state
 if "selected_article_id" not in st.session_state:
     st.session_state.selected_article_id = None
@@ -477,7 +486,13 @@ live_market_html = get_live_market_data()
 
 st.markdown(f"""
 <div class="intel-bar">
-    <div>🌐 <b>WORLD EDITION</b> &nbsp;|&nbsp; {current_date_str}</div>
+    <div>
+        🌐 <b>WORLD EDITION</b> &nbsp;|&nbsp; {current_date_str} &nbsp;|&nbsp; 
+        <a href="?page=about" style="color: #cbd5e1; text-decoration: underline; margin-left: 6px;">About Us</a> &nbsp;•&nbsp; 
+        <a href="?page=contact" style="color: #cbd5e1; text-decoration: underline;">Contact</a> &nbsp;•&nbsp; 
+        <a href="?page=privacy" style="color: #cbd5e1; text-decoration: underline;">Privacy Policy</a> &nbsp;•&nbsp; 
+        <a href="?page=terms" style="color: #cbd5e1; text-decoration: underline;">Terms</a>
+    </div>
     <div class="intel-market-pill">
         {live_market_html}
     </div>
@@ -505,10 +520,12 @@ nav_categories = ["Top Stories", "World", "Technology", "Business & Economy", "S
 nav_cols = st.columns([1.1, 0.9, 1.1, 1.4, 0.9, 1.1, 0.9, 2.0])
 for i, cat in enumerate(nav_categories):
     with nav_cols[i]:
-        btn_type = "primary" if st.session_state.active_category == cat else "secondary"
+        btn_type = "primary" if (st.session_state.active_category == cat and st.session_state.current_page == "news") else "secondary"
         if st.button(cat, key=f"nav_{cat}", use_container_width=True, type=btn_type):
             st.session_state.active_category = cat
+            st.session_state.current_page = "news"
             st.session_state.selected_article_id = None
+            st.query_params.clear()
             st.rerun()
 
 with nav_cols[-1]:
@@ -516,11 +533,36 @@ with nav_cols[-1]:
 
 st.markdown("<br>", unsafe_allow_html=True)
 
-# 4. VIEW LOGIC: READER MODE VS HOMEPAGE STREAM
-if st.session_state.selected_article_id is not None:
+# 4. VIEW LOGIC: LEGAL PAGES VS READER MODE VS HOMEPAGE STREAM
+if st.session_state.current_page != "news":
+    # --- RENDER ABOUT / CONTACT / PRIVACY / TERMS PAGES ---
+    col_back, _ = st.columns([3, 7])
+    with col_back:
+        if st.button("← Return to WorldWire News Feed", type="primary", use_container_width=True):
+            st.session_state.current_page = "news"
+            st.query_params.clear()
+            st.rerun()
+
+    if st.session_state.current_page == "about":
+        pages_content.render_about_page()
+    elif st.session_state.current_page == "contact":
+        pages_content.render_contact_page()
+    elif st.session_state.current_page == "privacy":
+        pages_content.render_privacy_page()
+    elif st.session_state.current_page == "terms":
+        pages_content.render_terms_page()
+
+    st.markdown("<br>", unsafe_allow_html=True)
+    if st.button("← Back to Top Stories", key="bottom_back_btn", type="secondary"):
+        st.session_state.current_page = "news"
+        st.query_params.clear()
+        st.rerun()
+
+elif st.session_state.selected_article_id is not None:
     # --- FULL ARTICLE READER VIEW ---
     all_articles = database.get_articles(limit=100)
     current_art = next((a for a in all_articles if a['id'] == st.session_state.selected_article_id), None)
+
     
     if current_art:
         if st.button("← Back to Global Headlines", type="secondary"):
@@ -702,26 +744,50 @@ else:
                             if item.get("source_url"):
                                 st.link_button(f"View on {item.get('source_name', 'Source')} ↗", item["source_url"], use_container_width=True)
 
-                    st.markdown('</div>', unsafe_allow_html=True)
+# Quick legal navigation buttons
+foot_c1, foot_c2, foot_c3, foot_c4 = st.columns(4)
+with foot_c1:
+    if st.button("📄 About WorldWire", key="foot_about", use_container_width=True):
+        st.session_state.current_page = "about"
+        st.query_params["page"] = "about"
+        st.rerun()
+with foot_c2:
+    if st.button("✉️ Contact Bureau", key="foot_contact", use_container_width=True):
+        st.session_state.current_page = "contact"
+        st.query_params["page"] = "contact"
+        st.rerun()
+with foot_c3:
+    if st.button("🔒 Privacy Policy", key="foot_privacy", use_container_width=True):
+        st.session_state.current_page = "privacy"
+        st.query_params["page"] = "privacy"
+        st.rerun()
+with foot_c4:
+    if st.button("⚖️ Terms of Service", key="foot_terms", use_container_width=True):
+        st.session_state.current_page = "terms"
+        st.query_params["page"] = "terms"
+        st.rerun()
+
+st.markdown("<br>", unsafe_allow_html=True)
 
 # 9. CONSUMER MEDIA FOOTER & EXTERNAL HUBS
+
 st.markdown("""
 <div class="footer-box">
     <div class="footer-links">
-        <a href="https://www.reuters.com" target="_blank">Reuters Wire</a> •
-        <a href="https://www.apnews.com" target="_blank">Associated Press</a> •
-        <a href="https://www.bloomberg.com" target="_blank">Bloomberg Markets</a> •
-        <a href="https://www.bbc.com/news" target="_blank">BBC World</a> •
-        <a href="https://www.ft.com" target="_blank">Financial Times</a> •
-        <a href="#">Editorial Standards</a> •
-        <a href="#">Verification Ethics</a> •
-        <a href="#">Terms & Privacy</a>
+        <a href="?page=about" style="color: #dc2626 !important; font-weight: 700;">About Us</a> •
+        <a href="?page=contact" style="color: #dc2626 !important; font-weight: 700;">Contact Bureau</a> •
+        <a href="?page=privacy" style="color: #dc2626 !important; font-weight: 700;">Privacy Policy (AdSense & GDPR)</a> •
+        <a href="?page=terms" style="color: #dc2626 !important; font-weight: 700;">Terms of Service</a> •
+        <a href="https://www.reuters.com" target="_blank">Reuters Wire ↗</a> •
+        <a href="https://www.apnews.com" target="_blank">Associated Press ↗</a> •
+        <a href="https://www.bloomberg.com" target="_blank">Bloomberg Markets ↗</a>
     </div>
-    <div style="margin-top: 10px;">
+    <div style="margin-top: 10px; font-size: 0.8rem; color: #64748b;">
         © 2026 <b>WORLDWIRE INTERNATIONAL MEDIA NETWORK</b>. Real-time autonomous global journalism.
     </div>
 </div>
 """, unsafe_allow_html=True)
+
 
 # GoatCounter Analytics Beacon
 import streamlit.components.v1 as components

@@ -9,4 +9,4 @@ textColor = "#0f172a"
 headless = true
 enableCORS = false
 enableXsrfProtection = true
-
+enableStaticServing = true
