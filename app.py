@@ -11,7 +11,6 @@ import pages_content
 
 load_dotenv()
 
-
 # Streamlit Page Config - Consumer Media Site
 st.set_page_config(
     page_title="WorldWire | Global Real-Time News & Wire Service",
@@ -26,8 +25,8 @@ scheduler.start_scheduler()
 # Ensure GoatCounter analytics script is present in Streamlit's static index.html
 def ensure_analytics_injected():
     try:
-        import streamlit, os
-        p = os.path.join(os.path.dirname(streamlit.__file__), 'static', 'index.html')
+        import streamlit as st_mod
+        p = os.path.join(os.path.dirname(st_mod.__file__), 'static', 'index.html')
         if os.path.exists(p):
             with open(p, 'r', encoding='utf-8') as f:
                 html = f.read()
@@ -44,13 +43,16 @@ ensure_analytics_injected()
 # Silent automatic background synchronization (every 60 seconds) without any UI clutter
 st_autorefresh(interval=60 * 1000, key="silent_feed_sync")
 
+# Helper to render clean HTML without CommonMark 4-space indentation code-block traps
+def html_block(content: str):
+    cleaned = "\n".join(line.strip() for line in content.strip().splitlines())
+    st.markdown(cleaned, unsafe_allow_html=True)
 
-# Custom Advanced Editorial CSS with Razor-Sharp High Contrast
+# Custom High-Contrast Editorial CSS
 st.markdown("""
 <style>
     @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;0,800;0,900;1,600&family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,600;1,6..72,400&display=swap');
 
-    /* Global Typography & Light Background */
     html, body, [class*="css"] {
         font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
         color: #0f172a !important;
@@ -65,7 +67,7 @@ st.markdown("""
         max-width: 1320px !important;
     }
 
-    /* Top Intelligence Bar (Dark Navy Container with Crisp White/Green Text) */
+    /* Top Intelligence Bar */
     .intel-bar {
         display: flex;
         justify-content: space-between;
@@ -91,7 +93,7 @@ st.markdown("""
     .market-up { color: #34d399 !important; }
     .market-down { color: #f87171 !important; }
 
-    /* Masthead Header (High Contrast Ink Black on White) */
+    /* Masthead Header */
     .masthead-wrapper {
         border-bottom: 3px solid #dc2626;
         padding: 10px 0 18px 0;
@@ -168,145 +170,6 @@ st.markdown("""
         text-overflow: ellipsis;
     }
 
-    /* Editorial Hero Card (Crisp White Card with Deep Black Headlines) */
-    .hero-box {
-        background: #ffffff !important;
-        border: 1px solid #e2e8f0 !important;
-        border-radius: 16px;
-        padding: 22px;
-        margin-bottom: 28px;
-        box-shadow: 0 4px 16px -2px rgba(15, 23, 42, 0.05);
-        transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
-    }
-    .hero-box:hover {
-        border-color: #dc2626 !important;
-        box-shadow: 0 10px 25px -4px rgba(220, 38, 38, 0.12);
-    }
-    .hero-kicker {
-        color: #dc2626 !important;
-        font-size: 0.76rem;
-        font-weight: 800;
-        letter-spacing: 0.1em;
-        text-transform: uppercase;
-        margin-bottom: 8px;
-    }
-    .hero-headline {
-        font-family: 'Playfair Display', Georgia, serif;
-        font-size: 2.15rem;
-        font-weight: 800;
-        line-height: 1.25;
-        margin-bottom: 12px;
-        color: #0f172a !important;
-    }
-    .hero-summary {
-        font-size: 1.05rem;
-        line-height: 1.65;
-        color: #334155 !important;
-        margin-bottom: 16px;
-    }
-
-    /* Trending Top Stories Sidebar (Right of Hero) */
-    .trending-list {
-        background: #ffffff !important;
-        border: 1px solid #e2e8f0 !important;
-        border-radius: 16px;
-        padding: 22px;
-        height: 100%;
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-        box-shadow: 0 4px 16px -2px rgba(15, 23, 42, 0.05);
-    }
-    .trending-header {
-        font-size: 0.82rem;
-        font-weight: 800;
-        letter-spacing: 0.1em;
-        text-transform: uppercase;
-        color: #dc2626 !important;
-        border-bottom: 2px solid #dc2626;
-        padding-bottom: 8px;
-        margin-bottom: 16px;
-        display: flex;
-        justify-content: space-between;
-    }
-    .trending-item {
-        display: flex;
-        gap: 14px;
-        padding-bottom: 14px;
-        margin-bottom: 14px;
-        border-bottom: 1px solid #f1f5f9;
-    }
-    .trending-item:last-child {
-        border-bottom: none;
-        padding-bottom: 0;
-        margin-bottom: 0;
-    }
-    .trend-number {
-        font-family: 'Playfair Display', serif;
-        font-size: 1.85rem;
-        font-weight: 900;
-        color: #dc2626 !important;
-        line-height: 1;
-    }
-    .trend-text h4 {
-        font-size: 0.98rem;
-        font-weight: 700;
-        line-height: 1.35;
-        margin: 0 0 4px 0;
-        color: #0f172a !important;
-    }
-    .trend-meta {
-        font-size: 0.74rem;
-        color: #64748b !important;
-        font-weight: 500;
-    }
-
-    /* ROW-WISE NEWS FEED (HORIZONTAL MAGAZINE ROW CARDS) */
-    .row-card {
-        background: #ffffff !important;
-        border: 1px solid #e2e8f0 !important;
-        border-radius: 14px;
-        padding: 18px;
-        margin-bottom: 18px;
-        box-shadow: 0 2px 10px rgba(15, 23, 42, 0.04);
-        transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
-    }
-    .row-card:hover {
-        border-color: #dc2626 !important;
-        transform: translateY(-2px);
-        box-shadow: 0 10px 25px -4px rgba(220, 38, 38, 0.1);
-    }
-    .row-kicker {
-        font-size: 0.74rem;
-        font-weight: 800;
-        color: #dc2626 !important;
-        text-transform: uppercase;
-        letter-spacing: 0.08em;
-        margin-bottom: 4px;
-    }
-    .row-headline {
-        font-family: 'Playfair Display', Georgia, serif;
-        font-size: 1.38rem;
-        font-weight: 700;
-        line-height: 1.32;
-        margin: 4px 0 8px 0;
-        color: #0f172a !important;
-    }
-    .row-summary {
-        font-size: 0.94rem;
-        line-height: 1.6;
-        color: #334155 !important;
-        margin-bottom: 12px;
-    }
-    .row-footer {
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        font-size: 0.78rem;
-        color: #64748b !important;
-        font-weight: 500;
-    }
-
     /* Special Feature Banner */
     .feature-banner {
         background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 60%, #1e293b 100%) !important;
@@ -348,61 +211,22 @@ st.markdown("""
         background: #b91c1c !important;
     }
 
-    /* Full Article Reader Layout */
-    .reader-hero-box {
-        max-width: 900px;
-        margin: 0 auto;
-        padding: 10px 0 40px 0;
-    }
-    .reader-head {
-        font-family: 'Playfair Display', Georgia, serif;
-        font-size: 2.8rem;
-        font-weight: 800;
-        line-height: 1.2;
-        margin: 12px 0 16px 0;
-        color: #0f172a !important;
-    }
-    .reader-lead {
-        font-size: 1.22rem;
-        line-height: 1.6;
-        color: #334155 !important;
-        font-style: italic;
-        margin-bottom: 24px;
-    }
-    .reader-prose {
-        font-family: 'Newsreader', Georgia, serif;
-        font-size: 1.2rem;
-        line-height: 1.85;
-        color: #1e293b !important;
-        margin-bottom: 1.6rem;
-    }
-
     /* Public Footer */
     .footer-box {
         border-top: 3px solid #dc2626;
-        margin-top: 48px;
-        padding: 30px 0 20px 0;
+        margin-top: 36px;
+        padding: 24px 0 16px 0;
         text-align: center;
         color: #64748b !important;
         font-size: 0.84rem;
     }
-    .footer-links {
-        display: flex;
-        justify-content: center;
-        gap: 22px;
-        flex-wrap: wrap;
-        margin-bottom: 14px;
-        font-weight: 600;
-        font-size: 0.78rem;
-        text-transform: uppercase;
-        letter-spacing: 0.06em;
-    }
     .footer-links a {
-        color: #475569 !important;
+        color: #dc2626 !important;
         text-decoration: none;
+        font-weight: 700;
     }
     .footer-links a:hover {
-        color: #dc2626 !important;
+        text-decoration: underline;
     }
 </style>
 """, unsafe_allow_html=True)
@@ -431,7 +255,6 @@ if "current_page" not in st.session_state:
 elif url_page in ["about", "contact", "privacy", "terms"]:
     st.session_state.current_page = url_page
 
-# Manage reader view state in session_state
 if "selected_article_id" not in st.session_state:
     st.session_state.selected_article_id = None
 if "active_category" not in st.session_state:
@@ -484,7 +307,7 @@ def get_live_market_data():
 current_date_str = datetime.now(timezone.utc).strftime("%A, %B %d, %Y")
 live_market_html = get_live_market_data()
 
-st.markdown(f"""
+html_block(f"""
 <div class="intel-bar">
     <div>
         🌐 <b>WORLD EDITION</b> &nbsp;|&nbsp; {current_date_str} &nbsp;|&nbsp; 
@@ -497,11 +320,10 @@ st.markdown(f"""
         {live_market_html}
     </div>
 </div>
-""", unsafe_allow_html=True)
-
+""")
 
 # 2. EDITORIAL MASTHEAD
-st.markdown("""
+html_block("""
 <div class="masthead-wrapper">
     <div>
         <h1 class="masthead-title">WORLDWIRE</h1>
@@ -512,7 +334,7 @@ st.markdown("""
         <div>Updated Autonomously Every 5 Hours</div>
     </div>
 </div>
-""", unsafe_allow_html=True)
+""")
 
 # 3. INTERACTIVE CATEGORY NAVIGATION & SEARCH
 nav_categories = ["Top Stories", "World", "Technology", "Business & Economy", "Science", "Geopolitics", "Politics"]
@@ -559,48 +381,34 @@ if st.session_state.current_page != "news":
         st.rerun()
 
 elif st.session_state.selected_article_id is not None:
-    # --- FULL ARTICLE READER VIEW ---
+    # --- FULL ARTICLE READER VIEW (CLEAN NATIVE STREAMLIT) ---
     all_articles = database.get_articles(limit=100)
     current_art = next((a for a in all_articles if a['id'] == st.session_state.selected_article_id), None)
-
     
     if current_art:
         if st.button("← Back to Global Headlines", type="secondary"):
             st.session_state.selected_article_id = None
             st.rerun()
             
-        st.markdown(f"""
-        <div class="reader-hero-box">
-            <div class="hero-kicker">
-                {current_art.get('category', 'WORLD').upper()} • {current_art.get('region', 'GLOBAL').upper()}
-            </div>
-            <h1 class="reader-head">{current_art['title']}</h1>
-            <p class="reader-lead">{current_art['summary']}</p>
-            <div style="font-size: 0.82rem; color: #64748b; border-top: 1px solid #e2e8f0; border-bottom: 1px solid #e2e8f0; padding: 10px 0; margin-bottom: 24px;">
-                ⏱️ Published <b>{format_time_ago(current_art['published_at'])}</b> &nbsp;|&nbsp; 
-                Reporting by <b>{current_art.get('source_name', 'WorldWire International Bureau')}</b>
-            </div>
-        </div>
-        """, unsafe_allow_html=True)
+        st.caption(f"{current_art.get('category', 'WORLD').upper()} • {current_art.get('region', 'GLOBAL').upper()}")
+        st.title(current_art['title'])
+        st.markdown(f"*{current_art['summary']}*")
+        st.caption(f"Published **{format_time_ago(current_art['published_at'])}** | Reporting by **{current_art.get('source_name', 'WorldWire International Bureau')}**")
+        st.divider()
         
         if current_art.get("image_url"):
             st.image(current_art["image_url"], use_container_width=True)
-            st.caption(f"Photo: WorldWire Global Photojournalism / {current_art.get('source_name', 'Editorial Archive')}")
+            st.caption(f"Photo: WorldWire Photojournalism / {current_art.get('source_name', 'Editorial Archive')}")
             
         paragraphs = current_art.get("content", "").split("\n\n")
-        st.markdown('<div class="reader-hero-box">', unsafe_allow_html=True)
         for p in paragraphs:
             if p.strip():
-                st.markdown(f'<p class="reader-prose">{p.strip()}</p>', unsafe_allow_html=True)
+                st.write(p.strip())
         
         if current_art.get("source_url"):
-            st.markdown(f"""
-            <div style="border-top: 1px solid #e2e8f0; padding-top: 18px; margin-top: 30px; font-size: 0.88rem; color: #475569;">
-                🔗 <b>Original Reference:</b> <a href="{current_art['source_url']}" target="_blank" style="color: #dc2626; font-weight: 700; text-decoration: underline;">Read primary coverage at {current_art.get('source_name', 'Source')} ↗</a>
-            </div>
-            """, unsafe_allow_html=True)
-        st.markdown('</div>', unsafe_allow_html=True)
-        
+            st.divider()
+            st.link_button(f"Read Primary Coverage at {current_art.get('source_name', 'Source')} ↗", current_art['source_url'])
+
         st.markdown("<br>", unsafe_allow_html=True)
         if st.button("← Return to All Dispatches", type="secondary"):
             st.session_state.selected_article_id = None
@@ -616,19 +424,19 @@ else:
     if st.session_state.active_category != "Top Stories":
         filter_category = st.session_state.active_category.replace(" & Economy", "").replace("Business", "Economy")
 
-    articles = database.get_articles(limit=35, category=filter_category, search=search_query)
+    articles = database.get_articles(limit=40, category=filter_category, search=search_query)
 
     if not articles:
         st.info("No dispatches found matching this topic. The autonomous news wire will populate new stories shortly.")
     else:
         # 5. LIVE ANIMATED BREAKING TICKER
         breaking_story = articles[0]
-        st.markdown(f"""
+        html_block(f"""
         <div class="ticker-container">
             <span class="ticker-badge"><span class="pulse-dot"></span>BREAKING NEWS</span>
             <span class="ticker-headline">{breaking_story['title']}</span>
         </div>
-        """, unsafe_allow_html=True)
+        """)
 
         # 6. FEATURED COVER STORY & TRENDING RADAR SECTION
         hero = articles[0]
@@ -638,55 +446,32 @@ else:
 
         with col_hero:
             with st.container():
-                st.markdown('<div class="hero-box">', unsafe_allow_html=True)
                 if hero.get("image_url"):
                     st.image(hero["image_url"], use_container_width=True)
                 
-                st.markdown(f"""
-                <div style="margin-top: 14px;">
-                    <div class="hero-kicker">🔥 FEATURED LEAD • {hero.get('category', 'WORLD').upper()} • {hero.get('region', 'GLOBAL').upper()}</div>
-                    <h2 class="hero-headline">{hero['title']}</h2>
-                    <p class="hero-summary">{hero['summary']}</p>
-                    <div style="font-size: 0.8rem; color: #64748b; margin-bottom: 14px;">
-                        ⏱️ {format_time_ago(hero['published_at'])} &nbsp;|&nbsp; 📰 <b>{hero.get('source_name', 'WorldWire')}</b>
-                    </div>
-                </div>
-                """, unsafe_allow_html=True)
+                st.caption(f"🔥 FEATURED LEAD • {hero.get('category', 'WORLD').upper()} • {hero.get('region', 'GLOBAL').upper()}")
+                st.markdown(f"### {hero['title']}")
+                st.write(hero['summary'])
+                st.caption(f"⏱️ {format_time_ago(hero['published_at'])} | 📰 {hero.get('source_name', 'WorldWire')}")
                 
                 if st.button("Read Full Lead Story →", key=f"btn_hero_{hero['id']}", type="primary", use_container_width=True):
                     st.session_state.selected_article_id = hero['id']
                     st.rerun()
-                st.markdown('</div>', unsafe_allow_html=True)
 
         with col_radar:
             with st.container():
-                st.markdown("""
-                <div class="trending-list">
-                    <div class="trending-header">
-                        <span>⚡ WIRE RADAR • MOST READ</span>
-                        <span>LIVE</span>
-                    </div>
-                """, unsafe_allow_html=True)
-                
+                st.markdown("#### ⚡ WIRE RADAR • MOST READ")
                 for idx, t_art in enumerate(top_radar, 1):
-                    st.markdown(f"""
-                    <div class="trending-item">
-                        <div class="trend-number">0{idx}</div>
-                        <div class="trend-text">
-                            <div style="font-size: 0.72rem; font-weight: 800; color: #dc2626; text-transform: uppercase;">{t_art.get('category', 'WORLD')}</div>
-                            <h4>{t_art['title']}</h4>
-                            <div class="trend-meta">⏱️ {format_time_ago(t_art['published_at'])} • {t_art.get('source_name', 'WorldWire')}</div>
-                        </div>
-                    </div>
-                    """, unsafe_allow_html=True)
+                    st.caption(f"**0{idx} • {t_art.get('category', 'WORLD').upper()}**")
+                    st.markdown(f"**{t_art['title']}**")
+                    st.caption(f"⏱️ {format_time_ago(t_art['published_at'])} • {t_art.get('source_name', 'WorldWire')}")
                     if st.button(f"Read Radar #{idx} →", key=f"radar_btn_{t_art['id']}", use_container_width=True):
                         st.session_state.selected_article_id = t_art['id']
                         st.rerun()
-                
-                st.markdown("</div>", unsafe_allow_html=True)
+                    st.markdown("---")
 
         # 7. CLICKABLE SPECIAL INVESTIGATION / PARTNER RIBBON BANNER
-        st.markdown("""
+        html_block("""
         <div class="feature-banner">
             <div>
                 <div style="font-size: 0.75rem; font-weight: 800; color: #f87171; letter-spacing: 0.1em; text-transform: uppercase;">SPECIAL INVESTIGATION SERIES</div>
@@ -699,24 +484,18 @@ else:
                 </a>
             </div>
         </div>
-        """, unsafe_allow_html=True)
+        """)
 
-        # 8. ROW-WISE NEWS STREAM (HIGH-DENSITY, NO WASTED WHITE SPACE)
+        # 8. ROW-WISE NEWS STREAM (HIGH-DENSITY, CLEAN AND ROBUST)
         stream_articles = articles[1:] if len(articles) > 1 else []
         
         if stream_articles:
-            st.markdown(f"""
-            <div style="display: flex; justify-content: space-between; align-items: center; border-bottom: 2px solid #dc2626; padding-bottom: 8px; margin-bottom: 20px;">
-                <h3 style="font-family: 'Playfair Display', serif; font-size: 1.45rem; font-weight: 800; margin: 0; color: #0f172a !important;">
-                    LATEST WIRE DISPATCHES — {st.session_state.active_category.upper()}
-                </h3>
-                <span style="font-size: 0.82rem; color: #64748b; font-weight: 700;">{len(stream_articles)} Stories In Feed</span>
-            </div>
-            """, unsafe_allow_html=True)
+            st.markdown(f"### LATEST WIRE DISPATCHES — {st.session_state.active_category.upper()}")
+            st.caption(f"{len(stream_articles)} Stories In Feed")
+            st.divider()
 
             for item in stream_articles:
                 with st.container():
-                    st.markdown('<div class="row-card">', unsafe_allow_html=True)
                     row_img_col, row_text_col = st.columns([4, 8])
                     
                     with row_img_col:
@@ -726,14 +505,10 @@ else:
                             st.image("https://images.unsplash.com/photo-1504711434969-e33886168f5c?auto=format&fit=crop&w=800&q=80", use_container_width=True)
                     
                     with row_text_col:
-                        st.markdown(f"""
-                        <div class="row-kicker">{item.get('category', 'WORLD').upper()} • {item.get('region', 'GLOBAL').upper()}</div>
-                        <h3 class="row-headline">{item['title']}</h3>
-                        <p class="row-summary">{item['summary']}</p>
-                        <div class="row-footer">
-                            <span>⏱️ <b>{format_time_ago(item['published_at'])}</b> &nbsp;|&nbsp; 📰 <b>{item.get('source_name', 'WorldWire')}</b></span>
-                        </div>
-                        """, unsafe_allow_html=True)
+                        st.caption(f"**{item.get('category', 'WORLD').upper()}** • {item.get('region', 'GLOBAL').upper()} • ⏱️ {format_time_ago(item['published_at'])}")
+                        st.markdown(f"#### {item['title']}")
+                        st.write(item['summary'])
+                        st.caption(f"📰 {item.get('source_name', 'WorldWire')}")
                         
                         btn_c1, btn_c2 = st.columns([1, 1])
                         with btn_c1:
@@ -744,7 +519,10 @@ else:
                             if item.get("source_url"):
                                 st.link_button(f"View on {item.get('source_name', 'Source')} ↗", item["source_url"], use_container_width=True)
 
+                    st.divider()
+
 # Quick legal navigation buttons
+st.markdown("<br>", unsafe_allow_html=True)
 foot_c1, foot_c2, foot_c3, foot_c4 = st.columns(4)
 with foot_c1:
     if st.button("📄 About WorldWire", key="foot_about", use_container_width=True):
@@ -767,17 +545,14 @@ with foot_c4:
         st.query_params["page"] = "terms"
         st.rerun()
 
-st.markdown("<br>", unsafe_allow_html=True)
-
-# 9. CONSUMER MEDIA FOOTER & EXTERNAL HUBS
-
-st.markdown("""
+# 9. CONSUMER MEDIA FOOTER
+html_block("""
 <div class="footer-box">
     <div class="footer-links">
-        <a href="?page=about" style="color: #dc2626 !important; font-weight: 700;">About Us</a> •
-        <a href="?page=contact" style="color: #dc2626 !important; font-weight: 700;">Contact Bureau</a> •
-        <a href="?page=privacy" style="color: #dc2626 !important; font-weight: 700;">Privacy Policy (AdSense & GDPR)</a> •
-        <a href="?page=terms" style="color: #dc2626 !important; font-weight: 700;">Terms of Service</a> •
+        <a href="?page=about">About Us</a> •
+        <a href="?page=contact">Contact Bureau</a> •
+        <a href="?page=privacy">Privacy Policy</a> •
+        <a href="?page=terms">Terms of Service</a> •
         <a href="https://www.reuters.com" target="_blank">Reuters Wire ↗</a> •
         <a href="https://www.apnews.com" target="_blank">Associated Press ↗</a> •
         <a href="https://www.bloomberg.com" target="_blank">Bloomberg Markets ↗</a>
@@ -786,8 +561,7 @@ st.markdown("""
         © 2026 <b>WORLDWIRE INTERNATIONAL MEDIA NETWORK</b>. Real-time autonomous global journalism.
     </div>
 </div>
-""", unsafe_allow_html=True)
-
+""")
 
 # GoatCounter Analytics Beacon
 import streamlit.components.v1 as components
@@ -795,4 +569,3 @@ components.html("""
 <script data-goatcounter="https://worldwire.goatcounter.com/count"
         async src="//gc.zgo.at/count.js"></script>
 """, height=0, width=0)
-
