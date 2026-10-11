@@ -7,14 +7,13 @@ import logging
 
 load_dotenv()
 
-DB_URL = os.getenv("WORLDWIRE_DATABASE_URL") or os.getenv("DATABASE_URL")
-if not DB_URL:
-    raise ValueError("DATABASE_URL or WORLDWIRE_DATABASE_URL environment variable is not set. Please specify it in .env or Secret Manager")
-
-
-# Ensure clean connection string if channel_binding causes SSL syscall issues
-if "channel_binding=require" in DB_URL:
-    DB_URL = DB_URL.replace("&channel_binding=require", "").replace("?channel_binding=require", "?")
+def get_db_url():
+    url = os.getenv("WORLDWIRE_DATABASE_URL") or os.getenv("DATABASE_URL")
+    if not url:
+        raise ValueError("DATABASE_URL or WORLDWIRE_DATABASE_URL environment variable is not set. Please specify it in .env or Secret Manager")
+    if "channel_binding=require" in url:
+        url = url.replace("&channel_binding=require", "").replace("?channel_binding=require", "?")
+    return url
 
 
 logging.basicConfig(level=logging.INFO)
@@ -25,7 +24,7 @@ def get_connection(retries: int = 4, delay: float = 2.0):
     last_err = None
     for attempt in range(retries):
         try:
-            conn = psycopg2.connect(DB_URL, connect_timeout=15)
+            conn = psycopg2.connect(get_db_url(), connect_timeout=15)
             return conn
         except Exception as e:
             last_err = e

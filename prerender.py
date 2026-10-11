@@ -1,10 +1,10 @@
 import os
 import streamlit as st_mod
-from database import get_articles
 
 def build_prerendered_html():
     articles = []
     try:
+        from database import get_articles
         articles = get_articles(limit=12)
     except Exception:
         pass

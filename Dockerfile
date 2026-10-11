@@ -19,7 +19,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY . .
 
 # Inject GoatCounter analytics, Google AdSense meta tag, scripts, and initial semantic HTML layout
-RUN python3 prerender.py || true
+RUN python3 prerender.py
 
 # Expose standard Streamlit port (Render dynamically sets $PORT)
 EXPOSE 8501
