@@ -22,19 +22,32 @@ st.set_page_config(
 # Initialize background 5-hour news ingestion daemon silently
 scheduler.start_scheduler()
 
-# Ensure GoatCounter analytics script is present in Streamlit's static index.html
+# Ensure GoatCounter analytics & Google AdSense scripts are present in Streamlit's static index.html
 def ensure_analytics_injected():
     try:
-        import streamlit as st_mod
-        p = os.path.join(os.path.dirname(st_mod.__file__), 'static', 'index.html')
+        import streamlit as st_mod, shutil
+        static_dir = os.path.join(os.path.dirname(st_mod.__file__), 'static')
+        p = os.path.join(static_dir, 'index.html')
         if os.path.exists(p):
             with open(p, 'r', encoding='utf-8') as f:
                 html = f.read()
-            tag = '<script data-goatcounter="https://mytomboy360.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>'
+            gc_tag = '<script data-goatcounter="https://mytomboy360.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>'
+            ads_tag = '<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6145233805932455" crossorigin="anonymous"></script>'
+            modified = False
             if "mytomboy360.goatcounter.com" not in html:
-                html = html.replace("</head>", f"{tag}</head>")
+                html = html.replace("</head>", f"{gc_tag}</head>")
+                modified = True
+            if "ca-pub-6145233805932455" not in html:
+                html = html.replace("</head>", f"{ads_tag}</head>")
+                modified = True
+            if modified:
                 with open(p, 'w', encoding='utf-8') as f:
                     f.write(html)
+        
+        # Ensure ads.txt is copied to Streamlit's static web directory
+        ads_src = os.path.join(os.path.dirname(__file__), 'ads.txt')
+        if os.path.exists(ads_src):
+            shutil.copy(ads_src, os.path.join(static_dir, 'ads.txt'))
     except Exception:
         pass
 

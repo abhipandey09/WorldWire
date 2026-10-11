@@ -15,12 +15,18 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Inject GoatCounter analytics tracking script into Streamlit static index.html
-RUN python3 -c "import streamlit, os; p = os.path.join(os.path.dirname(streamlit.__file__), 'static', 'index.html'); c = open(p).read(); open(p, 'w').write(c.replace('</head>', '<script data-goatcounter=\"https://mytomboy360.goatcounter.com/count\" async src=\"//gc.zgo.at/count.js\"></script></head>'))"
-
-
 # Copy application source code
 COPY . .
+
+# Inject GoatCounter analytics & Google AdSense scripts into Streamlit static index.html and copy ads.txt
+RUN python3 -c "import streamlit, os, shutil; \
+    p = os.path.join(os.path.dirname(streamlit.__file__), 'static', 'index.html'); \
+    c = open(p).read(); \
+    gc = '<script data-goatcounter=\"https://mytomboy360.goatcounter.com/count\" async src=\"//gc.zgo.at/count.js\"></script>'; \
+    ads = '<script async src=\"https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6145233805932455\" crossorigin=\"anonymous\"></script>'; \
+    open(p, 'w').write(c.replace('</head>', gc + ads + '</head>')); \
+    s = os.path.join(os.path.dirname(streamlit.__file__), 'static'); \
+    shutil.copy('ads.txt', os.path.join(s, 'ads.txt')) if os.path.exists('ads.txt') else None"
 
 # Expose standard Streamlit port (Render dynamically sets $PORT)
 EXPOSE 8501
