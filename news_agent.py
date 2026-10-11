@@ -16,7 +16,8 @@ load_dotenv()
 logger = logging.getLogger("WorldWire.NewsAgent")
 logging.basicConfig(level=logging.INFO)
 
-API_KEY = os.getenv("GOOGLE_GEMINI_API_KEY") or os.getenv("GEMINI_API_KEY")
+API_KEY = os.getenv("WORLDWIRE_GEMINI_API_KEY") or os.getenv("GOOGLE_GEMINI_API_KEY") or os.getenv("GEMINI_API_KEY")
+
 
 def get_gemini_client():
     if not API_KEY:

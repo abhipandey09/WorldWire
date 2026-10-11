@@ -7,9 +7,10 @@ import logging
 
 load_dotenv()
 
-DB_URL = os.getenv("DATABASE_URL")
+DB_URL = os.getenv("WORLDWIRE_DATABASE_URL") or os.getenv("DATABASE_URL")
 if not DB_URL:
-    raise ValueError("DATABASE_URL environment variable is not set. Please specify it in .env")
+    raise ValueError("DATABASE_URL or WORLDWIRE_DATABASE_URL environment variable is not set. Please specify it in .env or Secret Manager")
+
 
 # Ensure clean connection string if channel_binding causes SSL syscall issues
 if "channel_binding=require" in DB_URL:
