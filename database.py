@@ -210,6 +210,26 @@ def get_articles(limit: int = 50, category: str = None, search: str = None, stat
         conn.close()
 
 @execute_with_retry
+def get_article_by_id(article_id: int):
+    """Retrieve a single article by its primary key ID."""
+    if not article_id:
+        return None
+    query = """
+    SELECT id, title, summary, content, category, hot_topic_tag,
+           image_url, source_name, source_url, region, published_at, created_at, status, author
+    FROM news_articles
+    WHERE id = %s
+    LIMIT 1;
+    """
+    conn = get_connection()
+    try:
+        with conn.cursor(cursor_factory=RealDictCursor) as cur:
+            cur.execute(query, (article_id,))
+            return cur.fetchone()
+    finally:
+        conn.close()
+
+@execute_with_retry
 def get_pending_articles(limit: int = 50):
     """Retrieve articles waiting for admin review and approval."""
     return get_articles(limit=limit, status="in_review")

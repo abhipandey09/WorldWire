@@ -1,6 +1,10 @@
 import os
 from datetime import datetime, timezone
 import requests
+import asyncio
+import tornado.ioloop
+from tornado.websocket import WebSocketClosedError
+from tornado.iostream import StreamClosedError
 import streamlit as st
 from streamlit_autorefresh import st_autorefresh
 from dotenv import load_dotenv
@@ -9,6 +13,29 @@ import database
 import scheduler
 import pages_content
 import admin_panel
+
+# Configure asyncio exception handler to suppress noisy Tornado websocket disconnection tracebacks
+def _configure_asyncio_exception_handler():
+    try:
+        loop = tornado.ioloop.IOLoop.current().asyncio_loop
+        if loop and not getattr(loop, "_ws_handler_installed", False):
+            orig_handler = loop.get_exception_handler()
+
+            def custom_handler(current_loop, context):
+                exc = context.get("exception")
+                if isinstance(exc, (WebSocketClosedError, StreamClosedError)):
+                    return  # Expected client disconnection; suppress traceback
+                if orig_handler:
+                    orig_handler(current_loop, context)
+                else:
+                    current_loop.default_exception_handler(context)
+
+            loop.set_exception_handler(custom_handler)
+            loop._ws_handler_installed = True
+    except Exception:
+        pass
+
+_configure_asyncio_exception_handler()
 
 load_dotenv()
 
@@ -36,8 +63,9 @@ def ensure_analytics_injected():
 
 ensure_analytics_injected()
 
-# Silent automatic background synchronization (every 60 seconds) without any UI clutter
-st_autorefresh(interval=60 * 1000, key="silent_feed_sync")
+# Silent automatic background synchronization (every 120 seconds) on public feed
+if st.query_params.get("page") not in ["about", "contact", "privacy", "terms", "admin"]:
+    st_autorefresh(interval=120 * 1000, key="silent_feed_sync")
 
 # Helper to render clean HTML without CommonMark 4-space indentation code-block traps
 def html_block(content: str):
@@ -465,8 +493,7 @@ elif st.session_state.current_page != "news":
 
 elif st.session_state.selected_article_id is not None:
     # --- FULL ARTICLE READER VIEW (CLEAN NATIVE STREAMLIT) ---
-    all_articles = database.get_articles(limit=100)
-    current_art = next((a for a in all_articles if a['id'] == st.session_state.selected_article_id), None)
+    current_art = database.get_article_by_id(st.session_state.selected_article_id)
     
     if current_art:
         if st.button("← Back to Global Headlines", type="secondary"):
@@ -504,11 +531,15 @@ elif st.session_state.selected_article_id is not None:
 
 else:
     # --- HOMEPAGE EDITORIAL FEED ---
+    @st.cache_data(ttl=60)
+    def fetch_cached_articles(limit: int, category: str = None, search: str = None):
+        return database.get_articles(limit=limit, category=category, search=search, status="published")
+
     filter_category = None
     if st.session_state.active_category != "Top Stories":
         filter_category = st.session_state.active_category.replace(" & Economy", "").replace("Business", "Economy")
 
-    articles = database.get_articles(limit=40, category=filter_category, search=search_query)
+    articles = fetch_cached_articles(limit=20, category=filter_category, search=search_query)
 
     if not articles:
         st.info("No dispatches found matching this topic. Our editorial news desk will publish new verified stories shortly.")
@@ -625,10 +656,3 @@ html_block("""
     </div>
 </div>
 """)
-
-# GoatCounter Analytics Beacon
-import streamlit.components.v1 as components
-components.html("""
-<script data-goatcounter="https://mytomboy360.goatcounter.com/count"
-        async src="//gc.zgo.at/count.js"></script>
-""", height=0, width=0)

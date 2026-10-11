@@ -10,3 +10,5 @@ headless = true
 enableCORS = false
 enableXsrfProtection = false
 enableStaticServing = true
+enableWebsocketCompression = false
+maxMessageSize = 200
