@@ -95,7 +95,7 @@ def inject_prerender():
 
         # 2. Inject AdSense script
         ads_tag = '<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6145233805932455" crossorigin="anonymous"></script>'
-        if "ca-pub-6145233805932455" not in html:
+        if "pagead2.googlesyndication.com" not in html:
             html = html.replace("</head>", f"{ads_tag}\n</head>")
 
         # 3. Inject GoatCounter analytics
