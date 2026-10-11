@@ -8,8 +8,12 @@ from dotenv import load_dotenv
 import database
 import scheduler
 import pages_content
+import admin_panel
 
 load_dotenv()
+
+# Ensure database tables, indexes, and admin user are initialized
+database.init_db()
 
 # Streamlit Page Config - Consumer Media Site
 st.set_page_config(
@@ -325,11 +329,12 @@ def format_time_ago(dt: datetime) -> str:
     else:
         return f"{seconds // 86400}d ago"
 
-# Page routing: support direct URL parameters (?page=about, ?page=contact, ?page=privacy, ?page=terms)
+# Page routing: support direct URL parameters (?page=about, ?page=contact, ?page=privacy, ?page=terms, ?page=admin)
+VALID_PAGES = ["about", "contact", "privacy", "terms", "admin"]
 url_page = st.query_params.get("page", None)
 if "current_page" not in st.session_state:
-    st.session_state.current_page = url_page if url_page in ["about", "contact", "privacy", "terms"] else "news"
-elif url_page in ["about", "contact", "privacy", "terms"]:
+    st.session_state.current_page = url_page if url_page in VALID_PAGES else "news"
+elif url_page in VALID_PAGES:
     st.session_state.current_page = url_page
 
 if "selected_article_id" not in st.session_state:
@@ -430,8 +435,11 @@ with nav_cols[-1]:
 
 st.markdown("<br>", unsafe_allow_html=True)
 
-# 4. VIEW LOGIC: LEGAL PAGES VS READER MODE VS HOMEPAGE STREAM
-if st.session_state.current_page != "news":
+# 4. VIEW LOGIC: ADMIN PANEL VS LEGAL PAGES VS READER MODE VS HOMEPAGE STREAM
+if st.session_state.current_page == "admin":
+    admin_panel.render_admin_page()
+
+elif st.session_state.current_page != "news":
     # --- RENDER ABOUT / CONTACT / PRIVACY / TERMS PAGES ---
     col_back, _ = st.columns([3, 7])
     with col_back:
@@ -468,7 +476,8 @@ elif st.session_state.selected_article_id is not None:
         st.caption(f"{current_art.get('category', 'WORLD').upper()} • {current_art.get('region', 'GLOBAL').upper()}")
         st.title(current_art['title'])
         st.markdown(f"*{current_art['summary']}*")
-        st.caption(f"Published **{format_time_ago(current_art['published_at'])}** | Reporting by **{current_art.get('source_name', 'WorldWire International Bureau')}**")
+        byline_author = current_art.get("author") or "Abhishek Pandey, WorldWire News Desk"
+        st.caption(f"✍️ **By {byline_author}** • ⏱️ Published **{format_time_ago(current_art['published_at'])}** • 📰 Wire Attribution: **{current_art.get('source_name', 'WorldWire Global Desk')}**")
         st.divider()
         
         if current_art.get("image_url"):
@@ -502,7 +511,7 @@ else:
     articles = database.get_articles(limit=40, category=filter_category, search=search_query)
 
     if not articles:
-        st.info("No dispatches found matching this topic. The autonomous news wire will populate new stories shortly.")
+        st.info("No dispatches found matching this topic. Our editorial news desk will publish new verified stories shortly.")
     else:
         # 5. LIVE ANIMATED BREAKING TICKER
         breaking_story = articles[0]
@@ -605,6 +614,7 @@ html_block("""
         <a href="?page=contact">Contact Bureau</a> •
         <a href="?page=privacy">Privacy Policy</a> •
         <a href="?page=terms">Terms of Service</a> •
+        <a href="?page=admin">Editorial Staff / Admin 🔒</a> •
         <a href="https://www.reuters.com" target="_blank">Reuters Wire ↗</a> •
         <a href="https://www.apnews.com" target="_blank">Associated Press ↗</a> •
         <a href="https://www.bloomberg.com" target="_blank">Bloomberg Markets ↗</a>

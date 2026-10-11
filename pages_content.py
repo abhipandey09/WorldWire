@@ -2,16 +2,16 @@ import streamlit as st
 
 def render_about_page():
     st.caption("ABOUT WORLDWIRE • PUBLISHED AT MYTOMBOY360.COM")
-    st.title("The Autonomous International Journal of Global Affairs & Wire Intelligence")
+    st.title("The International Journal of Global Affairs & Wire Intelligence")
     st.markdown("##### *Delivering unvarnished, factual, and verified international reporting across geopolitics, markets, science, and technological shifts.*")
     st.divider()
 
     st.subheader("Our Mission & Publishing Entity")
     st.write(
-        "**WorldWire** is a digital news and geopolitical wire publication operated on **mytomboy360.com** "
+        "**WorldWire** is an independent digital news and geopolitical wire publication operated on **mytomboy360.com** "
         "by **Abhishek Pandey (TechSnapZone)**. Founded to provide global readers, researchers, policy observers, "
         "and technology professionals with real-time, non-partisan dispatches, WorldWire synthesizes verified international "
-        "events into comprehensive briefings with clear, primary-source attribution."
+        "events into comprehensive briefings with clear, primary-source attribution and full editorial oversight."
     )
 
     st.subheader("Editorial Standards & E-E-A-T Framework")
@@ -20,15 +20,15 @@ def render_about_page():
 - **Multi-Source Cross Verification:** All published events are verified against international diplomatic records, sovereign wire reports, and reputable press agencies (including Reuters, Associated Press, Agence France-Presse, Bloomberg, and the BBC).
 - **Neutral Tone & Strict Attribution:** We report facts, verified statements, and economic metrics without sensationalist commentary or speculative hyperbole. Every dispatch cites the primary news desk responsible for original field reporting.
 - **Global Breadth:** Our coverage actively monitors developments across North America, Latin America, Europe, Africa, the Middle East, and Asia-Pacific.
-- **Human Accountability & Ownership:** WorldWire is owned and operated by Abhishek Pandey. All editorial corrections, reader inquiries, and partnership requests are handled directly via verified email **techsnapzone@gmail.com**.
+- **Human Accountability & Editorial Oversight:** WorldWire is edited and published by Abhishek Pandey. Every story is reviewed, verified, and authorized through our editorial desk before publication. Reader inquiries and corrections are handled directly via verified email **techsnapzone@gmail.com**.
 """)
 
-    st.subheader("Technology & Autonomous Research Transparency")
+    st.subheader("Editorial Methodology & Newsroom Standards")
     st.write(
-        "In alignment with Google Search and international journalistic transparency guidelines, we openly disclose our workflow. "
-        "WorldWire utilizes autonomous research pipelines powered by Google Gemini infrastructure with live web grounding "
-        "to continuously scan global news feeds 24/7. These systems summarize complex multilingual developments into readable executive briefings "
-        "under strict validation and deduplication rules before publication."
+        "WorldWire's editorial desk actively monitors global press feeds, diplomatic communiques, and sovereign wire archives around the clock. "
+        "Our editorial research workflow cross-checks multilingual primary documents against international news repositories, "
+        "synthesizing them into comprehensive, verified executive dispatches. Every dispatch undergoes manual review, fact-checking, "
+        "and editorial authorization by Abhishek Pandey before being published."
     )
 
     st.subheader("Dedicated Coverage Desks")

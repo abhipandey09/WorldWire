@@ -42,7 +42,7 @@ def build_prerendered_html():
         <header style="border-bottom: 3px double #0f172a; padding-bottom: 12px; margin-bottom: 24px; text-align: center;">
             <div style="font-size: 13px; text-transform: uppercase; letter-spacing: 2px; color: #dc2626; font-weight: 700; margin-bottom: 6px;">Global Real-Time Wire Service</div>
             <h1 style="font-family: Georgia, serif; font-size: 38px; font-weight: 900; margin: 0; letter-spacing: -0.5px;">WORLDWIRE</h1>
-            <div style="font-size: 12px; color: #64748b; margin-top: 6px;">Live Dispatches & Analysis • Updated 24/7</div>
+            <div style="font-size: 12px; color: #64748b; margin-top: 6px;">Editorially Reviewed Dispatches & Analysis • Published at mytomboy360.com</div>
         </header>
 
         <section style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 24px; margin-bottom: 40px;">
@@ -70,7 +70,8 @@ def build_prerendered_html():
                 <a href="?page=about" style="color: #0f172a; text-decoration: none; font-weight: 600; margin: 0 8px;">About Us</a> |
                 <a href="?page=contact" style="color: #0f172a; text-decoration: none; font-weight: 600; margin: 0 8px;">Contact Bureau</a> |
                 <a href="?page=privacy" style="color: #0f172a; text-decoration: none; font-weight: 600; margin: 0 8px;">Privacy Policy</a> |
-                <a href="?page=terms" style="color: #0f172a; text-decoration: none; font-weight: 600; margin: 0 8px;">Terms of Service</a>
+                <a href="?page=terms" style="color: #0f172a; text-decoration: none; font-weight: 600; margin: 0 8px;">Terms of Service</a> |
+                <a href="?page=admin" style="color: #0f172a; text-decoration: none; font-weight: 600; margin: 0 8px;">Editorial Admin</a>
             </p>
             <p>© 2026 WORLDWIRE • Published at mytomboy360.com by Abhishek Pandey. Verified Contact: techsnapzone@gmail.com</p>
         </footer>
@@ -112,13 +113,14 @@ def inject_prerender():
         with open(index_path, 'w', encoding='utf-8') as f:
             f.write(html)
         
-        # 5. Copy ads.txt into static directory
-        ads_src = os.path.join(os.path.dirname(__file__), 'ads.txt')
-        if os.path.exists(ads_src):
-            import shutil
-            shutil.copy(ads_src, os.path.join(static_dir, 'ads.txt'))
+        # 5. Copy ads.txt, robots.txt, and sitemap.xml into static directory
+        import shutil
+        for static_file in ['ads.txt', 'robots.txt', 'sitemap.xml']:
+            src = os.path.join(os.path.dirname(__file__), static_file)
+            if os.path.exists(src):
+                shutil.copy(src, os.path.join(static_dir, static_file))
 
-        print("Prerendered HTML, AdSense meta/script, and ads.txt injected successfully into index.html")
+        print("Prerendered HTML, AdSense meta/script, ads.txt, robots.txt, and sitemap.xml injected successfully into index.html")
     except Exception as e:
         print(f"Error injecting prerender: {e}")
 

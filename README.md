@@ -2,7 +2,7 @@
 
 **WorldWire** is a real-time, consumer-facing international news portal built with an editorial design inspired by **BBC News** and **Reuters**, powered behind the scenes by **Google Gemini** with live Google Search Grounding and **Neon Serverless PostgreSQL**.
 
-The website is 100% reader-facing with zero admin clutter, technical dials, or settings exposed to the public. Behind the scenes, an autonomous 5-hour background engine continuously tracks breaking and trending world events, synthesizes journalistic reports, attaches high-resolution editorial imagery, and persists them into PostgreSQL. When a user visits or refreshes the page, the site automatically reflects the newest developments.
+The website is consumer-facing with high-standard editorial design. An editorial news-gathering pipeline assists in tracking breaking and trending international events from primary press agencies. Stories are reviewed, fact-checked, and approved by the lead editor in the dedicated Editorial Admin Portal before public dissemination.
 
 ---
 
@@ -14,11 +14,11 @@ The website is 100% reader-facing with zero admin clutter, technical dials, or s
   - **Lead / Splash Story**: Prominent hero card with high-resolution photo, headline, executive summary, and byline.
   - **Category Navigation**: *Top Stories*, *World*, *Technology*, *Business & Economy*, *Science*, *Geopolitics*, *Politics*.
   - **Distraction-Free Reader Mode**: Click "Read Full Story" on any dispatch to open a serif reader layout with full multi-paragraph reporting, photo captions, and original press citations.
-  - Clean public media footer (Editorial guidelines, Privacy Policy, Terms).
-- **Autonomous 5-Hour News Pipeline**:
-  - Automatically runs in the background in code using APScheduler.
-  - Uses `gemini-3.8-flash` with official Google Search tool grounding to discover and verify real-time events from the live web.
-  - Uses `gemini-2.5-flash-image` to generate custom photojournalistic visuals (with high-res editorial photo fallback), compressed and stored directly into PostgreSQL as base64 URIs.
+  - Clean public media footer (Editorial guidelines, Privacy Policy, Terms, Contact).
+- **Editorial Review & Publishing Pipeline**:
+  - Lead editor dashboard (`?page=admin`) with password-authenticated access (`abhishek`).
+  - Wire stories are queued into an "In Review" staging pipeline for human review, editing, and authorization.
+  - Ability to compose original dispatches directly through the editorial desk.
 - **Silent Background Synchronization**:
   - Automatically updates on browser refresh without manual intervention.
   - Silent background auto-polling every 60 seconds keeps the reader's screen live and up to date.
@@ -31,15 +31,16 @@ The website is 100% reader-facing with zero admin clutter, technical dials, or s
 
 ```mermaid
 flowchart TD
-    subgraph Autonomous Background Engine
-        SCHED["⏱️ APScheduler (5-Hour Cycle)"] --> AGENT["🤖 Gemini 3.8 Flash + Web Search"]
-        AGENT --> IMG["📸 Gemini 2.5 Flash Image Model"]
-        IMG --> DB[("🗄️ Neon PostgreSQL (news_articles)")]
+    subgraph Editorial Newsroom Engine
+        SCHED["⏱️ APScheduler Wire Intake"] --> AGENT["📰 Primary Wire Intelligence"]
+        AGENT --> QUEUE[("🗄️ In-Review Queue (news_articles)")]
+        QUEUE --> ADMIN["✍️ Human Editorial Approval (Abhishek Pandey)"]
     end
 
     subgraph Consumer-Facing News Portal
-        DB --> UI["📰 WorldWire Reader Portal (BBC / Reuters Style)"]
-        UI --> AUTO["🔄 Silent 60s Auto-Sync & Instant Refresh"]
+        ADMIN --> PUB[("🗄️ Published Dispatches")]
+        PUB --> UI["📰 WorldWire Reader Portal (mytomboy360.com)"]
+        UI --> AUTO["🔄 Silent 60s Auto-Sync"]
     end
 ```
 

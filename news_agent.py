@@ -187,15 +187,17 @@ Output ONLY the raw JSON object. Do not include markdown code block syntax (like
         "category": article_data.get("category", "World"),
         "hot_topic_tag": article_data.get("hot_topic_tag", "Trending"),
         "image_url": image_url,
-        "source_name": article_data.get("source_name", "WorldWire Intel"),
+        "source_name": article_data.get("source_name", "WorldWire Editorial Desk"),
         "source_url": article_data.get("source_url", ""),
         "region": article_data.get("region", "Global"),
-        "published_at": datetime.now(timezone.utc)
+        "published_at": datetime.now(timezone.utc),
+        "status": "in_review",
+        "author": "Abhishek Pandey, WorldWire Desk"
     }
 
-    inserted = database.insert_article(db_payload)
+    inserted = database.insert_article(db_payload, default_status="in_review")
     if inserted:
-        logger.info(f"Successfully published and stored article: '{db_payload['title']}'")
+        logger.info(f"Successfully queued article for editorial review: '{db_payload['title']}'")
     else:
         logger.warning(f"Article with title '{db_payload['title']}' already existed in DB.")
 
