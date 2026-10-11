@@ -30,8 +30,8 @@ def ensure_analytics_injected():
         if os.path.exists(p):
             with open(p, 'r', encoding='utf-8') as f:
                 html = f.read()
-            tag = '<script data-goatcounter="https://worldwire.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>'
-            if "worldwire.goatcounter.com" not in html:
+            tag = '<script data-goatcounter="https://mytomboy360.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>'
+            if "mytomboy360.goatcounter.com" not in html:
                 html = html.replace("</head>", f"{tag}</head>")
                 with open(p, 'w', encoding='utf-8') as f:
                     f.write(html)
@@ -540,6 +540,6 @@ html_block("""
 # GoatCounter Analytics Beacon
 import streamlit.components.v1 as components
 components.html("""
-<script data-goatcounter="https://worldwire.goatcounter.com/count"
+<script data-goatcounter="https://mytomboy360.goatcounter.com/count"
         async src="//gc.zgo.at/count.js"></script>
 """, height=0, width=0)

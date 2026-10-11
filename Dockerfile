@@ -16,7 +16,7 @@ COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Inject GoatCounter analytics tracking script into Streamlit static index.html
-RUN python3 -c "import streamlit, os; p = os.path.join(os.path.dirname(streamlit.__file__), 'static', 'index.html'); c = open(p).read(); open(p, 'w').write(c.replace('</head>', '<script data-goatcounter=\"https://worldwire.goatcounter.com/count\" async src=\"//gc.zgo.at/count.js\"></script></head>'))"
+RUN python3 -c "import streamlit, os; p = os.path.join(os.path.dirname(streamlit.__file__), 'static', 'index.html'); c = open(p).read(); open(p, 'w').write(c.replace('</head>', '<script data-goatcounter=\"https://mytomboy360.goatcounter.com/count\" async src=\"//gc.zgo.at/count.js\"></script></head>'))"
 
 
 # Copy application source code
