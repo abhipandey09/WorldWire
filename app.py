@@ -220,6 +220,91 @@ st.markdown("""
     .footer-links a:hover {
         text-decoration: underline;
     }
+
+    /* Mobile Responsive Optimizations */
+    @media (max-width: 768px) {
+        .block-container {
+            padding-top: 0.6rem !important;
+            padding-left: 0.8rem !important;
+            padding-right: 0.8rem !important;
+            padding-bottom: 2rem !important;
+        }
+        .intel-bar {
+            flex-direction: column !important;
+            align-items: flex-start !important;
+            gap: 6px !important;
+            padding: 8px 12px !important;
+            font-size: 0.72rem !important;
+        }
+        .intel-market-pill {
+            display: flex !important;
+            flex-wrap: wrap !important;
+            gap: 8px !important;
+            font-size: 0.75rem !important;
+        }
+        .masthead-wrapper {
+            flex-direction: column !important;
+            align-items: flex-start !important;
+            gap: 8px !important;
+            padding-bottom: 12px !important;
+        }
+        .masthead-title {
+            font-size: 2.2rem !important;
+            letter-spacing: -0.02em !important;
+        }
+        .masthead-sub {
+            font-size: 0.75rem !important;
+        }
+        .ticker-container {
+            flex-direction: column !important;
+            align-items: flex-start !important;
+            gap: 6px !important;
+            padding: 10px 12px !important;
+        }
+        .ticker-badge {
+            margin-right: 0 !important;
+            margin-bottom: 4px !important;
+        }
+        .ticker-headline {
+            white-space: normal !important;
+            font-size: 0.85rem !important;
+            line-height: 1.35 !important;
+        }
+        .feature-banner {
+            flex-direction: column !important;
+            align-items: flex-start !important;
+            padding: 16px !important;
+            margin: 18px 0 !important;
+        }
+        .banner-title {
+            font-size: 1.05rem !important;
+        }
+        .banner-btn {
+            width: 100% !important;
+            text-align: center !important;
+            padding: 12px 16px !important;
+        }
+        div[data-testid="stHorizontalBlock"] {
+            flex-wrap: wrap !important;
+            gap: 6px !important;
+        }
+        div[data-testid="stHorizontalBlock"] > div {
+            min-width: 110px !important;
+            flex: 1 1 auto !important;
+        }
+        button[data-testid="baseButton-secondary"], button[data-testid="baseButton-primary"] {
+            min-height: 44px !important;
+            font-size: 0.85rem !important;
+            padding: 6px 12px !important;
+        }
+        .footer-box {
+            padding: 18px 8px !important;
+            font-size: 0.78rem !important;
+        }
+        .footer-links {
+            line-height: 1.9 !important;
+        }
+    }
 </style>
 """, unsafe_allow_html=True)
 
@@ -288,10 +373,11 @@ def get_live_market_data():
 
     if not results:
         results = [
-            '<span>BRENT <b class="market-up">▲ $105.72 (+5.5%)</b></span>',
-            '<span>S&P 500 <b class="market-down">▼ 7,771.01 (-0.4%)</b></span>',
-            '<span>GOLD <b class="market-up">▲ $4,138.00 (+0.1%)</b></span>',
-            '<span>10Y YIELD <b class="market-up">▲ 5.29% (+0.3%)</b></span>',
+            '<span>BRENT <b class="market-up">▲ $78.40 (+1.2%)</b></span>',
+            '<span>S&P 500 <b class="market-up">▲ 5,864.20 (+0.4%)</b></span>',
+            '<span>GOLD <b class="market-up">▲ $2,658.00 (+0.8%)</b></span>',
+            '<span>TECH MEMORY <b class="market-up">▲ 142.80 (+3.4%)</b></span>',
+            '<span>10Y YIELD <b class="market-down">▼ 4.02% (-0.03)</b></span>',
         ]
     return " ".join(results)
 
@@ -316,11 +402,11 @@ html_block("""
 <div class="masthead-wrapper">
     <div>
         <h1 class="masthead-title">WORLDWIRE</h1>
-        <div class="masthead-sub">The Global Newspaper of Real-Time Intelligence & International Affairs</div>
+        <div class="masthead-sub">Global Real-Time Intelligence & International News • mytomboy360.com</div>
     </div>
     <div style="text-align: right; color: #475569; font-size: 0.8rem; font-weight: 600;">
-        <div style="color: #dc2626;">🔴 <b>LIVE WIRE DISPATCH</b></div>
-        <div>Updated Autonomously Every 5 Hours</div>
+        <div style="color: #dc2626;">🔴 <b>LIVE WIRE SERVICE</b></div>
+        <div>Publisher: Abhishek Pandey (TechSnapZone)</div>
     </div>
 </div>
 """)
@@ -523,8 +609,9 @@ html_block("""
         <a href="https://www.apnews.com" target="_blank">Associated Press ↗</a> •
         <a href="https://www.bloomberg.com" target="_blank">Bloomberg Markets ↗</a>
     </div>
-    <div style="margin-top: 10px; font-size: 0.8rem; color: #64748b;">
-        © 2026 <b>WORLDWIRE INTERNATIONAL MEDIA NETWORK</b>. Real-time autonomous global journalism.
+    <div style="margin-top: 12px; font-size: 0.82rem; color: #64748b; line-height: 1.6;">
+        © 2026 <b>WORLDWIRE NEWS NETWORK</b> • Published at <b>mytomboy360.com</b> by Abhishek Pandey (TechSnapZone).<br>
+        Verified Editorial & Compliance Contact: <a href="mailto:techsnapzone@gmail.com" style="color: #dc2626; font-weight: 700;">techsnapzone@gmail.com</a>
     </div>
 </div>
 """)

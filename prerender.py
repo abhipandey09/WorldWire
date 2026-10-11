@@ -72,7 +72,7 @@ def build_prerendered_html():
                 <a href="?page=privacy" style="color: #0f172a; text-decoration: none; font-weight: 600; margin: 0 8px;">Privacy Policy</a> |
                 <a href="?page=terms" style="color: #0f172a; text-decoration: none; font-weight: 600; margin: 0 8px;">Terms of Service</a>
             </p>
-            <p>© 2026 WORLDWIRE INTERNATIONAL MEDIA NETWORK. All rights reserved.</p>
+            <p>© 2026 WORLDWIRE • Published at mytomboy360.com by Abhishek Pandey. Verified Contact: techsnapzone@gmail.com</p>
         </footer>
     </div>
     """
