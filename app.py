@@ -414,6 +414,11 @@ def get_live_market_data():
         ]
     return " ".join(results)
 
+# Cached public dispatches fetcher (module-level with show_spinner=False to prevent any UI indicator or flicker)
+@st.cache_data(ttl=60, show_spinner=False)
+def fetch_cached_articles(limit: int = 60, category: str = None, search: str = None):
+    return database.get_articles(limit=limit, category=category, search=search, status="published")
+
 # 1. TOP INTELLIGENCE & GLOBAL MARKETS TICKER STRIP (DYNAMIC)
 current_date_str = datetime.now(timezone.utc).strftime("%A, %B %d, %Y")
 live_market_html = get_live_market_data()
@@ -531,15 +536,11 @@ elif st.session_state.selected_article_id is not None:
 
 else:
     # --- HOMEPAGE EDITORIAL FEED ---
-    @st.cache_data(ttl=60)
-    def fetch_cached_articles(limit: int, category: str = None, search: str = None):
-        return database.get_articles(limit=limit, category=category, search=search, status="published")
-
     filter_category = None
     if st.session_state.active_category != "Top Stories":
         filter_category = st.session_state.active_category.replace(" & Economy", "").replace("Business", "Economy")
 
-    articles = fetch_cached_articles(limit=20, category=filter_category, search=search_query)
+    articles = fetch_cached_articles(limit=60, category=filter_category, search=search_query)
 
     if not articles:
         st.info("No dispatches found matching this topic. Our editorial news desk will publish new verified stories shortly.")
@@ -606,7 +607,7 @@ else:
         
         if stream_articles:
             st.markdown(f"### LATEST WIRE DISPATCHES — {st.session_state.active_category.upper()}")
-            st.caption(f"{len(stream_articles)} Stories In Feed")
+            st.caption(f"Showing all {len(articles)} dispatches in this section")
             st.divider()
 
             for item in stream_articles:
