@@ -2,9 +2,14 @@ import os
 from datetime import datetime, timezone
 import requests
 import asyncio
-import tornado.ioloop
-from tornado.websocket import WebSocketClosedError
-from tornado.iostream import StreamClosedError
+try:
+    import tornado.ioloop
+    from tornado.websocket import WebSocketClosedError
+    from tornado.iostream import StreamClosedError
+    _has_tornado = True
+except Exception:
+    _has_tornado = False
+
 import streamlit as st
 from streamlit_autorefresh import st_autorefresh
 from dotenv import load_dotenv
@@ -16,6 +21,8 @@ import admin_panel
 
 # Configure asyncio exception handler to suppress noisy Tornado websocket disconnection tracebacks
 def _configure_asyncio_exception_handler():
+    if not _has_tornado:
+        return
     try:
         loop = tornado.ioloop.IOLoop.current().asyncio_loop
         if loop and not getattr(loop, "_ws_handler_installed", False):
