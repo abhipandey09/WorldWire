@@ -882,12 +882,18 @@ def generate_all_static_pages():
             shutil.copy(ads_src, os.path.join(s_dir, "ads.txt"))
 
     # 3. Generate sitemap.xml
-    sitemap_content = build_sitemap_xml(articles)
-    with open(os.path.join(proj_dir, "sitemap.xml"), "w", encoding="utf-8") as f:
-        f.write(sitemap_content)
-    for s_dir in static_dirs:
-        with open(os.path.join(s_dir, "sitemap.xml"), "w", encoding="utf-8") as f:
+    sitemap_src = os.path.join(proj_dir, "sitemap.xml")
+    if articles or not os.path.exists(sitemap_src):
+        sitemap_content = build_sitemap_xml(articles)
+        with open(sitemap_src, "w", encoding="utf-8") as f:
             f.write(sitemap_content)
+    for s_dir in static_dirs:
+        dest_file = os.path.join(s_dir, "sitemap.xml")
+        try:
+            if os.path.exists(sitemap_src) and os.path.abspath(sitemap_src) != os.path.abspath(dest_file):
+                shutil.copy(sitemap_src, dest_file)
+        except Exception:
+            pass
 
     # 4. Generate legal/informational pages
     pages = {
