@@ -167,6 +167,43 @@ def get_footer_html():
     </footer>
     """
 
+CATEGORY_IMAGES = {
+    "TECHNOLOGY": "https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w={width}&q=80",
+    "TECH": "https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w={width}&q=80",
+    "POLITICS": "https://images.unsplash.com/photo-1541872703-74c5e44368f9?auto=format&fit=crop&w={width}&q=80",
+    "GOVERNANCE": "https://images.unsplash.com/photo-1541872703-74c5e44368f9?auto=format&fit=crop&w={width}&q=80",
+    "ECONOMY": "https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?auto=format&fit=crop&w={width}&q=80",
+    "MARKETS": "https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?auto=format&fit=crop&w={width}&q=80",
+    "BUSINESS": "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w={width}&q=80",
+    "SCIENCE": "https://images.unsplash.com/photo-1507668077129-56e32842fceb?auto=format&fit=crop&w={width}&q=80",
+    "HEALTH": "https://images.unsplash.com/photo-1505751172876-fa1923c5c528?auto=format&fit=crop&w={width}&q=80",
+    "DEFENSE": "https://images.unsplash.com/photo-1509198397868-475647b2a1e5?auto=format&fit=crop&w={width}&q=80",
+    "SECURITY": "https://images.unsplash.com/photo-1509198397868-475647b2a1e5?auto=format&fit=crop&w={width}&q=80",
+    "ENERGY": "https://images.unsplash.com/photo-1473341304170-971dccb5ac1e?auto=format&fit=crop&w={width}&q=80",
+    "CLIMATE": "https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?auto=format&fit=crop&w={width}&q=80",
+    "ENVIRONMENT": "https://images.unsplash.com/photo-1470071459604-3b5ec3a7fe05?auto=format&fit=crop&w={width}&q=80",
+    "WORLD": "https://images.unsplash.com/photo-1504711434969-e33886168f5c?auto=format&fit=crop&w={width}&q=80",
+    "GLOBAL": "https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w={width}&q=80",
+}
+
+def get_clean_image_url(art, width=800):
+    """
+    Return a clean, lightweight external image URL.
+    Replaces heavy base64 data URIs with category-specific editorial Unsplash images
+    to keep static HTML files under 25KB and avoid Google crawler timeouts.
+    """
+    raw_url = art.get("image_url") if isinstance(art, dict) else None
+    if raw_url and isinstance(raw_url, str):
+        raw_url = raw_url.strip()
+        if raw_url.startswith("http://") or raw_url.startswith("https://"):
+            return raw_url
+
+    cat = (art.get("category") or "WORLD").upper().strip() if isinstance(art, dict) else "WORLD"
+    for key, template in CATEGORY_IMAGES.items():
+        if key in cat:
+            return template.format(width=width)
+    return CATEGORY_IMAGES["WORLD"].format(width=width)
+
 def format_date_str(dt):
     if not dt:
         return "Recent dispatch"
@@ -185,7 +222,7 @@ def build_prerendered_homepage_html(articles):
     grid_articles = articles[1:7] if len(articles) > 1 else []
     stream_articles = articles[7:] if len(articles) > 7 else []
 
-    hero_img = hero.get("image_url") or "https://images.unsplash.com/photo-1504711434969-e33886168f5c?auto=format&fit=crop&w=1200&q=80"
+    hero_img = get_clean_image_url(hero, width=1200)
     hero_author = hero.get("author") or "Abhishek Pandey, WorldWire News Desk"
     hero_date = format_date_str(hero.get("published_at"))
 
@@ -231,7 +268,7 @@ def build_prerendered_homepage_html(articles):
     """
 
     for a in grid_articles:
-        img = a.get("image_url") or "https://images.unsplash.com/photo-1504711434969-e33886168f5c?auto=format&fit=crop&w=800&q=80"
+        img = get_clean_image_url(a, width=800)
         a_date = format_date_str(a.get("published_at"))
         a_author = a.get("author") or "Abhishek Pandey, WorldWire News Desk"
         html += f"""
@@ -265,7 +302,7 @@ def build_prerendered_homepage_html(articles):
 
     for s in stream_articles:
         s_date = format_date_str(s.get("published_at"))
-        s_img = s.get("image_url") or "https://images.unsplash.com/photo-1504711434969-e33886168f5c?auto=format&fit=crop&w=400&q=80"
+        s_img = get_clean_image_url(s, width=400)
         html += f"""
         <article style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 8px; padding: 16px; display: grid; grid-template-columns: 160px 1fr; gap: 18px; align-items: center;">
             <img src="{s_img}" alt="{s['title']}" style="width: 160px; height: 110px; object-fit: cover; border-radius: 6px;" />
@@ -314,7 +351,7 @@ def build_article_page_html(article, other_articles):
     author = article.get("author") or "Abhishek Pandey, WorldWire News Desk"
     source = article.get("source_name") or "WorldWire Wire Desk"
     source_url = article.get("source_url") or ""
-    image_url = article.get("image_url") or "https://images.unsplash.com/photo-1504711434969-e33886168f5c?auto=format&fit=crop&w=1200&q=80"
+    image_url = get_clean_image_url(article, width=1200)
     pub_dt = article.get("published_at")
     pub_date_str = format_date_str(pub_dt)
     pub_iso = pub_dt.isoformat() if hasattr(pub_dt, "isoformat") else datetime.now(timezone.utc).isoformat()
@@ -898,12 +935,43 @@ def generate_all_static_pages():
             # Inject real homepage editorial content inside <div id="root">
             homepage_body = build_prerendered_homepage_html(articles)
             if homepage_body:
-                # Replace whatever was in <div id="root">...</div>
                 if '<div id="root">' in idx_html:
-                    idx_html = re.sub(r'<div id="root">[\s\S]*?</div>', f'<div id="root">{homepage_body}</div>', idx_html, count=1)
+                    prefix = idx_html.split('<div id="root">')[0] + '<div id="root">'
+                    idx_html = f"{prefix}\n{homepage_body}\n</div>\n  </body>\n</html>\n"
 
             with open(idx_path, "w", encoding="utf-8") as f:
                 f.write(idx_html)
+
+            # Save a copy as index_prerendered.html in project dir for Docker build bundling
+            if homepage_body:
+                with open(os.path.join(proj_dir, "index_prerendered.html"), "w", encoding="utf-8") as f:
+                    f.write(idx_html)
+
+    # 7. Ensure all article and static files from proj_dir are synced into all static directories
+    import glob
+    for pattern in ["article-*.html", "*.html", "sitemap.xml", "robots.txt", "ads.txt"]:
+        for src_file in glob.glob(os.path.join(proj_dir, pattern)):
+            fname = os.path.basename(src_file)
+            if fname == "index_prerendered.html":
+                continue
+            for s_dir in static_dirs:
+                dest_file = os.path.join(s_dir, fname)
+                try:
+                    if not os.path.exists(dest_file) or os.path.abspath(src_file) != os.path.abspath(dest_file):
+                        shutil.copy(src_file, dest_file)
+                except Exception:
+                    pass
+
+    # If index_prerendered.html exists, copy it directly over index.html in Streamlit static
+    prerendered_src = os.path.join(proj_dir, "index_prerendered.html")
+    if os.path.exists(prerendered_src):
+        for s_dir in static_dirs:
+            dest_idx = os.path.join(s_dir, "index.html")
+            try:
+                if os.path.abspath(prerendered_src) != os.path.abspath(dest_idx):
+                    shutil.copy(prerendered_src, dest_idx)
+            except Exception:
+                pass
 
     print(f"Successfully generated static site: {len(articles)} articles, sitemap, legal pages, and index.html")
 
