@@ -60,18 +60,18 @@ st.set_page_config(
 # Initialize background 5-hour news ingestion daemon silently
 scheduler.start_scheduler()
 
-# Ensure GoatCounter analytics & Google AdSense scripts are present in Streamlit's static index.html
+# Ensure static site pre-rendering, sitemap, legal pages, and AdSense tags are generated
 def ensure_analytics_injected():
     try:
-        from prerender import inject_prerender
-        inject_prerender()
+        from prerender import generate_all_static_pages
+        generate_all_static_pages()
     except Exception:
         pass
 
 ensure_analytics_injected()
 
 # Silent automatic background synchronization (every 120 seconds) on public feed
-if st.query_params.get("page") not in ["about", "contact", "privacy", "terms", "admin"]:
+if st.query_params.get("page") not in ["about", "contact", "privacy", "terms", "admin"] and "article" not in st.query_params:
     st_autorefresh(interval=120 * 1000, key="silent_feed_sync")
 
 # Helper to render clean HTML without CommonMark 4-space indentation code-block traps
@@ -364,10 +364,15 @@ def format_time_ago(dt: datetime) -> str:
     else:
         return f"{seconds // 86400}d ago"
 
-# Page routing: support direct URL parameters (?page=about, ?page=contact, ?page=privacy, ?page=terms, ?page=admin)
+# Page routing: support direct URL parameters (?page=about, ?page=contact, ?page=privacy, ?page=terms, ?page=admin, ?article=ID)
 VALID_PAGES = ["about", "contact", "privacy", "terms", "admin"]
 url_page = st.query_params.get("page", None)
-if "current_page" not in st.session_state:
+url_art = st.query_params.get("article", None)
+
+if url_art and url_art.isdigit():
+    st.session_state.selected_article_id = int(url_art)
+    st.session_state.current_page = "news"
+elif "current_page" not in st.session_state:
     st.session_state.current_page = url_page if url_page in VALID_PAGES else "news"
 elif url_page in VALID_PAGES:
     st.session_state.current_page = url_page
@@ -508,8 +513,10 @@ elif st.session_state.selected_article_id is not None:
     current_art = database.get_article_by_id(st.session_state.selected_article_id)
     
     if current_art:
+        st.query_params["article"] = str(current_art["id"])
         if st.button("← Back to Global Headlines", type="secondary"):
             st.session_state.selected_article_id = None
+            st.query_params.clear()
             st.rerun()
             
         st.caption(f"{current_art.get('category', 'WORLD').upper()} • {current_art.get('region', 'GLOBAL').upper()}")
@@ -535,10 +542,12 @@ elif st.session_state.selected_article_id is not None:
         st.markdown("<br>", unsafe_allow_html=True)
         if st.button("← Return to All Dispatches", type="secondary"):
             st.session_state.selected_article_id = None
+            st.query_params.clear()
             st.rerun()
 
     else:
         st.session_state.selected_article_id = None
+        st.query_params.clear()
         st.rerun()
 
 else:
@@ -649,14 +658,13 @@ else:
 html_block("""
 <div class="footer-box">
     <div class="footer-links">
-        <a href="?page=about">About Us</a> •
-        <a href="?page=contact">Contact Bureau</a> •
-        <a href="?page=privacy">Privacy Policy</a> •
-        <a href="?page=terms">Terms of Service</a> •
-        <a href="?page=admin">Editorial Staff / Admin 🔒</a> •
-        <a href="https://www.reuters.com" target="_blank">Reuters Wire ↗</a> •
-        <a href="https://www.apnews.com" target="_blank">Associated Press ↗</a> •
-        <a href="https://www.bloomberg.com" target="_blank">Bloomberg Markets ↗</a>
+        <a href="/about.html">About Us</a> •
+        <a href="/contact.html">Contact Bureau</a> •
+        <a href="/privacy.html">Privacy Policy</a> •
+        <a href="/terms.html">Terms of Service</a> •
+        <a href="https://www.reuters.com" target="_blank" rel="noopener">Reuters Wire ↗</a> •
+        <a href="https://www.apnews.com" target="_blank" rel="noopener">Associated Press ↗</a> •
+        <a href="https://www.bloomberg.com" target="_blank" rel="noopener">Bloomberg Markets ↗</a>
     </div>
     <div style="margin-top: 12px; font-size: 0.82rem; color: #64748b; line-height: 1.6;">
         © 2026 <b>WORLDWIRE NEWS NETWORK</b> • Published at <b>mytomboy360.com</b> by Abhishek Pandey (TechSnapZone).<br>

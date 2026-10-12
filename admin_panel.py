@@ -2,6 +2,14 @@ import streamlit as st
 from datetime import datetime, timezone
 import database
 import news_agent
+import prerender
+
+def sync_static_site():
+    st.cache_data.clear()
+    try:
+        prerender.generate_all_static_pages()
+    except Exception:
+        pass
 
 def render_admin_page():
     if not st.session_state.get("is_admin", False):
@@ -126,7 +134,7 @@ def render_dashboard_view():
                     with btn_col1:
                         if st.button(f"✅ Approve & Publish Story", key=f"appr_{art['id']}", type="primary", use_container_width=True):
                             database.update_article_status(art["id"], "published")
-                            st.cache_data.clear()
+                            sync_static_site()
                             st.success(f"Article '{art['title'][:40]}...' is now LIVE on mytomboy360.com!")
                             st.rerun()
 
@@ -144,14 +152,14 @@ def render_dashboard_view():
                                     "content": edit_cnt,
                                     "status": "published"
                                 })
-                                st.cache_data.clear()
+                                sync_static_site()
                                 st.success("Article updated and published to the live newspaper!")
                                 st.rerun()
 
                     with btn_col3:
                         if st.button(f"🗑️ Reject & Delete", key=f"del_{art['id']}", use_container_width=True):
                             database.delete_article(art["id"])
-                            st.cache_data.clear()
+                            sync_static_site()
                             st.warning("Article rejected and removed from queue.")
                             st.rerun()
 
@@ -195,7 +203,7 @@ def render_dashboard_view():
                         "author": f"{st.session_state.get('admin_user', 'Abhishek Pandey')}, WorldWire Desk"
                     }
                     database.insert_article(new_art, default_status=new_art["status"])
-                    st.cache_data.clear()
+                    sync_static_site()
                     if w_pub_now:
                         st.success(f"Dispatch '{w_title}' has been PUBLISHED live to mytomboy360.com!")
                     else:
@@ -233,13 +241,13 @@ def render_dashboard_view():
                             "summary": ep_sum,
                             "content": ep_cnt
                         })
-                        st.cache_data.clear()
+                        sync_static_site()
                         st.success("Story updated!")
                         st.rerun()
             with p_col3:
                 if st.button(f"Unpublish", key=f"unpub_{p_art['id']}"):
                     database.update_article_status(p_art["id"], "in_review")
-                    st.cache_data.clear()
+                    sync_static_site()
                     st.info("Story returned to in-review queue.")
                     st.rerun()
             st.markdown("---")
