@@ -123,6 +123,112 @@ COMMON_HEAD = f"""
     </style>
 """
 
+SCOPED_PRERENDER_CSS = """
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,600;1,6..72,400&family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style id="prerender-styles">
+        #prerender-container {
+            max-width: 1240px;
+            margin: 0 auto;
+            padding: 16px 20px 48px 20px;
+            font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif;
+            color: #0f172a;
+            line-height: 1.6;
+        }
+        #prerender-container * { box-sizing: border-box; }
+        #prerender-container a { color: #dc2626; text-decoration: none; }
+        #prerender-container a:hover { text-decoration: underline; }
+        #prerender-container .top-intel-bar {
+            background: #0f172a;
+            color: #e2e8f0;
+            padding: 8px 16px;
+            border-radius: 6px;
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+        }
+        #prerender-container .masthead {
+            border-bottom: 3px double #0f172a;
+            padding: 12px 0 16px 0;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+        #prerender-container .masthead-title {
+            font-family: 'Playfair Display', Georgia, serif;
+            font-size: 42px;
+            font-weight: 900;
+            letter-spacing: -0.5px;
+            line-height: 1;
+            color: #0f172a;
+        }
+        #prerender-container .masthead-sub {
+            font-size: 13px;
+            color: #475569;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            margin-top: 6px;
+            font-weight: 700;
+        }
+        #prerender-container .nav-bar {
+            display: flex;
+            gap: 16px;
+            border-bottom: 1px solid #e2e8f0;
+            padding-bottom: 10px;
+            margin-bottom: 24px;
+            overflow-x: auto;
+            white-space: nowrap;
+            font-size: 13px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+        }
+        #prerender-container .nav-bar a {
+            color: #334155;
+            padding: 4px 8px;
+            border-radius: 4px;
+        }
+        #prerender-container .nav-bar a:hover {
+            background: #e2e8f0;
+            color: #0f172a;
+            text-decoration: none;
+        }
+        #prerender-container .site-footer {
+            border-top: 3px solid #dc2626;
+            margin-top: 48px;
+            padding: 32px 16px 24px 16px;
+            text-align: center;
+            color: #64748b;
+            font-size: 13px;
+            background: #ffffff;
+            border-radius: 8px;
+        }
+        #prerender-container .footer-links {
+            margin-bottom: 14px;
+            line-height: 2;
+        }
+        #prerender-container .footer-links a {
+            margin: 0 10px;
+            font-weight: 600;
+            color: #0f172a;
+        }
+        #prerender-container .footer-links a:hover { color: #dc2626; }
+        @media (max-width: 768px) {
+            #prerender-container .masthead-title { font-size: 30px; }
+            #prerender-container .top-intel-bar { flex-direction: column; align-items: flex-start; gap: 4px; }
+        }
+    </style>
+"""
+
 def get_header_html():
     now_str = datetime.now(timezone.utc).strftime("%A, %B %d, %Y")
     return f"""
@@ -919,46 +1025,54 @@ def generate_all_static_pages():
             with open(os.path.join(s_dir, art_filename), "w", encoding="utf-8") as f:
                 f.write(art_html)
 
-    # 6. Inject homepage content and AdSense tags into index.html
-    for s_dir in static_dirs:
-        idx_path = os.path.join(s_dir, "index.html")
+    # 6. Inject homepage content, scoped styling, and AdSense tags into Streamlit's real index.html
+    try:
+        mod_static_dir = os.path.join(os.path.dirname(st_mod.__file__), 'static')
+        idx_path = os.path.join(mod_static_dir, "index.html")
         if os.path.exists(idx_path):
             with open(idx_path, "r", encoding="utf-8") as f:
                 idx_html = f.read()
 
-            # Inject AdSense Meta Tag
+            # Update Title
+            idx_html = re.sub(r'<title>.*?</title>', '<title>WORLDWIRE | Global Real-Time Intelligence & Breaking News</title>', idx_html)
+
+            # Inject AdSense Meta Tag in <head>
             if "google-adsense-account" not in idx_html:
                 idx_html = idx_html.replace("<head>", f"<head>\n    {ADSENSE_META}")
 
-            # Inject AdSense Script
+            # Inject AdSense Script in <head>
             if "pagead2.googlesyndication.com" not in idx_html:
-                idx_html = idx_html.replace("</head>", f"{ADSENSE_SCRIPT}\n</head>")
+                idx_html = idx_html.replace("</head>", f"    {ADSENSE_SCRIPT}\n</head>")
 
-            # Inject GoatCounter Script
+            # Inject GoatCounter Script in <head>
             if "mytomboy360.goatcounter.com" not in idx_html:
-                idx_html = idx_html.replace("</head>", f"{GOATCOUNTER_SCRIPT}\n</head>")
+                idx_html = idx_html.replace("</head>", f"    {GOATCOUNTER_SCRIPT}\n</head>")
 
-            # Inject real homepage editorial content inside <div id="root">
+            # Inject Scoped Pre-render CSS in <head>
+            if 'id="prerender-styles"' not in idx_html:
+                idx_html = idx_html.replace("</head>", f"    {SCOPED_PRERENDER_CSS}\n</head>")
+
+            # Inject Homepage Semantic Editorial Content inside <div id="root">
             homepage_body = build_prerendered_homepage_html(articles)
             if homepage_body:
-                if '<div id="root">' in idx_html:
-                    prefix = idx_html.split('<div id="root">')[0] + '<div id="root">'
-                    idx_html = f"{prefix}\n{homepage_body}\n</div>\n  </body>\n</html>\n"
+                root_idx = idx_html.find('<div id="root">')
+                body_end_idx = idx_html.find('</body>')
+                if root_idx != -1 and body_end_idx != -1:
+                    before_root = idx_html[:root_idx + len('<div id="root">')]
+                    after_body = idx_html[body_end_idx:]
+                    idx_html = f"{before_root}\n{homepage_body}\n</div>\n{after_body}"
 
             with open(idx_path, "w", encoding="utf-8") as f:
                 f.write(idx_html)
+    except Exception as e:
+        print(f"Error updating streamlit index.html: {e}")
 
-            # Save a copy as index_prerendered.html in project dir for Docker build bundling
-            if homepage_body:
-                with open(os.path.join(proj_dir, "index_prerendered.html"), "w", encoding="utf-8") as f:
-                    f.write(idx_html)
-
-    # 7. Ensure all article and static files from proj_dir are synced into all static directories
+    # 7. Ensure all article and static files from proj_dir are synced into all static directories (excluding index.html)
     import glob
     for pattern in ["article-*.html", "*.html", "sitemap.xml", "robots.txt", "ads.txt"]:
         for src_file in glob.glob(os.path.join(proj_dir, pattern)):
             fname = os.path.basename(src_file)
-            if fname == "index_prerendered.html":
+            if fname in ["index.html", "index_prerendered.html"]:
                 continue
             for s_dir in static_dirs:
                 dest_file = os.path.join(s_dir, fname)
@@ -967,17 +1081,6 @@ def generate_all_static_pages():
                         shutil.copy(src_file, dest_file)
                 except Exception:
                     pass
-
-    # If index_prerendered.html exists, copy it directly over index.html in Streamlit static
-    prerendered_src = os.path.join(proj_dir, "index_prerendered.html")
-    if os.path.exists(prerendered_src):
-        for s_dir in static_dirs:
-            dest_idx = os.path.join(s_dir, "index.html")
-            try:
-                if os.path.abspath(prerendered_src) != os.path.abspath(dest_idx):
-                    shutil.copy(prerendered_src, dest_idx)
-            except Exception:
-                pass
 
     print(f"Successfully generated static site: {len(articles)} articles, sitemap, legal pages, and index.html")
 
