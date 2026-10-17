@@ -2,125 +2,75 @@ import logging
 import threading
 from datetime import datetime, timezone, timedelta
 from apscheduler.schedulers.background import BackgroundScheduler
-import database
-import news_agent
+import job_scraper
+import job_store
 
-logger = logging.getLogger("WorldWire.Scheduler")
+logger = logging.getLogger("WorkWire.Scheduler")
 logging.basicConfig(level=logging.INFO)
 
-# Global singleton state
 _scheduler = None
 _scheduler_lock = threading.Lock()
 _state = {
     "is_running": False,
     "last_run_time": None,
-    "next_run_time": None,
     "status": "Initialized",
-    "last_article_title": None,
+    "last_count": 0,
     "last_error": None
 }
 
 def scheduled_job():
-    """Job executed every 5 hours to fetch 1 hot topic world news article."""
-    logger.info("Executing scheduled news fetch (5-hour interval)...")
-    _state["status"] = "Fetching News..."
+    """Daily/12-hour job execution to scrape new vacancies for admin review."""
+    logger.info("Executing scheduled job scraping cycle...")
+    _state["status"] = "Scraping Job Feeds..."
     try:
-        res = news_agent.fetch_and_publish_news()
+        count = job_scraper.run_job_scraping_cycle()
         _state["last_run_time"] = datetime.now(timezone.utc)
-        _state["last_article_title"] = res.get("title")
+        _state["last_count"] = count
         _state["status"] = "Active"
         _state["last_error"] = None
-        logger.info(f"Scheduled news posted: {res.get('title')}")
+        logger.info(f"Scheduled scraping completed: {count} positions added to pending review queue.")
     except Exception as e:
-        logger.error(f"Error during scheduled news fetch: {e}")
+        logger.error(f"Error during scheduled job scraping: {e}")
         _state["status"] = "Error"
         _state["last_error"] = str(e)
 
-def check_and_bootstrap_news():
-    """Check if initial news is needed (e.g. if DB is empty or last article is >5 hours old)."""
+def check_and_bootstrap_jobs():
+    """Verify jobs data exists and bootstrap scraping if needed."""
     try:
-        latest = database.get_latest_article()
+        stats = job_store.get_job_stats()
+        last_str = stats.get("last_fetched_at")
         needs_fetch = False
-        if not latest:
-            logger.info("Database is empty. Triggering bootstrap news fetch...")
+        if not last_str:
             needs_fetch = True
         else:
-            published_at = latest.get("published_at")
-            if published_at:
-                now = datetime.now(timezone.utc)
-                if (now - published_at) > timedelta(hours=5):
-                    logger.info("Latest article is older than 5 hours. Triggering refresh fetch...")
+            try:
+                last_dt = datetime.fromisoformat(last_str)
+                if (datetime.now(timezone.utc) - last_dt) > timedelta(hours=24):
                     needs_fetch = True
+            except Exception:
+                needs_fetch = True
 
         if needs_fetch:
-            # Run in a background thread so it doesn't block startup
             threading.Thread(target=scheduled_job, daemon=True).start()
     except Exception as e:
-        logger.warning(f"Error checking news freshness on startup: {e}")
+        logger.warning(f"Error checking jobs freshness on startup: {e}")
 
 def start_scheduler():
-    """Start the APScheduler background daemon if not already started."""
     global _scheduler
     with _scheduler_lock:
         if _scheduler is not None and _scheduler.running:
             return _scheduler
 
         _scheduler = BackgroundScheduler(daemon=True)
-        # Schedule every 5 hours
-        _scheduler.add_job(
-            scheduled_job,
-            trigger='interval',
-            hours=5,
-            id='worldwire_5hour_fetch',
-            replace_existing=True,
-            next_run_time=datetime.now(timezone.utc) + timedelta(hours=5)
-        )
+        # Schedule scraping cycle every 12 hours
+        _scheduler.add_job(scheduled_job, 'interval', hours=12, id='job_scraper_daemon')
         _scheduler.start()
         _state["is_running"] = True
         _state["status"] = "Active"
-        _state["next_run_time"] = datetime.now(timezone.utc) + timedelta(hours=5)
-        logger.info("WorldWire 5-hour background scheduler started.")
+        logger.info("WorkWire background job scraper scheduler started (12-hour interval).")
 
-        # Check if bootstrap news is needed
-        check_and_bootstrap_news()
-
+        check_and_bootstrap_jobs()
         return _scheduler
 
-def trigger_manual_fetch():
-    """Trigger an immediate asynchronous news fetch."""
-    logger.info("Manual news fetch requested.")
-    thread = threading.Thread(target=scheduled_job, daemon=True)
-    thread.start()
-    return thread
-
-def get_scheduler_info():
-    """Return current scheduler health and timing status."""
-    global _scheduler
-    next_run = None
-    if _scheduler and _scheduler.running:
-        job = _scheduler.get_job('worldwire_5hour_fetch')
-        if job and job.next_run_time:
-            next_run = job.next_run_time
-
-    latest_db_article = None
-    try:
-        latest_db_article = database.get_latest_article()
-    except Exception:
-        pass
-
-    return {
-        "is_running": _scheduler.running if _scheduler else False,
-        "status": _state["status"],
-        "next_run_time": next_run or _state.get("next_run_time"),
-        "last_run_time": _state.get("last_run_time") or (latest_db_article.get("published_at") if latest_db_article else None),
-        "last_article_title": _state.get("last_article_title") or (latest_db_article.get("title") if latest_db_article else None),
-        "last_error": _state.get("last_error")
-    }
-
-if __name__ == "__main__":
-    start_scheduler()
-    print("Scheduler running. Press Ctrl+C to exit.")
-    import time
-    while True:
-        time.sleep(1)
-
+def get_scheduler_status():
+    return _state

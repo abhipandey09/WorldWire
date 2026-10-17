@@ -1,220 +1,144 @@
-import streamlit as st
+"""
+pages_content.py
+Defines the authoritative E-E-A-T editorial and legal pages for WorkWire
+(mytomboy360.com), verified under publisher Abhishek Pandey (TechSnapZone).
+"""
 
-def render_about_page():
-    st.caption("ABOUT WORLDWIRE • PUBLISHED AT MYTOMBOY360.COM")
-    st.title("The International Journal of Global Affairs & Wire Intelligence")
-    st.markdown("##### *Delivering unvarnished, factual, and verified international reporting across geopolitics, markets, science, and technological shifts.*")
-    st.divider()
+ABOUT_PAGE_MD = """
+# About WorkWire Career Bureau
 
-    st.subheader("Our Mission & Publishing Entity")
-    st.write(
-        "**WorldWire** is an independent digital news and geopolitical wire publication operated on **mytomboy360.com** "
-        "by **Abhishek Pandey (TechSnapZone)**. Founded to provide global readers, researchers, policy observers, "
-        "and technology professionals with real-time, non-partisan dispatches, WorldWire synthesizes verified international "
-        "events into comprehensive briefings with clear, primary-source attribution and full editorial oversight."
-    )
-
-    st.subheader("Editorial Standards & E-E-A-T Framework")
-    st.write("We adhere to rigorous standards of accuracy, transparency, and accountability:")
-    st.markdown("""
-- **Multi-Source Cross Verification:** All published events are verified against international diplomatic records, sovereign wire reports, and reputable press agencies (including Reuters, Associated Press, Agence France-Presse, Bloomberg, and the BBC).
-- **Neutral Tone & Strict Attribution:** We report facts, verified statements, and economic metrics without sensationalist commentary or speculative hyperbole. Every dispatch cites the primary news desk responsible for original field reporting.
-- **Global Breadth:** Our coverage actively monitors developments across North America, Latin America, Europe, Africa, the Middle East, and Asia-Pacific.
-- **Human Accountability & Editorial Oversight:** WorldWire is edited and published by Abhishek Pandey. Every story is reviewed, verified, and authorized through our editorial desk before publication. Reader inquiries and corrections are handled directly via verified email **techsnapzone@gmail.com**.
-""")
-
-    st.subheader("Editorial Methodology & Newsroom Standards")
-    st.write(
-        "WorldWire's editorial desk actively monitors global press feeds, diplomatic communiques, and sovereign wire archives around the clock. "
-        "Our editorial research workflow cross-checks multilingual primary documents against international news repositories, "
-        "synthesizing them into comprehensive, verified executive dispatches. Every dispatch undergoes manual review, fact-checking, "
-        "and editorial authorization by Abhishek Pandey before being published."
-    )
-
-    st.subheader("Dedicated Coverage Desks")
-    col1, col2 = st.columns(2)
-    with col1:
-        st.info("**🌐 Geopolitics & World**\n\nDiplomatic treaties, regional conflicts, sovereign summit communiques, and humanitarian missions.")
-        st.info("**📈 Global Markets & Economy**\n\nCentral bank rate actions, trade corridors, sovereign debt cycles, energy spot markets, and supply chains.")
-    with col2:
-        st.info("**⚡ Technology & Computing**\n\nArtificial intelligence infrastructure, semiconductor fabrication, telecommunications, and quantum systems.")
-        st.info("**🔬 Science & Climate**\n\nSpace exploration missions, biomedical Nobel breakthroughs, renewable energy deployment, and weather anomalies.")
-
-    st.subheader("Fact-Checking & Corrections Policy")
-    st.write(
-        "Accuracy is our cornerstone. If a dispatch contains a factual error or misattribution, we issue immediate, transparent corrections. "
-        "Readers and journalists wishing to report an inaccuracy may reach our corrections desk directly at **techsnapzone@gmail.com**."
-    )
-
-
-def render_contact_page():
-    st.caption("CONTACT THE WIRE • EDITORIAL & INQUIRIES BUREAU")
-    st.title("Connect with WorldWire Bureau")
-    st.markdown("##### *We welcome inquiries from readers, press colleagues, researchers, and partners worldwide.*")
-    st.divider()
-
-    col1, col2 = st.columns([1, 1])
-    with col1:
-        st.subheader("Official Communication Channels")
-        st.markdown("""
-**Primary Verified Contact**  
-📧 **techsnapzone@gmail.com**  
-*Direct inbox monitored daily for all editorial, syndication, and partnership inquiries.*
+**WorkWire** (published at [mytomboy360.com](https://mytomboy360.com)) is an independent tech employment intelligence portal and career opportunities desk founded and editorially directed by **Abhishek Pandey (TechSnapZone)**.
 
 ---
 
-**Editorial & Content Desk**  
-📧 `techsnapzone@gmail.com` *(Subject: [Editorial Inquiry])*  
-*For questions regarding story coverage, press quotes, and syndication.*
+## 🎯 Our Mission & Purpose
+In an era dominated by automated job scrapers, ghost postings, and deceptive recruitment spam, WorkWire was founded to deliver **vetted, authentic, and high-impact career opportunities** across the world's two largest technology talent ecosystems: **India 🇮🇳 and the United States 🇺🇸**.
+
+We curate and verify engineering, machine learning, cloud architecture, and product leadership roles at top tech enterprises, high-growth startups, and sovereign research laboratories.
 
 ---
 
-**Corrections & Fact-Checking Desk**  
-📧 `techsnapzone@gmail.com` *(Subject: [Correction Request])*  
-*Direct priority line for factual rectifications, source attribution, and updates.*
+## 🛡️ Human Editorial Curation (E-E-A-T)
+Every single job posting listed on WorkWire undergoes **human editorial review** before going live on the site:
+1. **Direct Employer Verification**: We verify that every application link directs candidates to the official, verified company ATS (Greenhouse, Lever, Workday, SmartRecruiters) or genuine corporate careers page.
+2. **Anti-Ghost Job Screening**: We monitor company hiring activity to filter out stale listings and speculative postings.
+3. **Compensation & Scope Clarity**: We prioritize listings with transparent salary benchmarks, clear technical qualifications, and explicit location/visa details.
+4. **Candidate Zero-Fee Guarantee**: WorkWire is **100% free** for candidates. We never charge job seekers for applications, referrals, or listings.
 
 ---
 
-**Advertising, Sponsorship & AdSense Compliance**  
-📧 `techsnapzone@gmail.com` *(Subject: [Advertising / Compliance])*  
-*For Google AdSense policy coordination, sponsorship, and commercial inquiries.*
+## 👨‍💼 Publisher & Editorial Oversight
+- **Lead Publisher & Editor**: Abhishek Pandey
+- **Operating Organization**: TechSnapZone Media Network
+- **Official Portal**: [mytomboy360.com](https://mytomboy360.com)
+- **Verified Editorial & AdSense Contact**: [techsnapzone@gmail.com](mailto:techsnapzone@gmail.com)
+- **Primary Coverage**: Bengaluru, Hyderabad, Gurugram, Pune, San Francisco Bay Area, Seattle, New York, Austin, and Global Remote.
+
+For recruitment partnerships, job listing verification, or corrections, contact our editorial team directly at [techsnapzone@gmail.com](mailto:techsnapzone@gmail.com).
+"""
+
+CONTACT_PAGE_MD = """
+# Contact WorkWire Editorial Bureau
+
+We welcome inquiries from job seekers, hiring managers, technology organizations, and compliance evaluators.
 
 ---
 
-**Publishing Domain:** `https://mytomboy360.com`  
+### 📬 Direct Bureau Contact
+- **Lead Editor**: Abhishek Pandey (TechSnapZone)
+- **Verified Email**: [techsnapzone@gmail.com](mailto:techsnapzone@gmail.com)
+- **Publication Domain**: [mytomboy360.com](https://mytomboy360.com)
+- **Response Commitment**: Within 24 to 48 business hours.
+
+---
+
+### 🏢 What You Can Contact Us For:
+1. **Job Opportunity Verification**: If you are an employer and wish to update, feature, or verify a listed position.
+2. **Notice of Filled Positions / Removals**: If an approved role has closed, email us with the Job ID (e.g. `job-101`) for immediate archiving.
+3. **Job Seeker Assistance & Anti-Fraud Alerts**: Report any suspicious employer communications or fraudulent recruitment activity.
+4. **Google AdSense & Privacy Compliance**: Any questions concerning site disclosures, advertising tags, or privacy requests.
+"""
+
+PRIVACY_PAGE_MD = """
+# Privacy Policy & Cookie Disclosure
+
+**Effective Date:** October 17, 2026  
+**Publisher:** Abhishek Pandey (TechSnapZone)  
+**Portal:** [mytomboy360.com](https://mytomboy360.com) (WorkWire)
+
+---
+
+### 1. Introduction
+WorkWire ("we", "our", or "us") respects your privacy. This Privacy Policy outlines our data handling practices in compliance with global standards, including the EU General Data Protection Regulation (GDPR), California Consumer Privacy Act (CCPA), and India's Digital Personal Data Protection (DPDP) Act.
+
+---
+
+### 2. Information We Do NOT Collect
+- WorkWire is an open directory of verified career opportunities.
+- **We do not require candidate registration** to browse jobs or access application links.
+- We do not store, process, or sell user resumes or personal financial documents on our servers.
+
+---
+
+### 3. Google AdSense & Third-Party Advertising
+- Google, as a third-party vendor, uses cookies to serve ads on WorkWire (`mytomboy360.com`).
+- Google's use of advertising cookies enables it and its partners to serve ads to our users based on their visit to our site and/or other sites on the Internet.
+- Users may opt out of personalized advertising by visiting [Google Ad Settings](https://www.google.com/settings/ads).
+- Alternatively, you can opt out of a third-party vendor's use of cookies for personalized advertising by visiting [aboutads.info](https://www.aboutads.info).
+
+---
+
+### 4. Privacy-First Analytics
+We utilize **GoatCounter**, a privacy-respecting, lightweight web analytics tool. GoatCounter does not track users across websites, does not collect personal identifiers, and does not set tracking cookies.
+
+---
+
+### 5. External Career Links
+WorkWire provides outbound links directly to employers' official application portals (e.g. Greenhouse, Lever, Workday). We are not responsible for the privacy policies or practices of third-party employer sites.
+
+---
+
+### 6. Contacting the Data Controller
+For inquiries or requests regarding this Privacy Policy, please contact our designated publisher:
+**Abhishek Pandey (TechSnapZone)**  
+Email: [techsnapzone@gmail.com](mailto:techsnapzone@gmail.com)
+"""
+
+TERMS_PAGE_MD = """
+# Terms of Service & Candidate Safety Disclaimer
+
+**Effective Date:** October 17, 2026  
+**Publication:** WorkWire (published at [mytomboy360.com](https://mytomboy360.com))  
 **Publisher:** Abhishek Pandey (TechSnapZone)
-""")
 
-    with col2:
-        st.subheader("Send a Message Directly")
-        with st.form("contact_direct_form"):
-            c_name = st.text_input("Your Full Name", placeholder="e.g. Jane Smith")
-            c_email = st.text_input("Your Email Address", placeholder="name@example.com")
-            c_topic = st.selectbox("Subject Category", [
-                "General Editorial Question",
-                "Factual Correction / Retraction Request",
-                "News Tip / Lead",
-                "Advertising & Monetization Inquiry",
-                "Technical / Bug Report"
-            ])
-            c_msg = st.text_area("Your Message", placeholder="Please provide clear details regarding your inquiry...")
-            submitted = st.form_submit_button("Send Transmission →", type="primary", use_container_width=True)
-            if submitted:
-                if c_name and c_email and c_msg:
-                    st.success(
-                        f"Thank you, {c_name}! Your message regarding '{c_topic}' has been logged. "
-                        f"You may also reach us directly at **techsnapzone@gmail.com**."
-                    )
-                else:
-                    st.error("Please fill in your name, email address, and message before sending.")
+---
 
+### 1. Acceptance of Terms
+By accessing or using WorkWire, you agree to comply with and be bound by these Terms of Service. If you do not agree to these terms, please do not use the website.
 
-def render_privacy_page():
-    st.caption("LEGAL & COMPLIANCE • PRIVACY POLICY")
-    st.title("WorldWire Privacy Policy")
-    st.caption("Effective Date: January 1, 2026 | Last Updated: October 11, 2026 | Domain: mytomboy360.com")
-    st.divider()
+---
 
-    st.write(
-        "At **WorldWire (mytomboy360.com)**, the privacy of our visitors is of paramount importance to us. "
-        "This Privacy Policy document outlines the types of information collected and recorded by WorldWire "
-        "and how we utilize it in full compliance with international regulations including GDPR, CCPA, and Google AdSense partner guidelines."
-    )
+### 2. Information Purpose & Neutral Directory
+WorkWire acts strictly as an informational job aggregation and curation directory. All job descriptions, designations, salary ranges, and employer trademarks belong to their respective corporate entities.
+- WorkWire is not an employment agency or recruiter for the companies listed.
+- We do not participate in candidate hiring decisions, interview scheduling, or employment contracts.
 
-    st.subheader("1. Consent")
-    st.write("By using our website, you hereby consent to our Privacy Policy and agree to its terms.")
+---
 
-    st.subheader("2. Standard Log Files")
-    st.write(
-        "WorldWire follows a standard procedure of utilizing log files. These files log visitors when they access websites. "
-        "The information collected by log files includes internet protocol (IP) addresses, browser type, Internet Service Provider (ISP), "
-        "date and time stamp, referring/exit pages, and number of clicks. These are not linked to any information that is personally identifiable. "
-        "The purpose is for analyzing trends, administering the site, and gathering demographic information."
-    )
+### 3. Anti-Fraud & Job Seeker Safety Notice
+- **Legitimate employers will NEVER request money, processing fees, or credit card details** during an application or interview process.
+- If any entity claiming to represent a company listed on our directory requests money or sensitive financial data, **do not proceed** and report them immediately to [techsnapzone@gmail.com](mailto:techsnapzone@gmail.com).
+- All applications should be submitted solely through the official employer links provided on WorkWire.
 
-    st.subheader("3. Cookies and Web Beacons")
-    st.write(
-        "Like any other digital publication, WorldWire uses 'cookies' to store information including visitors' preferences "
-        "and the pages on the website that the visitor accessed. The information is used to optimize user experience."
-    )
+---
 
-    st.info("""
-### 4. Google AdSense & DoubleClick DART Cookies (Mandatory Disclosure)
+### 4. Direct Outbound Links
+Our website contains direct links to third-party employer career websites. WorkWire exercises editorial care to link only to verified corporate domains, but holds no liability for content, availability, or operational policies of external sites.
 
-Google is one of our third-party advertising vendors on our site (`mytomboy360.com`). It uses cookies, known as DART cookies, to serve advertisements to our site visitors based upon their visit to WorldWire and other sites across the internet.
+---
 
-- Third party vendors, including Google, use cookies to serve ads based on a user's prior visits to your website or other websites.
-- Google's use of advertising cookies enables it and its partners to serve ads to users based on their visit to our sites and/or other sites on the Internet.
-- Users may opt out of personalized advertising by visiting [Google Ads Settings](https://www.google.com/settings/ads). Alternatively, users can opt out of a third-party vendor's use of cookies for personalized advertising by visiting [www.aboutads.info](https://www.aboutads.info/choices/).
-""")
-
-    st.subheader("5. Third-Party Privacy Policies")
-    st.write(
-        "WorldWire's Privacy Policy does not apply to other advertisers or websites. Thus, we advise you to consult the respective Privacy Policies "
-        "of these third-party ad servers for more detailed information. It may include their practices and instructions about how to opt-out of certain options."
-    )
-
-    st.subheader("6. Privacy-First Analytics (GoatCounter)")
-    st.write(
-        "We utilize GoatCounter, an open-source, privacy-first web analytics platform that does not track users across websites, "
-        "does not use tracking cookies, and does not harvest personally identifiable data. All statistical data collected is strictly aggregated "
-        "to gauge readership popularity and geographic distribution."
-    )
-
-    st.subheader("7. CCPA Privacy Rights (Do Not Sell My Personal Information)")
-    st.write(
-        "Under the California Consumer Privacy Act (CCPA), consumers have the right to request disclosure or deletion of collected personal data, "
-        "and to request that a business not sell their personal data. WorldWire does not sell personal information."
-    )
-
-    st.subheader("8. GDPR Data Protection Rights")
-    st.write(
-        "Every user is entitled to data access, rectification, erasure, restriction of processing, objection to processing, "
-        "and data portability under the General Data Protection Regulation (GDPR)."
-    )
-
-    st.subheader("9. Contact Us Regarding Privacy")
-    st.write("If you have questions or require more information about our Privacy Policy, contact our Data Protection Administrator directly at **techsnapzone@gmail.com**.")
-
-
-def render_terms_page():
-    st.caption("LEGAL & COMPLIANCE • TERMS OF SERVICE")
-    st.title("WorldWire Terms of Service")
-    st.caption("Effective Date: January 1, 2026 | Last Updated: October 11, 2026 | Domain: mytomboy360.com")
-    st.divider()
-
-    st.subheader("1. Acceptance of Terms")
-    st.write(
-        "By accessing or reading the WorldWire intelligence portal at **mytomboy360.com** (and all affiliated subdomains and digital services), "
-        "you agree to be bound by these Terms of Service and all applicable international laws and regulations. "
-        "If you do not agree with any of these terms, you are prohibited from using or accessing this site."
-    )
-
-    st.subheader("2. Intellectual Property & Fair Use Attribution")
-    st.write(
-        "All original editorial syntheses, branding, layout architectures, and software codebase associated with WorldWire "
-        "are protected by copyright. External reporting, cited quotes, and third-party trademarks "
-        "referenced in news dispatches remain the intellectual property of their respective originating news wire agencies (Reuters, AP, Bloomberg, BBC, etc.)."
-    )
-
-    st.subheader("3. Disclaimer of Financial & Legal Advice")
-    st.write(
-        "Articles, market figures, and economic indicators published across WorldWire are provided purely for educational and journalistic "
-        "informational purposes. Nothing published on this site constitutes financial, legal, investment, or geopolitical consulting advice. "
-        "Readers must conduct independent verification before executing financial transactions based on real-time news data."
-    )
-
-    st.subheader("4. External Hyperlinks")
-    st.write(
-        "WorldWire dispatches cite and link to primary source publications, diplomatic archives, and original wire services. "
-        "WorldWire is not responsible for the contents or availability of any linked external third-party site."
-    )
-
-    st.subheader("5. Modifications to Terms")
-    st.write(
-        "WorldWire reserves the right to revise these Terms of Service at any time without prior notice. "
-        "By continuing to access this website, you agree to be bound by the then-current version of these Terms."
-    )
-
-    st.subheader("6. Contact Information")
-    st.write("For legal, copyright, or terms inquiries, contact the publisher at **techsnapzone@gmail.com**.")
+### 5. Contact Information
+For legal, copyright, or listing concerns:  
+**Abhishek Pandey (TechSnapZone)**  
+Email: [techsnapzone@gmail.com](mailto:techsnapzone@gmail.com)
+"""
