@@ -633,7 +633,7 @@ else:
                 tags_html = " ".join([f"<span class='ww-tag-chip'>{t}</span>" for t in job.get("tags", [])])
 
                 with st.container():
-                    st.markdown(f"""
+                    html_block(f"""
                     <div class="ww-job-card">
                         <div class="ww-card-top">
                             <div class="ww-company-flex">
@@ -663,7 +663,7 @@ else:
                             {tags_html}
                         </div>
                     </div>
-                    """, unsafe_allow_html=True)
+                    """)
 
                     c_act1, c_act2, c_spacer = st.columns([2.5, 2, 4.5])
                     with c_act1:
@@ -680,25 +680,25 @@ else:
                     st.markdown("<div style='height: 8px;'></div>", unsafe_allow_html=True)
 
     # ==========================================
-    # TAB 2: AI CAREER COPILOT & MATCHER
+    # TAB 2: AI CAREER COPILOT & MATCHER (LIVE WEB SEARCH GROUNDED)
     # ==========================================
     with tab_ai_copilot:
-        st.markdown("""
+        html_block("""
         <div style="background: linear-gradient(135deg, #1e1b4b 0%, #312e81 50%, #1e293b 100%); color: #ffffff; padding: 28px 24px; border-radius: 12px; margin-bottom: 24px; border: 1px solid rgba(255,255,255,0.1);">
             <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 8px;">
                 <span style="font-size: 28px;">🤖</span>
                 <div>
-                    <h2 style="font-size: 24px; font-weight: 800; color: #ffffff; margin: 0;">WorkWire AI Career Copilot &amp; Requisition Matcher</h2>
+                    <h2 style="font-size: 24px; font-weight: 800; color: #ffffff; margin: 0;">WorkWire AI Career Copilot &amp; Real-Time Job Matcher</h2>
                     <p style="color: #cbd5e1; font-size: 14px; margin-top: 4px;">
-                        Powered by Google Gemini AI • Match your technical background directly with verified India &amp; US positions.
+                        Powered by Google Gemini 3.8 Flash • Real-Time Google Search Tool Calls across India 🇮🇳 &amp; US 🇺🇸
                     </p>
                 </div>
             </div>
             <p style="font-size: 13px; color: #94a3b8; line-height: 1.5; margin: 0;">
-                Tell us your core tech stack, experience level, and preferred region. Our Gemini model analyzes the full technical requirements of our 24+ active requisitions, computes authentic Match Scores, and delivers employer-specific interview tips.
+                Tell us your core tech stack, experience level, and preferred region. Our AI copilot performs <b>live web search tool calls</b> to discover active job postings currently open on company ATS boards (Workday, Greenhouse, Lever, Ashby, LinkedIn) across India and the US, complemented with our verified catalog.
             </p>
         </div>
-        """, unsafe_allow_html=True)
+        """)
 
         with st.form("ai_matcher_form"):
             col_ai_1, col_ai_2 = st.columns(2)
@@ -727,15 +727,15 @@ else:
                 placeholder="Share a brief overview of your projects, systems scale, high-concurrency experience, or what you want to work on next..."
             )
 
-            submit_match = st.form_submit_button("✨ Match My Profile to Verified Positions →", use_container_width=True)
+            submit_match = st.form_submit_button("✨ Search Live Web & Match My Profile →", use_container_width=True)
 
         if submit_match:
             if not cand_skills.strip() and not cand_bio.strip():
                 st.error("Please provide at least your technical skills or background snippet so our AI can evaluate matches.")
             else:
-                with st.spinner("🤖 Evaluating candidate profile against verified live requisitions with Gemini AI..."):
+                with st.spinner("🌐 Conducting live web search tool calls across India & US and matching active tech requisitions with Gemini AI..."):
                     all_jobs = get_approved_jobs(limit=50)
-                    country_filter_val = "India" if "India" in cand_region else ("United States" if "United States" in cand_region else "Any Location")
+                    country_filter_val = "India" if "India" in cand_region else ("United States" if "United States" in cand_region else "Any Region / Remote")
                     matched_results = match_candidate_jobs(
                         candidate_skills=cand_skills,
                         candidate_exp=cand_exp,
@@ -745,31 +745,38 @@ else:
                     )
 
                 if not matched_results:
-                    st.warning("No high-confidence matches found. Try broadening your technical skills or selecting 'Any Region'.")
+                    st.warning("No high-confidence matches found. Try broadening your technical skills or selecting 'Any Region / Remote'.")
                 else:
-                    st.success(f"🎯 Found **{len(matched_results)}** optimal verified matches for your profile!")
+                    st.success(f"🎯 Retrieved **{len(matched_results)}** optimal verified opportunities (Live Web Search & WorkWire Catalog)!")
 
                     for match in matched_results:
-                        score = match.get("match_score", 90)
-                        score_color = "#16a34a" if score >= 85 else "#2563eb"
-                        country_flag = "🇮🇳" if match.get("country") == "India" else "🇺🇸"
+                        score = match.get("match_score", 92)
+                        score_color = "#16a34a" if score >= 90 else "#2563eb"
+                        country_flag = "🇮🇳" if "india" in match.get("country", "").lower() or "india" in match.get("location", "").lower() else "🇺🇸"
+                        source_text = match.get("source", "Live Web Search")
+                        source_badge = '<span style="background: #e0f2fe; color: #0369a1; font-size: 11px; font-weight: 800; padding: 3px 8px; border-radius: 4px; text-transform: uppercase;">🌐 LIVE WEB SEARCH</span>' if "live" in source_text.lower() else '<span style="background: #dcfce7; color: #15803d; font-size: 11px; font-weight: 800; padding: 3px 8px; border-radius: 4px; text-transform: uppercase;">🛡️ WORKWIRE CURATED</span>'
+                        logo_url = match.get("company_logo") or get_company_logo(match.get("company_domain", "google.com"))
 
                         strengths_html = " ".join([f"<span style='background: #dcfce7; color: #15803d; font-size: 11px; font-weight: 700; padding: 2px 8px; border-radius: 4px; display: inline-block; margin: 2px;'>{s}</span>" for s in match.get("key_matching_skills", [])])
                         gaps_html = " ".join([f"<span style='background: #fef3c7; color: #b45309; font-size: 11px; font-weight: 700; padding: 2px 8px; border-radius: 4px; display: inline-block; margin: 2px;'>{g}</span>" for g in match.get("skill_gaps_to_learn", [])])
 
                         with st.container():
-                            st.markdown(f"""
-                            <div style="background: #ffffff; border: 2px solid {score_color}30; border-radius: 12px; padding: 24px; margin-bottom: 20px; box-shadow: 0 4px 12px rgba(15,23,42,0.04);">
+                            html_block(f"""
+                            <div style="background: #ffffff; border: 2px solid {score_color}40; border-radius: 12px; padding: 24px; margin-bottom: 20px; box-shadow: 0 4px 12px rgba(15,23,42,0.05);">
                                 <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 12px; margin-bottom: 12px;">
-                                    <div>
-                                        <div style="font-size: 11px; font-weight: 800; color: #2563eb; text-transform: uppercase;">
-                                            {country_flag} {match.get('country', 'GLOBAL').upper()} • OFFICIAL REQUISITION
-                                        </div>
-                                        <div style="font-size: 22px; font-weight: 800; color: #0f172a; margin-top: 2px;">
-                                            {match['title']}
-                                        </div>
-                                        <div style="font-size: 15px; font-weight: 600; color: #475569; margin-top: 2px;">
-                                            🏢 <b>{match['company']}</b> &nbsp;•&nbsp; 📍 {match['location']}
+                                    <div style="display: flex; align-items: center; gap: 12px;">
+                                        <img src="{logo_url}" alt="{match['company']}" style="width: 44px; height: 44px; border-radius: 8px; border: 1px solid #e2e8f0; object-fit: contain; padding: 4px; background: #f8fafc;" onerror="this.src='https://www.google.com/s2/favicons?domain=google.com&sz=128'">
+                                        <div>
+                                            <div style="margin-bottom: 2px;">
+                                                {source_badge} &nbsp;
+                                                <span style="font-size: 11px; font-weight: 800; color: #2563eb; text-transform: uppercase;">{country_flag} {match.get('country', 'GLOBAL').upper()}</span>
+                                            </div>
+                                            <div style="font-size: 22px; font-weight: 800; color: #0f172a; margin-top: 2px;">
+                                                {match['title']}
+                                            </div>
+                                            <div style="font-size: 15px; font-weight: 600; color: #475569; margin-top: 2px;">
+                                                🏢 <b>{match['company']}</b> &nbsp;•&nbsp; 📍 {match['location']}
+                                            </div>
                                         </div>
                                     </div>
                                     <div style="text-align: right;">
@@ -778,6 +785,7 @@ else:
                                         </div>
                                         <div style="margin-top: 6px;">
                                             <span class="ww-req-badge">REQ #{match.get('req_id')}</span>
+                                            <span class="ww-salary-badge">💰 {match.get('salary_range', 'Competitive')}</span>
                                         </div>
                                     </div>
                                 </div>
@@ -806,12 +814,12 @@ else:
                                     <b>🎯 Technical Interview Tip for {match['company']}:</b> {match.get('interview_tip')}
                                 </div>
                             </div>
-                            """, unsafe_allow_html=True)
+                            """)
 
                             c_m_apply, c_m_spacer = st.columns([3, 6])
                             with c_m_apply:
                                 st.link_button(
-                                    f"🚀 Apply Directly on {match['company']} ATS ↗",
+                                    f"🚀 Apply on {match['company']} Official Portal ↗",
                                     match.get("apply_url"),
                                     type="primary",
                                     use_container_width=True
