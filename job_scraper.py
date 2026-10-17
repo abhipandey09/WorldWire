@@ -344,3 +344,4 @@ def run_job_scraping_cycle():
 if __name__ == "__main__":
     count = run_job_scraping_cycle()
     print(f"Scraping completed. {count} jobs queued for admin review.")
+

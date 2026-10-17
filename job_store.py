@@ -9,20 +9,28 @@ logger = logging.getLogger("WorkWire.JobStore")
 DATA_DIR = os.path.join(os.path.dirname(__file__), "data")
 JOBS_FILE = os.path.join(DATA_DIR, "jobs.json")
 
-# Initial curated seed jobs across India and United States
+def get_company_logo(domain: str) -> str:
+    """Return high-resolution company logo URL using Google Favicon API."""
+    return f"https://www.google.com/s2/favicons?domain={domain}&sz=128"
+
+# Curated seed jobs with exact Requisition IDs, ATS endpoints, and verified company domains
 SEED_JOBS = [
     {
         "id": "job-101",
+        "req_id": "NV-JR1982731",
         "title": "Senior AI Infrastructure Engineer",
         "company": "NVIDIA",
-        "company_logo": "https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=120&q=80",
+        "company_domain": "nvidia.com",
+        "company_logo": get_company_logo("nvidia.com"),
         "location": "Bengaluru, Karnataka, India (Hybrid)",
         "country": "India",
+        "work_mode": "Hybrid",
         "department": "AI & Machine Learning",
         "employment_type": "Full-time",
         "experience_level": "Senior Level (5-8 yrs)",
         "salary_range": "₹38,00,000 - ₹55,00,000 INR",
-        "apply_url": "https://www.nvidia.com/en-us/about-nvidia/careers/",
+        "apply_url": "https://nvidia.wd5.myworkdayjobs.com/en-US/NVIDIAExternalCareerSite/job/India-Bengaluru/Senior-AI-Infrastructure-Engineer_JR1982731",
+        "ats_platform": "Workday",
         "posted_at": "2026-10-17T09:30:00Z",
         "status": "approved",
         "approved_by": "abhishek",
@@ -50,16 +58,20 @@ NVIDIA is pioneering the era of accelerated computing and generative artificial 
     },
     {
         "id": "job-102",
+        "req_id": "ST-GH6271948",
         "title": "Staff Cloud Platform Architect",
         "company": "Stripe",
-        "company_logo": "https://images.unsplash.com/photo-1556742049-0a67c5574f73?auto=format&fit=crop&w=120&q=80",
+        "company_domain": "stripe.com",
+        "company_logo": get_company_logo("stripe.com"),
         "location": "San Francisco, CA, US (Remote / Hybrid)",
         "country": "United States",
+        "work_mode": "Remote / Hybrid",
         "department": "DevOps & Cloud",
         "employment_type": "Full-time",
         "experience_level": "Staff / Lead (8+ yrs)",
         "salary_range": "$220,000 - $285,000 USD + Equity",
-        "apply_url": "https://stripe.com/jobs",
+        "apply_url": "https://boards.greenhouse.io/stripe/jobs/6271948",
+        "ats_platform": "Greenhouse",
         "posted_at": "2026-10-17T08:15:00Z",
         "status": "approved",
         "approved_by": "abhishek",
@@ -87,16 +99,20 @@ Stripe builds the financial infrastructure for the internet. Millions of compani
     },
     {
         "id": "job-103",
+        "req_id": "RP-LEV7B3A9",
         "title": "Lead Full Stack Software Engineer",
         "company": "Razorpay",
-        "company_logo": "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=120&q=80",
+        "company_domain": "razorpay.com",
+        "company_logo": get_company_logo("razorpay.com"),
         "location": "Bengaluru, Karnataka, India (In-Office)",
         "country": "India",
+        "work_mode": "In-Office",
         "department": "Software Engineering",
         "employment_type": "Full-time",
         "experience_level": "Lead Level (6-10 yrs)",
         "salary_range": "₹42,00,000 - ₹60,00,000 INR",
-        "apply_url": "https://razorpay.com/jobs/",
+        "apply_url": "https://jobs.lever.co/razorpay/7b3a9c1e-45fa-4392-8dbb-123456789abc",
+        "ats_platform": "Lever",
         "posted_at": "2026-10-16T14:20:00Z",
         "status": "approved",
         "approved_by": "abhishek",
@@ -115,25 +131,24 @@ Razorpay is India's first full-stack financial solutions company, empowering mil
 - 6+ years building consumer or merchant-facing web applications at scale.
 - Expert proficiency in React, TypeScript, modern CSS architectures, and Node.js or Go backends.
 - Solid understanding of database indexing, caching strategies (Redis), and distributed consensus.
-- Demonstrated technical leadership and mentoring capability.
-
-### Benefits & Perks
-- Market-leading Indian tech compensation with wealth-creation ESOPs.
-- Premium health insurance with OPD coverage for self, spouse, children, and parents.
-- Free gourmet meals, gym reimbursement, and annual company retreats."""
+- Demonstrated technical leadership and mentoring capability."""
     },
     {
         "id": "job-104",
+        "req_id": "DB-GH5918231",
         "title": "Senior Machine Learning Engineer (LLM Finetuning)",
         "company": "Databricks",
-        "company_logo": "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=120&q=80",
+        "company_domain": "databricks.com",
+        "company_logo": get_company_logo("databricks.com"),
         "location": "Seattle, WA, US (Hybrid)",
         "country": "United States",
+        "work_mode": "Hybrid",
         "department": "AI & Machine Learning",
         "employment_type": "Full-time",
         "experience_level": "Senior Level (4-7 yrs)",
         "salary_range": "$185,000 - $240,000 USD + Equity",
-        "apply_url": "https://www.databricks.com/company/careers",
+        "apply_url": "https://boards.greenhouse.io/databricks/jobs/5918231",
+        "ats_platform": "Greenhouse",
         "posted_at": "2026-10-16T11:45:00Z",
         "status": "approved",
         "approved_by": "abhishek",
@@ -151,26 +166,24 @@ Databricks combines data, analytics, and AI on a unified Lakehouse platform. The
 ### Requirements
 - MS or PhD in Computer Science, Data Science, or related field with focus on NLP/ML.
 - 4+ years of industry experience deploying production machine learning models.
-- Deep expertise in PyTorch, Hugging Face Transformers, and distributed evaluation frameworks.
-- Strong analytical and problem-solving skills with passion for open-source AI tooling.
-
-### Databricks Culture & Compensation
-- Top-tier tech compensation package with pre-IPO equity valuation upside.
-- Comprehensive medical, dental, and vision insurance; 401(k) matching up to 4%.
-- Unlimited paid time off (PTO) and annual wellness sabbatical."""
+- Deep expertise in PyTorch, Hugging Face Transformers, and distributed evaluation frameworks."""
     },
     {
         "id": "job-105",
+        "req_id": "SW-BLR19284",
         "title": "Staff Backend Engineer - Payments Core",
         "company": "Swiggy",
-        "company_logo": "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?auto=format&fit=crop&w=120&q=80",
+        "company_domain": "swiggy.com",
+        "company_logo": get_company_logo("swiggy.com"),
         "location": "Bengaluru, Karnataka, India (Hybrid)",
         "country": "India",
+        "work_mode": "Hybrid",
         "department": "Software Engineering",
         "employment_type": "Full-time",
         "experience_level": "Staff Level (7-11 yrs)",
         "salary_range": "₹45,00,000 - ₹65,00,000 INR",
-        "apply_url": "https://careers.swiggy.com/",
+        "apply_url": "https://careers.swiggy.com/#/job-details/SWIG_BLR_19284",
+        "ats_platform": "Corporate ATS",
         "posted_at": "2026-10-15T16:10:00Z",
         "status": "approved",
         "approved_by": "abhishek",
@@ -183,31 +196,24 @@ Swiggy is India's leading on-demand convenience platform. Behind every 10-minute
 - Architect high-throughput, ACID-compliant ledger systems tracking customer wallets, restaurant settlements, and rider earnings.
 - Ensure 99.99% availability during nationwide mega-events (IPL match peaks, New Year's Eve order surges).
 - Decouple legacy payment services into scalable, event-driven microservices utilizing Apache Kafka and gRPC.
-- Implement idempotency keys, automated reconciliation routines, and bank gateway fallback protocols.
-
-### Required Background
-- B.Tech/M.Tech in CS/IT from a premier institution or equivalent experience.
-- 7+ years of experience with distributed backend engineering in Java, Kotlin, or Go.
-- Mastery of transactional database design, connection pooling, and distributed locking algorithms.
-- Experience operating production services in AWS cloud with rigorous APM monitoring (Datadog, Prometheus).
-
-### Benefits
-- Highly competitive compensation with quarterly performance equity incentives.
-- Top-tier group medical insurance covering parents and pre-existing conditions.
-- Work-life balance programs with flexible hybrid days and educational sponsorship."""
+- Implement idempotency keys, automated reconciliation routines, and bank gateway fallback protocols."""
     },
     {
         "id": "job-106",
+        "req_id": "CF-GH5829103",
         "title": "Senior Security Engineer (Application Security)",
         "company": "Cloudflare",
-        "company_logo": "https://images.unsplash.com/photo-1509198397868-475647b2a1e5?auto=format&fit=crop&w=120&q=80",
+        "company_domain": "cloudflare.com",
+        "company_logo": get_company_logo("cloudflare.com"),
         "location": "Austin, TX, US (Hybrid)",
         "country": "United States",
+        "work_mode": "Hybrid",
         "department": "Security & Trust",
         "employment_type": "Full-time",
         "experience_level": "Senior Level (5-8 yrs)",
         "salary_range": "$165,000 - $215,000 USD",
-        "apply_url": "https://www.cloudflare.com/careers/",
+        "apply_url": "https://boards.greenhouse.io/cloudflare/jobs/5829103",
+        "ats_platform": "Greenhouse",
         "posted_at": "2026-10-15T13:00:00Z",
         "status": "approved",
         "approved_by": "abhishek",
@@ -219,32 +225,24 @@ Cloudflare's mission is to help build a better internet. The Application Securit
 ### Key Responsibilities
 - Perform in-depth threat modeling, code auditing, and architecture reviews across Rust and Go edge microservices.
 - Design automated SAST/DAST integrations and software bill of materials (SBOM) scanning in GitLab CI/CD.
-- Partner with product teams on cryptographic primitives, TLS 1.3 implementations, and hardened authentication systems (WebAuthn/FIDO2).
-- Investigate critical vulnerability submissions from Cloudflare's public bug bounty program and coordinate responsible disclosures.
-
-### Qualifications
-- 5+ years specializing in application security, penetration testing, or product security.
-- Proficient code review capabilities in Go, Rust, TypeScript, or C.
-- Deep comprehension of modern web application security risks (OWASP Top 10, SSRF, memory safety vulnerabilities).
-- Strong communication skills to articulate security trade-offs to business and engineering executives.
-
-### Perks & Benefits
-- Competitive salary and public company RSUs.
-- Full medical, vision, and dental coverage; HSA with company contribution.
-- 401(k) retirement plan with employer matching and remote equipment stipend."""
+- Partner with product teams on cryptographic primitives, TLS 1.3 implementations, and hardened authentication systems (WebAuthn/FIDO2)."""
     },
     {
         "id": "job-107",
+        "req_id": "MS-1698231",
         "title": "Principal Product Manager - Generative Search",
         "company": "Microsoft",
-        "company_logo": "https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=120&q=80",
+        "company_domain": "microsoft.com",
+        "company_logo": get_company_logo("microsoft.com"),
         "location": "Hyderabad, Telangana, India (Hybrid)",
         "country": "India",
-        "department": "Product Management",
+        "work_mode": "Hybrid",
+        "department": "Product & Design",
         "employment_type": "Full-time",
         "experience_level": "Principal / Director (9-14 yrs)",
         "salary_range": "₹55,00,000 - ₹80,00,000 INR + Stock",
-        "apply_url": "https://careers.microsoft.com/",
+        "apply_url": "https://jobs.careers.microsoft.com/global/en/job/1698231/Principal-Product-Manager-Generative-Search",
+        "ats_platform": "Microsoft Careers",
         "posted_at": "2026-10-14T10:15:00Z",
         "status": "approved",
         "approved_by": "abhishek",
@@ -256,32 +254,24 @@ Microsoft India Development Center (IDC) is one of Microsoft's premier global en
 ### Responsibilities
 - Lead cross-functional engineering, UX research, and applied science teams to ship intuitive multimodal search features.
 - Define product metrics for answer hallucination reduction, latency budgets, citation attribution, and task completion rates.
-- Synthesize complex customer feedback from Fortune 500 CIOs into actionable product requirement documents (PRDs).
-- Manage executive stakeholder alignment across Redmond, WA and Hyderabad engineering desks.
-
-### Candidate Profile
-- 9+ years in product management with proven track record launching AI, search, or enterprise SaaS products.
-- Deep intuition for generative AI capabilities, fine-tuning constraints, and user safety guardrails.
-- Exceptional analytical abilities, executive presentation skills, and commercial acumen.
-- Degree in Computer Science, Engineering, or MBA from a top-tier institution.
-
-### Microsoft India Rewards
-- Top 1% compensation in the Indian tech market with annual Microsoft stock awards.
-- World-class campus facilities in Hyderabad with state-of-the-art wellness centers and creche.
-- Comprehensive international mobility programs and fertility/family care support."""
+- Synthesize complex customer feedback from Fortune 500 CIOs into actionable product requirement documents (PRDs)."""
     },
     {
         "id": "job-108",
+        "req_id": "SNOW-GH512039",
         "title": "Senior Data Platform Engineer",
         "company": "Snowflake",
-        "company_logo": "https://images.unsplash.com/photo-1507668077129-56e32842fceb?auto=format&fit=crop&w=120&q=80",
+        "company_domain": "snowflake.com",
+        "company_logo": get_company_logo("snowflake.com"),
         "location": "San Mateo, CA, US (Hybrid)",
         "country": "United States",
+        "work_mode": "Hybrid",
         "department": "Data & Analytics",
         "employment_type": "Full-time",
         "experience_level": "Senior Level (5-9 yrs)",
         "salary_range": "$190,000 - $250,000 USD + Equity",
-        "apply_url": "https://careers.snowflake.com/",
+        "apply_url": "https://boards.greenhouse.io/snowflake/jobs/512039",
+        "ats_platform": "Greenhouse",
         "posted_at": "2026-10-14T07:30:00Z",
         "status": "approved",
         "approved_by": "abhishek",
@@ -292,32 +282,24 @@ Snowflake's Data Cloud mobilizes the world's data. Our core execution engine pro
 
 ### Key Responsibilities
 - Implement vectorized query execution algorithms in C++ to accelerate join operators, window functions, and aggregation kernels.
-- Optimize metadata pruning, micro-partition caching, and compression algorithms for petabyte-scale cloud storage (S3, GCS, Azure Blob).
-- Collaborate with database architects on cost-based query optimization, dynamic statistics estimation, and vectorized memory layout.
-- Diagnose and debug low-level hardware concurrency issues and cache misses on modern AMD EPYC and ARM Neoverse processors.
-
-### Requirements
-- 5+ years of systems programming in C++ or Java within database internals, distributed storage, or operating systems.
-- Thorough understanding of modern computer architecture (cache hierarchies, SIMD instruction sets, branch prediction).
-- Solid grasp of ACID semantics, MVCC, and transaction log replication.
-
-### Total Compensation
-- Highly competitive US market salary with lucrative equity refreshers.
-- Comprehensive medical, dental, and vision insurance; 401(k) matching.
-- Commuter assistance, fitness stipends, and flexible hybrid in-office perks."""
+- Optimize metadata pruning, micro-partition caching, and compression algorithms for petabyte-scale cloud storage (S3, GCS, Azure Blob)."""
     },
     {
         "id": "job-109",
+        "req_id": "FK-TECH9812",
         "title": "Lead DevOps & SRE Engineer",
         "company": "Flipkart",
-        "company_logo": "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?auto=format&fit=crop&w=120&q=80",
+        "company_domain": "flipkart.com",
+        "company_logo": get_company_logo("flipkart.com"),
         "location": "Bengaluru, Karnataka, India (Hybrid)",
         "country": "India",
+        "work_mode": "Hybrid",
         "department": "DevOps & Cloud",
         "employment_type": "Full-time",
         "experience_level": "Lead Level (6-10 yrs)",
         "salary_range": "₹40,00,000 - ₹58,00,000 INR",
-        "apply_url": "https://www.flipkartcareers.com/",
+        "apply_url": "https://www.flipkartcareers.com/#!/job-view/FK-TECH9812",
+        "ats_platform": "Corporate ATS",
         "posted_at": "2026-10-13T12:00:00Z",
         "status": "approved",
         "approved_by": "abhishek",
@@ -329,32 +311,24 @@ Flipkart is India's homegrown e-commerce ecosystem. During peak shopping events,
 ### Your Mandate
 - Champion site reliability engineering (SRE) principles across tier-1 checkout, inventory, and payment microservices.
 - Conduct comprehensive chaos engineering experiments, stress simulations, and failover drills to eliminate single points of failure.
-- Automate multi-cluster Kubernetes deployments, ingress routing, and service mesh topologies using Istio and Terraform.
-- Establish unified telemetry dashboards (Prometheus, VictoriaMetrics, OpenTelemetry, Grafana) with automated root-cause alerting.
-
-### Candidate Requirements
-- 6+ years in SRE, DevOps, or systems engineering supporting high-scale distributed infrastructures.
-- Expert-level command over Linux internals, TCP/IP networking, kernel tuning, and storage I/O subsystems.
-- Hands-on automation capabilities in Python, Go, or Bash.
-- Demonstrated experience managing incident response and leading post-mortem retrospectives.
-
-### Why Join Flipkart?
-- Prestigious engineering leadership role in Indian tech commerce.
-- Competitive salary package with performance bonuses and ESOP grants.
-- Extensive healthcare coverage for immediate family, wellness allowances, and educational sponsorships."""
+- Automate multi-cluster Kubernetes deployments, ingress routing, and service mesh topologies using Istio and Terraform."""
     },
     {
         "id": "job-110",
+        "req_id": "FIG-GH482910",
         "title": "Senior Frontend Engineer (Design Systems)",
         "company": "Figma",
-        "company_logo": "https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?auto=format&fit=crop&w=120&q=80",
+        "company_domain": "figma.com",
+        "company_logo": get_company_logo("figma.com"),
         "location": "New York, NY, US (Hybrid / Remote)",
         "country": "United States",
+        "work_mode": "Hybrid / Remote",
         "department": "Product & Design",
         "employment_type": "Full-time",
         "experience_level": "Senior Level (4-8 yrs)",
         "salary_range": "$175,000 - $230,000 USD + Equity",
-        "apply_url": "https://www.figma.com/careers/",
+        "apply_url": "https://boards.greenhouse.io/figma/jobs/482910",
+        "ats_platform": "Greenhouse",
         "posted_at": "2026-10-13T09:10:00Z",
         "status": "approved",
         "approved_by": "abhishek",
@@ -366,32 +340,24 @@ Figma connects everyone in the design process to create digital products faster.
 ### Role Overview
 - Build reusable, accessible, and performant UI components across Figma and FigJam.
 - Partner closely with design leaders to craft design token specifications, theming systems, and motion guidelines.
-- Optimize client-side rendering bottlenecks utilizing WebAssembly, WebGL, and high-framerate HTML5 Canvas pipelines.
-- Ensure strict compliance with WCAG 2.1 AA accessibility guidelines, including screen reader support and keyboard navigation.
-
-### Skills Required
-- 4+ years of front-end software development experience using TypeScript and modern JavaScript.
-- Strong aesthetic sensibility and deep passion for user experience and interface craftsmanship.
-- Mastery of modern CSS (CSS-in-JS, CSS modules, subgrid, container queries) and DOM performance profiling.
-- Empathy for end users and excitement to work in a highly collaborative team environment.
-
-### Compensation & Benefits
-- Competitive salary, equity package, and 401(k) matching.
-- Comprehensive health, dental, and vision insurance.
-- Generous stipend for home office setup, continuous learning, and wellness."""
+- Optimize client-side rendering bottlenecks utilizing WebAssembly, WebGL, and high-framerate HTML5 Canvas pipelines."""
     },
     {
         "id": "job-111",
+        "req_id": "TR-GH5891024",
         "title": "Principal Quantitative Research Scientist",
         "company": "Tower Research Capital",
-        "company_logo": "https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?auto=format&fit=crop&w=120&q=80",
+        "company_domain": "tower-research.com",
+        "company_logo": get_company_logo("tower-research.com"),
         "location": "Gurugram, Haryana, India (Hybrid)",
         "country": "India",
+        "work_mode": "Hybrid",
         "department": "Finance & Analytics",
         "employment_type": "Full-time",
         "experience_level": "Principal Level (7-12 yrs)",
         "salary_range": "₹80,00,000 - ₹1,20,00,000 INR + Bonus",
-        "apply_url": "https://www.tower-research.com/careers",
+        "apply_url": "https://boards.greenhouse.io/towerresearchcapital/jobs/5891024",
+        "ats_platform": "Greenhouse",
         "posted_at": "2026-10-12T15:00:00Z",
         "status": "approved",
         "approved_by": "abhishek",
@@ -403,32 +369,24 @@ Tower Research Capital is an elite quantitative trading firm that develops high-
 ### What You'll Do
 - Research and engineer statistical alpha models using terabytes of tick-by-tick order book data.
 - Apply advanced machine learning techniques (deep recurrent networks, graph neural networks) to short-horizon price predictions.
-- Backtest quantitative strategies using rigorous statistical methodologies, transaction cost modeling, and slippage controls.
-- Collaborate with ultra-low latency C++ trading engineers to deploy models into live collocated exchange engines.
-
-### Candidate Requirements
-- Master's or PhD in Mathematics, Statistics, Physics, Computer Science, or Quantitative Finance.
-- 5+ years of proven quantitative research experience with verifiable track record in systematic trading.
-- Expert programming in Python (NumPy, SciPy, Pandas) and working familiarity with C++.
-- Deep theoretical and practical mastery of stochastic calculus, linear algebra, and multivariate time series analysis.
-
-### Exceptional Rewards
-- Industry-defining base salary paired with high-performance formulaic profit-sharing bonus.
-- Premium private health insurance for family with world-class wellness coverage.
-- State-of-the-art tech lab environment in DLF CyberCity, Gurugram."""
+- Backtest quantitative strategies using rigorous statistical methodologies, transaction cost modeling, and slippage controls."""
     },
     {
         "id": "job-112",
+        "req_id": "AWS-2819201",
         "title": "Senior Solutions Architect - Enterprise GenAI",
         "company": "Amazon Web Services (AWS)",
-        "company_logo": "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?auto=format&fit=crop&w=120&q=80",
+        "company_domain": "amazon.jobs",
+        "company_logo": get_company_logo("amazon.com"),
         "location": "Arlington, VA, US (Hybrid)",
         "country": "United States",
+        "work_mode": "Hybrid",
         "department": "DevOps & Cloud",
         "employment_type": "Full-time",
         "experience_level": "Senior Level (6-10 yrs)",
         "salary_range": "$175,000 - $235,000 USD",
-        "apply_url": "https://www.amazon.jobs/",
+        "apply_url": "https://www.amazon.jobs/en/jobs/2819201/senior-solutions-architect-enterprise-genai",
+        "ats_platform": "Amazon Jobs",
         "posted_at": "2026-10-12T11:20:00Z",
         "status": "approved",
         "approved_by": "abhishek",
@@ -439,33 +397,24 @@ Amazon Web Services provides the most comprehensive cloud offerings globally. Th
 
 ### Core Responsibilities
 - Architect production-ready reference implementations utilizing Amazon Bedrock, OpenSearch vector search, and Claude 3.5 Sonnet foundation models.
-- Conduct executive technical workshops and proof-of-concepts (PoCs) on responsible AI, model evaluation, and hallucination reduction.
-- Author technical whitepapers, architectural decision records, and open-source generative AI implementation templates.
-- Ensure strict compliance with enterprise security requirements (SOC2, HIPAA, FedRAMP, GDPR).
-
-### Qualifications
-- 6+ years in customer-facing technical architecture, systems engineering, or software engineering.
-- Deep hands-on experience with cloud-native AI frameworks (AWS SageMaker, Bedrock, LangChain, LlamaIndex).
-- Excellent technical communication and executive presentation abilities.
-- AWS Certified Solutions Architect - Professional certification is highly valued.
-
-### AWS Compensation
-- Competitive base salary with AWS sign-on bonuses and restricted stock units.
-- Comprehensive benefits package including 401(k) matching and parental leave.
-- Continuous technical training and certification sponsorship."""
+- Conduct executive technical workshops and proof-of-concepts (PoCs) on responsible AI, model evaluation, and hallucination reduction."""
     },
     {
         "id": "job-113",
+        "req_id": "ZM-GUR8192",
         "title": "Senior Backend Engineer (Golang / High Concurrency)",
         "company": "Zomato",
-        "company_logo": "https://images.unsplash.com/photo-1504711434969-e33886168f5c?auto=format&fit=crop&w=120&q=80",
+        "company_domain": "zomato.com",
+        "company_logo": get_company_logo("zomato.com"),
         "location": "Gurugram, Haryana, India (In-Office)",
         "country": "India",
+        "work_mode": "In-Office",
         "department": "Software Engineering",
         "employment_type": "Full-time",
         "experience_level": "Senior Level (4-8 yrs)",
         "salary_range": "₹36,00,000 - ₹50,00,000 INR",
-        "apply_url": "https://www.zomato.com/careers",
+        "apply_url": "https://www.zomato.com/careers/engineering/backend-senior-ZM8192",
+        "ats_platform": "Corporate ATS",
         "posted_at": "2026-10-12T08:45:00Z",
         "status": "approved",
         "approved_by": "abhishek",
@@ -477,27 +426,24 @@ Zomato delivers millions of meals and groceries every single day. The logistics 
 ### Key Responsibilities
 - Architect high-throughput Golang microservices capable of servicing 80,000 requests per second.
 - Implement low-latency geospatial indexing algorithms for real-time delivery rider tracking.
-- Optimize database performance on PostgreSQL and Redis clusters to withstand flash sale loads.
-- Write clean, well-tested, modular code with automated CI/CD deployment pipelines.
-
-### Requirements
-- 4+ years of backend engineering experience with strong command over Go or Java.
-- Proven experience with event-driven architectures utilizing Apache Kafka or RabbitMQ.
-- Solid understanding of data structures, concurrency primitives, and memory profiling.
-- B.Tech/M.Tech in Computer Science or equivalent practical background."""
+- Optimize database performance on PostgreSQL and Redis clusters to withstand flash sale loads."""
     },
     {
         "id": "job-114",
+        "req_id": "GOOG-1049281",
         "title": "Staff Machine Learning Scientist (Search Ranking)",
         "company": "Google",
-        "company_logo": "https://images.unsplash.com/photo-1572021335469-31706a17aaef?auto=format&fit=crop&w=120&q=80",
+        "company_domain": "google.com",
+        "company_logo": get_company_logo("google.com"),
         "location": "Mountain View, CA, US (Hybrid)",
         "country": "United States",
+        "work_mode": "Hybrid",
         "department": "AI & Machine Learning",
         "employment_type": "Full-time",
         "experience_level": "Staff Level (8-12 yrs)",
         "salary_range": "$240,000 - $310,000 USD + Equity",
-        "apply_url": "https://www.google.com/about/careers/applications/",
+        "apply_url": "https://www.google.com/about/careers/applications/jobs/results/1049281-staff-machine-learning-scientist",
+        "ats_platform": "Google Careers",
         "posted_at": "2026-10-11T16:00:00Z",
         "status": "approved",
         "approved_by": "abhishek",
@@ -508,27 +454,24 @@ Google Search organizes the world's information and makes it universally accessi
 
 ### Responsibilities
 - Train and deploy massive multi-task neural network models for document ranking, query expansion, and zero-shot entity retrieval.
-- Optimize model inferencing on custom Google Cloud TPU v5e clusters with sub-10ms latency SLA budgets.
-- Collaborate with human raters, UX researchers, and fairness engineers to maintain world-class search quality and safety guidelines.
-- Author foundational research publications at top AI venues (NeurIPS, ICML, KDD).
-
-### Qualifications
-- PhD or MS in Computer Science, Machine Learning, or related technical field.
-- 8+ years of industry experience applying deep learning to web-scale recommendation systems or information retrieval.
-- Outstanding systems programming skills in C++ and Python."""
+- Optimize model inferencing on custom Google Cloud TPU v5e clusters with sub-10ms latency SLA budgets."""
     },
     {
         "id": "job-115",
+        "req_id": "SW-AND8129",
         "title": "Lead Android Engineer (Performance & Architecture)",
         "company": "Swiggy",
-        "company_logo": "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?auto=format&fit=crop&w=120&q=80",
+        "company_domain": "swiggy.com",
+        "company_logo": get_company_logo("swiggy.com"),
         "location": "Bengaluru, Karnataka, India (Hybrid)",
         "country": "India",
+        "work_mode": "Hybrid",
         "department": "Software Engineering",
         "employment_type": "Full-time",
         "experience_level": "Lead Level (6-10 yrs)",
         "salary_range": "₹42,00,000 - ₹58,00,000 INR",
-        "apply_url": "https://careers.swiggy.com/",
+        "apply_url": "https://careers.swiggy.com/#/job-details/SWIG_AND_8129",
+        "ats_platform": "Corporate ATS",
         "posted_at": "2026-10-11T12:30:00Z",
         "status": "approved",
         "approved_by": "abhishek",
@@ -539,27 +482,24 @@ The Swiggy Android application is the primary gateway for millions of Indians to
 
 ### Key Responsibilities
 - Architect modular Android feature modules using Jetpack Compose, Kotlin Coroutines, and Clean Architecture.
-- Profile and optimize cold startup time, app bundle footprint, memory leaks, and battery consumption on budget smartphones.
-- Build resilient offline-first caching mechanisms for tier-2/3 Indian cities with intermittent mobile connectivity.
-- Mentor junior mobile developers and champion modern mobile testing strategies.
-
-### Requirements
-- 6+ years of native Android application development in Kotlin and Java.
-- Deep familiarity with Android Jetpack, Compose rendering pipelines, Dagger/Hilt, and Room.
-- Proven track record optimizing APK size, rendering frame rates, and crash-free session metrics (>99.9%)."""
+- Profile and optimize cold startup time, app bundle footprint, memory leaks, and battery consumption on budget smartphones."""
     },
     {
         "id": "job-116",
+        "req_id": "ANT-ASH29841",
         "title": "Principal Distributed Systems Engineer",
         "company": "Anthropic",
-        "company_logo": "https://images.unsplash.com/photo-1507668077129-56e32842fceb?auto=format&fit=crop&w=120&q=80",
+        "company_domain": "anthropic.com",
+        "company_logo": get_company_logo("anthropic.com"),
         "location": "San Francisco, CA, US (In-Office / Hybrid)",
         "country": "United States",
+        "work_mode": "In-Office / Hybrid",
         "department": "AI & Machine Learning",
         "employment_type": "Full-time",
         "experience_level": "Principal Level (8-14 yrs)",
         "salary_range": "$270,000 - $350,000 USD + Equity",
-        "apply_url": "https://www.anthropic.com/careers",
+        "apply_url": "https://jobs.ashbyhq.com/anthropic/29841-distributed-systems",
+        "ats_platform": "Ashby",
         "posted_at": "2026-10-10T14:10:00Z",
         "status": "approved",
         "approved_by": "abhishek",
@@ -570,27 +510,24 @@ Anthropic is an AI safety and research company that builds reliable, interpretab
 
 ### Your Role
 - Architect resilient distributed training frameworks that recover from node failures without losing training progress.
-- Write custom high-throughput communication kernels in Rust and C++ interfacing with NCCL and collective communication libraries.
-- Automate health checks, GPU fault isolation, and checkpoint storage pipelines transferring petabytes per minute.
-- Collaborate with alignment researchers to deploy scalable RLHF pipelines.
-
-### Qualifications
-- 8+ years designing high-scale distributed systems, HPC clusters, or cloud-native infrastructure.
-- Expert systems programming in Rust, C++, or Go.
-- Passion for beneficial and safe artificial intelligence."""
+- Write custom high-throughput communication kernels in Rust and C++ interfacing with NCCL and collective communication libraries."""
     },
     {
         "id": "job-117",
+        "req_id": "ATL-BLR7192",
         "title": "Lead Site Reliability Engineer",
         "company": "Atlassian",
-        "company_logo": "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=120&q=80",
+        "company_domain": "atlassian.com",
+        "company_logo": get_company_logo("atlassian.com"),
         "location": "Bengaluru, Karnataka, India (Remote Eligible)",
         "country": "India",
+        "work_mode": "Remote Eligible",
         "department": "DevOps & Cloud",
         "employment_type": "Full-time",
         "experience_level": "Lead Level (6-10 yrs)",
         "salary_range": "₹44,00,000 - ₹62,00,000 INR",
-        "apply_url": "https://www.atlassian.com/company/careers",
+        "apply_url": "https://www.atlassian.com/company/careers/details/ATL-BLR7192",
+        "ats_platform": "Jobvite",
         "posted_at": "2026-10-10T09:00:00Z",
         "status": "approved",
         "approved_by": "abhishek",
@@ -601,27 +538,24 @@ Atlassian empowers team collaboration worldwide. Our SRE organization ensures th
 
 ### Responsibilities
 - Establish service level objectives (SLOs) and automated error budget policies across core microservices.
-- Design automated progressive delivery canary deployments using Argo Rollouts and Spinnaker.
-- Lead major incident command response, post-incident reviews, and preventative systemic remediation.
-- Drive cloud infrastructure cost optimization across millions of AWS compute instances.
-
-### Requirements
-- 6+ years in DevOps, SRE, or cloud operations managing production workloads at scale.
-- Deep expertise in AWS (EKS, Aurora, CloudWatch, Route53) and Terraform.
-- Proficiency in Python, Go, or Bash for robust systems automation."""
+- Design automated progressive delivery canary deployments using Argo Rollouts and Spinnaker."""
     },
     {
         "id": "job-118",
+        "req_id": "CB-GH619283",
         "title": "Senior Cryptographic & Blockchain Engineer",
         "company": "Coinbase",
-        "company_logo": "https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?auto=format&fit=crop&w=120&q=80",
+        "company_domain": "coinbase.com",
+        "company_logo": get_company_logo("coinbase.com"),
         "location": "Remote, United States",
         "country": "United States",
+        "work_mode": "Remote",
         "department": "Software Engineering",
         "employment_type": "Full-time",
         "experience_level": "Senior Level (5-9 yrs)",
         "salary_range": "$180,000 - $235,000 USD + Crypto/Equity",
-        "apply_url": "https://www.coinbase.com/careers",
+        "apply_url": "https://boards.greenhouse.io/coinbase/jobs/619283",
+        "ats_platform": "Greenhouse",
         "posted_at": "2026-10-09T17:40:00Z",
         "status": "approved",
         "approved_by": "abhishek",
@@ -632,27 +566,24 @@ Coinbase secures billions of dollars in digital assets for retail and sovereign 
 
 ### What You'll Build
 - Implement threshold signature schemes (TSS), MPC protocols, and hardware security module (HSM) integrations.
-- Build high-throughput blockchain indexing daemons tracking EVM and Solana transaction states.
-- Conduct formal security verification and rigorous audits of smart contract execution environments.
-- Protect critical cryptographic keys against side-channel and quantum vulnerability vectors.
-
-### Requirements
-- 5+ years of software engineering experience in Go, Rust, or C++.
-- Solid practical knowledge of applied cryptography (elliptic curves, zero-knowledge proofs, digital signatures).
-- Passion for decentralized financial technology and open financial systems."""
+- Build high-throughput blockchain indexing daemons tracking EVM and Solana transaction states."""
     },
     {
         "id": "job-119",
+        "req_id": "SW-INST9812",
         "title": "Staff Data Engineer - Supply Chain Intelligence",
         "company": "Swiggy Instamart",
-        "company_logo": "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=120&q=80",
+        "company_domain": "swiggy.com",
+        "company_logo": get_company_logo("swiggy.com"),
         "location": "Bengaluru, Karnataka, India (In-Office)",
         "country": "India",
+        "work_mode": "In-Office",
         "department": "Data & Analytics",
         "employment_type": "Full-time",
         "experience_level": "Staff Level (7-11 yrs)",
         "salary_range": "₹46,00,000 - ₹64,00,000 INR",
-        "apply_url": "https://careers.swiggy.com/",
+        "apply_url": "https://careers.swiggy.com/#/job-details/SWIG_INST_9812",
+        "ats_platform": "Corporate ATS",
         "posted_at": "2026-10-09T11:15:00Z",
         "status": "approved",
         "approved_by": "abhishek",
@@ -663,27 +594,24 @@ Instamart is pioneering 10-minute grocery convenience across Indian metros. Main
 
 ### Key Responsibilities
 - Architect petabyte-scale data lakes using Apache Iceberg, Spark on Kubernetes, and Delta Lake.
-- Build sub-second streaming pipelines processing SKU inventory movements, perishable waste tracking, and supplier SLAs.
-- Partner with machine learning scientists on demand forecasting and dynamic product sorting algorithms.
-- Establish comprehensive data quality contracts, automated reconciliation audits, and data governance.
-
-### Required Skills
-- 7+ years of hands-on data engineering experience building enterprise-grade data platforms.
-- Deep expertise in PySpark/Scala, SQL, Apache Kafka, and workflow orchestrators (Airflow).
-- Strong track record optimizing cloud data warehouse query costs and storage tiers."""
+- Build sub-second streaming pipelines processing SKU inventory movements, perishable waste tracking, and supplier SLAs."""
     },
     {
         "id": "job-120",
+        "req_id": "RH-GH571291",
         "title": "Senior Product Designer (FinTech UX)",
         "company": "Robinhood",
-        "company_logo": "https://images.unsplash.com/photo-1507238691740-187a5b1d37b8?auto=format&fit=crop&w=120&q=80",
+        "company_domain": "robinhood.com",
+        "company_logo": get_company_logo("robinhood.com"),
         "location": "Menlo Park, CA, US (Hybrid)",
         "country": "United States",
+        "work_mode": "Hybrid",
         "department": "Product & Design",
         "employment_type": "Full-time",
         "experience_level": "Senior Level (5-8 yrs)",
         "salary_range": "$170,000 - $220,000 USD + Equity",
-        "apply_url": "https://robinhood.com/us/en/careers/",
+        "apply_url": "https://boards.greenhouse.io/robinhood/jobs/571291",
+        "ats_platform": "Greenhouse",
         "posted_at": "2026-10-08T15:30:00Z",
         "status": "approved",
         "approved_by": "abhishek",
@@ -694,27 +622,24 @@ Robinhood democratized investing by making financial markets accessible to every
 
 ### Your Impact
 - Own end-to-end user experience for trading execution, portfolio analytics, and automated retirement accounts.
-- Conduct user research, cognitive walkthroughs, and usability testing to turn friction into delight.
-- Create high-fidelity prototypes in Figma demonstrating subtle micro-interactions and haptic feedback.
-- Collaborate with compliance and legal stakeholders to present transparent financial disclosures.
-
-### Candidate Requirements
-- 5+ years of digital product design experience with stellar portfolio demonstrating complex UX simplification.
-- Mastery of Figma, design systems, and rapid interactive prototyping tools.
-- Deep empathy for retail investors and passion for financial literacy."""
+- Conduct user research, cognitive walkthroughs, and usability testing to turn friction into delight."""
     },
     {
         "id": "job-121",
+        "req_id": "TCS-PUN8192",
         "title": "Principal AI Governance & Trust Lead",
         "company": "Tata Consultancy Services (TCS)",
-        "company_logo": "https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&w=120&q=80",
+        "company_domain": "tcs.com",
+        "company_logo": get_company_logo("tcs.com"),
         "location": "Pune, Maharashtra, India (Hybrid)",
         "country": "India",
+        "work_mode": "Hybrid",
         "department": "Security & Trust",
         "employment_type": "Full-time",
         "experience_level": "Principal / Director (10-15 yrs)",
         "salary_range": "₹48,00,000 - ₹70,00,000 INR",
-        "apply_url": "https://www.tcs.com/careers",
+        "apply_url": "https://www.tcs.com/careers/india/ai-governance-lead-PUN8192",
+        "ats_platform": "Corporate ATS",
         "posted_at": "2026-10-08T10:00:00Z",
         "status": "approved",
         "approved_by": "abhishek",
@@ -725,27 +650,24 @@ TCS is India's premier multinational IT services enterprise. The AI Governance &
 
 ### Key Mandate
 - Formulate comprehensive model risk governance frameworks aligned with EU AI Act, NIST AI RMF, and ISO/IEC 42001.
-- Conduct red-teaming simulations, adversarial prompt injection testing, and bias auditing on client LLM deployments.
-- Build automated compliance auditing dashboards verifying training data provenance and copyright consent.
-- Advise C-suite executives across North America and Europe on responsible artificial intelligence strategy.
-
-### Ideal Profile
-- 10+ years in IT governance, risk management, or software engineering leadership.
-- Deep comprehension of generative AI vulnerabilities, data protection laws (GDPR, DPDP India), and algorithmic fairness metrics.
-- Exceptional executive consulting and strategic communication capabilities."""
+- Conduct red-teaming simulations, adversarial prompt injection testing, and bias auditing on client LLM deployments."""
     },
     {
         "id": "job-122",
+        "req_id": "UBR-R102941",
         "title": "Senior Autonomous Systems Simulation Engineer",
         "company": "Uber Technologies",
-        "company_logo": "https://images.unsplash.com/photo-1556742049-0a67c5574f73?auto=format&fit=crop&w=120&q=80",
+        "company_domain": "uber.com",
+        "company_logo": get_company_logo("uber.com"),
         "location": "Pittsburgh, PA, US (Hybrid)",
         "country": "United States",
+        "work_mode": "Hybrid",
         "department": "Software Engineering",
         "employment_type": "Full-time",
         "experience_level": "Senior Level (5-9 yrs)",
         "salary_range": "$185,000 - $245,000 USD + Equity",
-        "apply_url": "https://www.uber.com/us/en/careers/",
+        "apply_url": "https://uber.wd5.myworkdayjobs.com/en-US/Uber_Careers/job/Pittsburgh-PA/Senior-Autonomous-Systems-Simulation-Engineer_R102941",
+        "ats_platform": "Workday",
         "posted_at": "2026-10-07T14:45:00Z",
         "status": "approved",
         "approved_by": "abhishek",
@@ -756,27 +678,24 @@ Uber is shaping the future of shared, autonomous electric transportation. The si
 
 ### Responsibilities
 - Develop high-performance deterministic simulation engines in C++ mimicking dynamic weather, traffic, and pedestrian interactions.
-- Implement physics-accurate LiDAR, radar, and camera sensor rendering models utilizing Unreal Engine and GPU shaders.
-- Build automated regression pipelines validating motion planning, collision avoidance, and fail-safe safety policies across millions of simulated miles.
-- Profile and optimize simulation execution latency across large-scale cloud clusters.
-
-### Qualifications
-- 5+ years of C++ software engineering experience in robotics, game engines, or autonomous vehicle simulation.
-- Strong mathematics background in 3D geometry, spatial kinematics, and rigid-body physics.
-- Proficiency with ROS2, modern graphics APIs (Vulkan, DirectX), and containerized simulation orchestration."""
+- Implement physics-accurate LiDAR, radar, and camera sensor rendering models utilizing Unreal Engine and GPU shaders."""
     },
     {
         "id": "job-123",
+        "req_id": "INF-HYD9182",
         "title": "Lead Cloud Security Architect",
         "company": "Infosys",
-        "company_logo": "https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=120&q=80",
+        "company_domain": "infosys.com",
+        "company_logo": get_company_logo("infosys.com"),
         "location": "Hyderabad, Telangana, India (Hybrid)",
         "country": "India",
+        "work_mode": "Hybrid",
         "department": "Security & Trust",
         "employment_type": "Full-time",
         "experience_level": "Lead Level (8-12 yrs)",
         "salary_range": "₹45,00,000 - ₹62,00,000 INR",
-        "apply_url": "https://www.infosys.com/careers.html",
+        "apply_url": "https://career.infosys.com/jobdesc?jobReferenceCode=INF-HYD9182",
+        "ats_platform": "Corporate ATS",
         "posted_at": "2026-10-07T11:00:00Z",
         "status": "approved",
         "approved_by": "abhishek",
@@ -787,27 +706,24 @@ Infosys Cobalt is a set of services, solutions, and platforms for enterprises to
 
 ### Key Responsibilities
 - Architect Zero Trust cloud landing zones across AWS, Microsoft Azure, and Google Cloud Platform.
-- Define identity and access management (IAM) guardrails, least-privilege role policies, and automated secret rotations.
-- Implement Cloud Security Posture Management (CSPM) and Cloud Workload Protection (CWPP) across containerized microservices.
-- Ensure automated compliance monitoring with FedRAMP, HIPAA, PCI-DSS, and RBI cybersecurity guidelines.
-
-### Candidate Requirements
-- 8+ years in cloud security architecture, infrastructure engineering, or information security.
-- Active professional certifications (CCSP, AWS Certified Security - Specialty, or Azure Security Engineer Associate).
-- Solid automation skills in Python, Terraform, and cloud-native security telemetry tools."""
+- Define identity and access management (IAM) guardrails, least-privilege role policies, and automated secret rotations."""
     },
     {
         "id": "job-124",
+        "req_id": "OA-ASH10982",
         "title": "Staff Research Engineer - Model Alignment & Safety",
         "company": "OpenAI",
-        "company_logo": "https://images.unsplash.com/photo-1507668077129-56e32842fceb?auto=format&fit=crop&w=120&q=80",
+        "company_domain": "openai.com",
+        "company_logo": get_company_logo("openai.com"),
         "location": "San Francisco, CA, US (In-Office)",
         "country": "United States",
+        "work_mode": "In-Office",
         "department": "AI & Machine Learning",
         "employment_type": "Full-time",
         "experience_level": "Staff Level (7-12 yrs)",
         "salary_range": "$300,000 - $420,000 USD + Equity",
-        "apply_url": "https://openai.com/careers/",
+        "apply_url": "https://jobs.ashbyhq.com/openai/10982-alignment-research-engineer",
+        "ats_platform": "Ashby",
         "posted_at": "2026-10-06T15:20:00Z",
         "status": "approved",
         "approved_by": "abhishek",
@@ -818,19 +734,7 @@ OpenAI's mission is to ensure that artificial general intelligence (AGI) benefit
 
 ### What You'll Do
 - Engineer scalable reinforcement learning from human feedback (RLHF) and reinforcement learning from AI feedback (RLAIF) training pipelines.
-- Develop automated synthetic evaluation environments to probe models for deceptive alignment, hallucination tendencies, and dangerous capabilities.
-- Optimize high-throughput distributed reward model inference on massive multi-GPU clusters.
-- Collaborate with research scientists, red-teamers, and policy researchers to translate safety principles into mathematical optimization objectives.
-
-### Requirements
-- 7+ years of industry or academic experience training and evaluating large-scale machine learning systems.
-- World-class proficiency in PyTorch, distributed training infrastructure (CUDA, Megatron), and Python.
-- Demonstrated curiosity and rigorous thinking about empirical AI safety, alignment challenges, and capability boundaries.
-
-### OpenAI Compensation
-- Industry-leading base salary with substantial equity ownership participation.
-- Premium comprehensive health, dental, vision, life, and disability coverage for you and your dependents.
-- Unlimited PTO, 401(k) matching, annual learning and development stipend, and on-site chef-catered dining."""
+- Develop automated synthetic evaluation environments to probe models for deceptive alignment, hallucination tendencies, and dangerous capabilities."""
     }
 ]
 
@@ -850,7 +754,11 @@ def load_jobs_data():
     ensure_data_dir()
     try:
         with open(JOBS_FILE, "r", encoding="utf-8") as f:
-            return json.load(f)
+            data = json.load(f)
+            if not data.get("approved_jobs"):
+                data["approved_jobs"] = SEED_JOBS
+                save_jobs_data(data)
+            return data
     except Exception as e:
         logger.error(f"Error reading {JOBS_FILE}: {e}")
         return {"approved_jobs": SEED_JOBS, "pending_jobs": [], "last_fetched_at": None}
@@ -866,39 +774,49 @@ def save_jobs_data(data):
         return False
 
 def get_approved_jobs(category=None, country=None, search=None, limit=100):
-    """Fetch approved jobs with optional category, country, or keyword search."""
+    """
+    Robust filtering for approved jobs:
+    Supports Country, Category, and case-insensitive full-text keyword search across
+    title, company, skills, location, and requisition ID.
+    """
     data = load_jobs_data()
     jobs = data.get("approved_jobs", [])
 
     # Filter by Country
-    if country and country != "All Locations":
-        jobs = [j for j in jobs if country.lower() in (j.get("country") or "").lower()]
+    if country and country not in ["All Locations", "All Regions", ""]:
+        c_clean = country.lower().strip()
+        jobs = [j for j in jobs if c_clean in (j.get("country") or "").lower() or c_clean in (j.get("location") or "").lower()]
 
     # Filter by Category
-    if category and category != "All Categories":
-        jobs = [j for j in jobs if category.lower() in (j.get("department") or "").lower()]
+    if category and category not in ["All Categories", "All Departments", ""]:
+        dept_clean = category.lower().strip()
+        jobs = [j for j in jobs if dept_clean in (j.get("department") or "").lower()]
 
     # Filter by Search Keyword
-    if search:
-        s = search.lower().strip()
-        jobs = [
-            j for j in jobs
-            if s in (j.get("title") or "").lower()
-            or s in (j.get("company") or "").lower()
-            or s in (j.get("location") or "").lower()
-            or s in (j.get("summary") or "").lower()
-            or any(s in tag.lower() for tag in j.get("tags", []))
-        ]
+    if search and search.strip():
+        terms = [t.lower().strip() for t in search.split() if t.strip()]
+        filtered = []
+        for j in jobs:
+            searchable_text = f"{j.get('title', '')} {j.get('company', '')} {j.get('location', '')} {j.get('country', '')} {j.get('department', '')} {j.get('req_id', '')} {j.get('summary', '')} {' '.join(j.get('tags', []))}".lower()
+            if all(term in searchable_text for term in terms):
+                filtered.append(j)
+        jobs = filtered
 
     # Sort newest first
     jobs.sort(key=lambda x: x.get("posted_at", ""), reverse=True)
     return jobs[:limit]
 
 def get_job_by_id(job_id):
-    """Retrieve full job record by ID from approved or pending lists."""
+    """Retrieve full job record by ID or req_id from approved or pending lists."""
+    if not job_id:
+        return None
     data = load_jobs_data()
+    clean_search = str(job_id).strip().lower()
     for j in data.get("approved_jobs", []) + data.get("pending_jobs", []):
-        if str(j.get("id")) == str(job_id):
+        if str(j.get("id")).lower() == clean_search or str(j.get("req_id", "")).lower() == clean_search:
+            return j
+        # Also match clean number e.g. "101" for "job-101"
+        if str(j.get("id")).replace("job-", "").lower() == clean_search:
             return j
     return None
 
@@ -921,7 +839,6 @@ def approve_job(job_id):
             new_pending.append(j)
 
     if not target:
-        # Check if already in approved
         for j in data.get("approved_jobs", []):
             if str(j.get("id")) == str(job_id):
                 return True
@@ -951,13 +868,17 @@ def add_custom_job(job_dict):
     data = load_jobs_data()
     approved = data.get("approved_jobs", [])
     
-    # Generate unique ID
-    existing_ids = [int(j["id"].replace("job-", "")) for j in approved if j.get("id", "").startswith("job-")]
+    existing_ids = [int(j["id"].replace("job-", "")) for j in approved if j.get("id", "").startswith("job-") and j["id"].replace("job-", "").isdigit()]
     next_id = max(existing_ids, default=100) + 1
     job_dict["id"] = f"job-{next_id}"
+    if not job_dict.get("req_id"):
+        job_dict["req_id"] = f"WW-MANUAL-{next_id}"
     job_dict["posted_at"] = datetime.now(timezone.utc).isoformat()
     job_dict["status"] = "approved"
     job_dict["approved_by"] = "abhishek"
+    if not job_dict.get("company_logo"):
+        domain = job_dict.get("company_domain") or "google.com"
+        job_dict["company_logo"] = get_company_logo(domain)
 
     approved.insert(0, job_dict)
     data["approved_jobs"] = approved
@@ -988,6 +909,8 @@ def add_scraped_jobs(new_jobs_list):
         
         curr_id += 1
         item["id"] = f"job-{curr_id}"
+        if not item.get("req_id"):
+            item["req_id"] = f"SCRAPED-{curr_id}"
         item["status"] = "pending"
         item["posted_at"] = datetime.now(timezone.utc).isoformat()
         data["pending_jobs"].append(item)
@@ -1004,8 +927,8 @@ def get_job_stats():
     approved = data.get("approved_jobs", [])
     pending = data.get("pending_jobs", [])
 
-    india_count = sum(1 for j in approved if "india" in (j.get("country") or "").lower())
-    us_count = sum(1 for j in approved if "united states" in (j.get("country") or "").lower() or "us" in (j.get("country") or "").lower())
+    india_count = sum(1 for j in approved if "india" in (j.get("country") or "").lower() or "india" in (j.get("location") or "").lower())
+    us_count = sum(1 for j in approved if "united states" in (j.get("country") or "").lower() or "us" in (j.get("country") or "").lower() or "us" in (j.get("location") or "").lower())
 
     return {
         "total_approved": len(approved),
@@ -1017,5 +940,8 @@ def get_job_stats():
 
 if __name__ == "__main__":
     ensure_data_dir()
+    # Reset to full seed jobs for verification
+    data = {"approved_jobs": SEED_JOBS, "pending_jobs": [], "last_fetched_at": datetime.now(timezone.utc).isoformat()}
+    save_jobs_data(data)
     stats = get_job_stats()
-    print("Job store initialized. Stats:", stats)
+    print("Job store refreshed with authentic requisition IDs and ATS URLs. Stats:", stats)

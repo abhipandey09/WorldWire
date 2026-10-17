@@ -316,27 +316,34 @@ def build_prerendered_homepage_html(jobs):
         clean_id = job["id"].replace("job-", "")
         country_flag = "🇮🇳" if job.get("country") == "India" else "🇺🇸"
         tags_html = "".join([f'<span class="tag-pill">{t}</span>' for t in job.get("tags", [])[:5]])
+        logo_url = job.get("company_logo") or f"https://www.google.com/s2/favicons?domain={job.get('company_domain', 'google.com')}&sz=128"
+        req_id = job.get("req_id") or job["id"]
+        ats_platform = job.get("ats_platform") or "Direct ATS"
 
         cards_html += f"""
-        <article class="job-card" style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 8px; padding: 22px; margin-bottom: 20px; box-shadow: 0 1px 4px rgba(15,23,42,0.04);">
+        <article class="job-card" style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 10px; padding: 24px; margin-bottom: 20px; box-shadow: 0 1px 4px rgba(15,23,42,0.04);">
             <div style="display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 12px; margin-bottom: 12px;">
-                <div>
-                    <span style="font-size: 11px; font-weight: 800; color: #2563eb; text-transform: uppercase; letter-spacing: 0.05em;">
-                        {country_flag} {job.get('country', 'GLOBAL').upper()} • {job.get('department', 'ENGINEERING').upper()}
-                    </span>
-                    <h2 style="font-size: 20px; font-weight: 700; color: #0f172a; margin-top: 4px;">
-                        <a href="/job-{clean_id}.html" style="color: #0f172a;">{job['title']}</a>
-                    </h2>
-                    <div style="font-size: 14px; color: #475569; font-weight: 600; margin-top: 2px;">
-                        🏢 {job['company']} &nbsp;•&nbsp; 📍 {job['location']}
+                <div style="display: flex; align-items: center; gap: 12px;">
+                    <img src="{logo_url}" alt="{job['company']}" style="width: 44px; height: 44px; border-radius: 8px; border: 1px solid #e2e8f0; background: #f8fafc; object-fit: contain; padding: 4px;" onerror="this.src='https://www.google.com/s2/favicons?domain=google.com&sz=128'">
+                    <div>
+                        <span style="font-size: 11px; font-weight: 800; color: #2563eb; text-transform: uppercase; letter-spacing: 0.05em;">
+                            {country_flag} {job.get('country', 'GLOBAL').upper()} • {job.get('department', 'ENGINEERING').upper()} • {job.get('work_mode', 'Hybrid').upper()}
+                        </span>
+                        <h2 style="font-size: 20px; font-weight: 800; color: #0f172a; margin-top: 4px;">
+                            <a href="/job-{clean_id}.html" style="color: #0f172a;">{job['title']}</a>
+                        </h2>
+                        <div style="font-size: 14px; color: #475569; font-weight: 600; margin-top: 2px;">
+                            🏢 <b>{job['company']}</b> &nbsp;•&nbsp; 📍 {job['location']}
+                        </div>
                     </div>
                 </div>
                 <div style="text-align: right;">
-                    <div style="font-size: 13px; font-weight: 800; color: #059669; background: #ecfdf5; padding: 4px 10px; border-radius: 4px;">
+                    <div style="font-size: 13px; font-weight: 800; color: #065f46; background: #d1fae5; border: 1px solid #a7f3d0; padding: 4px 10px; border-radius: 6px;">
                         💰 {job.get('salary_range', 'Competitive Rate')}
                     </div>
-                    <div style="font-size: 11px; color: #94a3b8; margin-top: 4px;">
-                        Level: {job.get('experience_level', 'Mid Level')}
+                    <div style="font-size: 11px; margin-top: 6px;">
+                        <span style="font-family: monospace; font-weight: 700; color: #1e40af; background: #dbeafe; padding: 2px 6px; border-radius: 4px;">REQ #{req_id}</span>
+                        <span style="background: #f1f5f9; color: #475569; padding: 2px 6px; border-radius: 4px; font-weight: 600;">{ats_platform}</span>
                     </div>
                 </div>
             </div>
@@ -349,13 +356,13 @@ def build_prerendered_homepage_html(jobs):
                 {tags_html}
             </div>
 
-            <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid #f1f5f9; padding-top: 12px; font-size: 12px; color: #64748b;">
+            <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid #f1f5f9; padding-top: 12px; font-size: 12px; color: #64748b; flex-wrap: wrap; gap: 8px;">
                 <div>
-                    ✅ Verified by Editor Abhishek Pandey
+                    🛡️ Verified by Abhishek Pandey (TechSnapZone)
                 </div>
                 <div>
                     <a href="/job-{clean_id}.html" style="font-weight: 700; color: #2563eb; margin-right: 14px;">View Role Specification →</a>
-                    <a href="{job.get('apply_url')}" target="_blank" rel="noopener nofollow" class="apply-btn" style="padding: 6px 14px; font-size: 11px;">Apply on Company Site ↗</a>
+                    <a href="{job.get('apply_url')}" target="_blank" rel="noopener nofollow" class="apply-btn" style="padding: 6px 14px; font-size: 11px;">Apply on {ats_platform} ↗</a>
                 </div>
             </div>
         </article>
@@ -366,19 +373,19 @@ def build_prerendered_homepage_html(jobs):
         {get_header_html()}
 
         <!-- Editorial Hero Notice -->
-        <section style="background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%); color: #ffffff; padding: 32px 28px; border-radius: 8px; margin-bottom: 32px; box-shadow: 0 4px 12px rgba(15,23,42,0.08);">
+        <section style="background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%); color: #ffffff; padding: 32px 28px; border-radius: 12px; margin-bottom: 32px; box-shadow: 0 4px 12px rgba(15,23,42,0.08);">
             <div style="max-width: 820px;">
                 <span style="background: #2563eb; color: #ffffff; font-size: 11px; font-weight: 800; padding: 3px 8px; border-radius: 4px; text-transform: uppercase;">VERIFIED OPPORTUNITIES DESK</span>
-                <h2 style="font-family: 'Playfair Display', Georgia, serif; font-size: 32px; font-weight: 800; margin: 12px 0 8px 0; line-height: 1.2;">Curated Technology &amp; Leadership Opportunities in India &amp; United States</h2>
+                <h2 style="font-size: 32px; font-weight: 800; margin: 12px 0 8px 0; line-height: 1.2;">Curated Technology &amp; Leadership Opportunities in India &amp; United States</h2>
                 <p style="font-size: 15px; color: #cbd5e1; line-height: 1.6;">
-                    Every position listed on WorkWire is reviewed by <b>Abhishek Pandey (TechSnapZone)</b>. We filter out speculative ghost postings, verify direct corporate application endpoints, and highlight transparent salary benchmarks across India and the US tech corridors.
+                    Every position listed on WorkWire is reviewed by <b>Abhishek Pandey (TechSnapZone)</b>. We filter out speculative ghost postings, verify direct corporate ATS endpoints, and highlight transparent salary benchmarks across India and the US tech corridors.
                 </p>
             </div>
         </section>
 
         <!-- Directory Header -->
         <div style="border-bottom: 2px solid #0f172a; padding-bottom: 8px; margin-bottom: 24px; display: flex; justify-content: space-between; align-items: flex-end;">
-            <h3 style="font-family: 'Playfair Display', Georgia, serif; font-size: 24px; font-weight: 800; color: #0f172a;">Active Verified Positions</h3>
+            <h3 style="font-size: 24px; font-weight: 800; color: #0f172a;">Active Verified Positions</h3>
             <span style="font-size: 13px; color: #64748b; font-weight: 600;">Showing {len(jobs)} Vetted Openings</span>
         </div>
 
@@ -394,6 +401,7 @@ def build_prerendered_homepage_html(jobs):
 def build_job_page_html(job):
     job_id = job["id"]
     clean_id = job_id.replace("job-", "")
+    req_id = job.get("req_id") or clean_id
     title = job["title"]
     company = job["company"]
     location = job.get("location", "India / United States")
@@ -404,6 +412,8 @@ def build_job_page_html(job):
     apply_url = job.get("apply_url", "https://mytomboy360.com")
     posted_iso = job.get("posted_at", datetime.now(timezone.utc).isoformat())
     country_code = "IN" if country == "India" else "US"
+    ats_platform = job.get("ats_platform") or "Corporate ATS"
+    logo_url = job.get("company_logo") or f"https://www.google.com/s2/favicons?domain={job.get('company_domain', 'google.com')}&sz=128"
 
     # Convert Markdown-like headers & bullet points into clean semantic HTML
     desc_html = ""
@@ -428,7 +438,7 @@ def build_job_page_html(job):
         "identifier": {{
             "@type": "PropertyValue",
             "name": {repr(company)},
-            "value": {repr(job_id)}
+            "value": {repr(req_id)}
         }},
         "datePosted": {repr(posted_iso[:10])},
         "employmentType": "FULL_TIME",
@@ -467,36 +477,44 @@ def build_job_page_html(job):
     <div class="site-container">
         {get_header_html()}
 
-        <article style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 8px; padding: 36px 32px; margin-bottom: 36px; box-shadow: 0 2px 10px rgba(15,23,42,0.04);">
-            <div style="font-size: 13px; font-weight: 800; color: #2563eb; text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 12px;">
-                {country.upper()} • {job.get('department', 'ENGINEERING').upper()} • VERIFIED VACANCY
+        <article style="background: #ffffff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 36px 32px; margin-bottom: 36px; box-shadow: 0 2px 10px rgba(15,23,42,0.04);">
+            <div style="display: flex; align-items: center; gap: 14px; margin-bottom: 14px;">
+                <img src="{logo_url}" alt="{company}" style="width: 52px; height: 52px; border-radius: 10px; border: 1px solid #e2e8f0; background: #f8fafc; object-fit: contain; padding: 4px;" onerror="this.src='https://www.google.com/s2/favicons?domain=google.com&sz=128'">
+                <div>
+                    <div style="font-size: 13px; font-weight: 800; color: #2563eb; text-transform: uppercase; letter-spacing: 0.08em;">
+                        {country.upper()} • {job.get('department', 'ENGINEERING').upper()} • OFFICIAL REQUISITION
+                    </div>
+                    <div style="font-size: 15px; font-weight: 700; color: #475569;">
+                        🏢 <b style="color: #0f172a;">{company}</b> &nbsp;|&nbsp; 📍 <b style="color: #0f172a;">{location}</b>
+                    </div>
+                </div>
             </div>
 
-            <h1 style="font-family: 'Playfair Display', Georgia, serif; font-size: 34px; line-height: 1.25; color: #0f172a; margin-bottom: 8px; font-weight: 900;">
+            <h1 style="font-size: 34px; line-height: 1.25; color: #0f172a; margin-bottom: 12px; font-weight: 900; letter-spacing: -0.03em;">
                 {title}
             </h1>
 
-            <div style="font-size: 16px; font-weight: 600; color: #475569; margin-bottom: 20px;">
-                🏢 Company: <b style="color: #0f172a;">{company}</b> &nbsp;|&nbsp; 📍 Location: <b style="color: #0f172a;">{location}</b>
-            </div>
-
             <!-- Highlights Bar -->
-            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 14px; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 18px; margin-bottom: 28px;">
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 14px; background: #f8fafc; border: 1px solid #e2e8f0; border-radius: 8px; padding: 18px; margin-bottom: 28px;">
+                <div>
+                    <div style="font-size: 11px; text-transform: uppercase; font-weight: 800; color: #64748b;">Requisition ID</div>
+                    <div style="font-size: 15px; font-family: monospace; font-weight: 800; color: #1e40af; margin-top: 2px;">#{req_id}</div>
+                </div>
                 <div>
                     <div style="font-size: 11px; text-transform: uppercase; font-weight: 800; color: #64748b;">Estimated Salary</div>
-                    <div style="font-size: 15px; font-weight: 800; color: #059669; margin-top: 2px;">{salary}</div>
+                    <div style="font-size: 15px; font-weight: 800; color: #065f46; margin-top: 2px;">{salary}</div>
                 </div>
                 <div>
                     <div style="font-size: 11px; text-transform: uppercase; font-weight: 800; color: #64748b;">Experience Level</div>
                     <div style="font-size: 14px; font-weight: 700; color: #0f172a; margin-top: 2px;">{job.get('experience_level', 'Mid Level')}</div>
                 </div>
                 <div>
-                    <div style="font-size: 11px; text-transform: uppercase; font-weight: 800; color: #64748b;">Employment Type</div>
-                    <div style="font-size: 14px; font-weight: 700; color: #0f172a; margin-top: 2px;">{job.get('employment_type', 'Full-time')}</div>
+                    <div style="font-size: 11px; text-transform: uppercase; font-weight: 800; color: #64748b;">ATS Endpoint</div>
+                    <div style="font-size: 14px; font-weight: 700; color: #475569; margin-top: 2px;">{ats_platform}</div>
                 </div>
                 <div>
                     <div style="font-size: 11px; text-transform: uppercase; font-weight: 800; color: #64748b;">Review Status</div>
-                    <div style="font-size: 14px; font-weight: 700; color: #2563eb; margin-top: 2px;">Human Vetted</div>
+                    <div style="font-size: 14px; font-weight: 700; color: #2563eb; margin-top: 2px;">🛡️ Verified Human</div>
                 </div>
             </div>
 
@@ -516,13 +534,13 @@ def build_job_page_html(job):
             </div>
 
             <!-- Direct Apply Call to Action -->
-            <div style="background: #0f172a; color: #ffffff; border-radius: 8px; padding: 28px; margin-top: 36px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px;">
+            <div style="background: #090d16; color: #ffffff; border-radius: 12px; padding: 28px; margin-top: 36px; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; border: 1px solid rgba(255,255,255,0.1);">
                 <div>
-                    <div style="font-size: 18px; font-weight: 800; color: #ffffff;">Ready to apply for this position?</div>
-                    <div style="font-size: 13px; color: #94a3b8; margin-top: 4px;">Applications are submitted directly on {company}'s official careers portal.</div>
+                    <div style="font-size: 18px; font-weight: 800; color: #ffffff;">Ready to apply for Requisition #{req_id}?</div>
+                    <div style="font-size: 13px; color: #94a3b8; margin-top: 4px;">Applications are processed directly on {company}'s official {ats_platform} portal.</div>
                 </div>
                 <div>
-                    <a href="{apply_url}" target="_blank" rel="noopener nofollow" class="apply-btn" style="background: #2563eb; padding: 12px 24px; font-size: 14px;">Apply on {company} Portal ↗</a>
+                    <a href="{apply_url}" target="_blank" rel="noopener nofollow" class="apply-btn" style="background: #2563eb; padding: 12px 24px; font-size: 14px;">Apply on {company} {ats_platform} ↗</a>
                 </div>
             </div>
 
