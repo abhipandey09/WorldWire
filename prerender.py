@@ -9,11 +9,17 @@ from pages_content import ABOUT_PAGE_MD, CONTACT_PAGE_MD, PRIVACY_PAGE_MD, TERMS
 ADSENSE_META = '<meta name="google-adsense-account" content="ca-pub-6145233805932455">'
 ADSENSE_SCRIPT = '<script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6145233805932455" crossorigin="anonymous"></script>'
 GOATCOUNTER_SCRIPT = '<script data-goatcounter="https://mytomboy360.goatcounter.com/count" async src="//gc.zgo.at/count.js"></script>'
+WWW_REDIRECT_SCRIPT = """<script>
+if (window.location.hostname === 'www.mytomboy360.com') {
+    window.location.replace('https://mytomboy360.com' + window.location.pathname + window.location.search + window.location.hash);
+}
+</script>"""
 
 COMMON_HEAD = f"""
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="icon" href="/favicon.png">
+    {WWW_REDIRECT_SCRIPT}
     {ADSENSE_META}
     {ADSENSE_SCRIPT}
     {GOATCOUNTER_SCRIPT}
@@ -752,6 +758,10 @@ def generate_all_static_pages():
                 # Inject Canonical URL in <head>
                 if 'rel="canonical"' not in idx_html:
                     idx_html = idx_html.replace("<head>", '<head>\n    <link rel="canonical" href="https://mytomboy360.com/">')
+
+                # Inject WWW to apex canonical domain redirect script in <head>
+                if "www.mytomboy360.com" not in idx_html:
+                    idx_html = idx_html.replace("<head>", f"<head>\n    {WWW_REDIRECT_SCRIPT}")
 
                 # Inject Meta Description in <head>
                 if 'name="description"' not in idx_html:
