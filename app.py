@@ -354,7 +354,7 @@ def render_header():
         <a href="/contact.html">Contact Us</a>
         <a href="/privacy.html">Privacy Policy</a>
         <a href="/terms.html">Terms &amp; Safety</a>
-        <a href="/?page=admin">Editorial Staff 🔒</a>
+        <a href="/?page=admin" rel="nofollow">Editorial Staff 🔒</a>
     </div>
     """)
 
@@ -368,7 +368,7 @@ def render_footer():
             <a href="/contact.html">Contact Bureau</a> |
             <a href="/privacy.html">Privacy Policy</a> |
             <a href="/terms.html">Terms of Service</a> |
-            <a href="/?page=admin">Editorial Staff 🔒</a>
+            <a href="/?page=admin" rel="nofollow">Editorial Staff 🔒</a>
         </div>
         <p>© 2026 <b>WORKWIRE CAREER NETWORK</b> • Published at <b>mytomboy360.com</b> by Abhishek Pandey (TechSnapZone).</p>
         <p style="margin-top: 6px; font-size: 12px; color: #94a3b8;">

@@ -749,6 +749,37 @@ def generate_all_static_pages():
                 # Update Title
                 idx_html = re.sub(r'<title>.*?</title>', '<title>WORKWIRE | Curated Tech & Leadership Careers in India & US</title>', idx_html)
 
+                # Inject Canonical URL in <head>
+                if 'rel="canonical"' not in idx_html:
+                    idx_html = idx_html.replace("<head>", '<head>\n    <link rel="canonical" href="https://mytomboy360.com/">')
+
+                # Inject Meta Description in <head>
+                if 'name="description"' not in idx_html:
+                    idx_html = idx_html.replace("<head>", '<head>\n    <meta name="description" content="WorkWire - Human-vetted tech, AI, and software engineering opportunities in India and the United States with transparent compensation benchmarks.">')
+
+                # Inject Open Graph tags in <head>
+                if 'property="og:url"' not in idx_html:
+                    og_tags = """    <meta property="og:type" content="website">
+    <meta property="og:title" content="WORKWIRE | Verified Tech & AI Careers India & US">
+    <meta property="og:description" content="Curated Technology & Leadership Opportunities in India & United States. Vetted direct ATS positions.">
+    <meta property="og:url" content="https://mytomboy360.com/">
+"""
+                    idx_html = idx_html.replace("<head>", f"<head>\n{og_tags}")
+
+                # Inject WebSite Structured Data in <head>
+                if "schema.org" not in idx_html:
+                    website_schema = """    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "name": "WorkWire",
+      "url": "https://mytomboy360.com/",
+      "description": "Verified Tech, AI & Software Engineering Jobs in India and the United States."
+    }
+    </script>
+"""
+                    idx_html = idx_html.replace("</head>", f"{website_schema}</head>")
+
                 # Inject AdSense Meta Tag in <head>
                 if "google-adsense-account" not in idx_html:
                     idx_html = idx_html.replace("<head>", f"<head>\n    {ADSENSE_META}")
