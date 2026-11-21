@@ -22,7 +22,17 @@ export const WeddingStory: React.FC = () => {
 
   return (
     <section id="story" className="relative py-20 bg-ivory/40 border-t border-gold/30 overflow-hidden">
-      <div className="max-w-4xl mx-auto px-4 sm:px-6">
+      {/* Personalized Couple Photo Background: Romantic Heart at Lake */}
+      <div className="absolute inset-0 pointer-events-none overflow-hidden">
+        <img
+          src="/assets/couple/couple_heart_lake.jpg"
+          alt="Sakshi & Abhishek Love Story"
+          className="w-full h-full object-cover object-center opacity-25 sm:opacity-15 filter contrast-[1.05]"
+        />
+        <div className="absolute inset-0 bg-gradient-to-b from-[#FFFDF9]/85 via-ivory/70 to-[#FFFDF9]/90" />
+      </div>
+
+      <div className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6">
         {/* Section Header */}
         <div className="text-center max-w-xl mx-auto mb-14">
           <div className="flex items-center justify-center gap-2 mb-2 text-burgundy font-serif font-bold text-sm tracking-widest uppercase">
@@ -80,6 +90,15 @@ export const WeddingStory: React.FC = () => {
                       isEven ? 'sm:mr-auto sm:text-right' : 'sm:ml-auto sm:text-left'
                     }`}
                   >
+                    {milestone.image && (
+                      <div className="mb-3.5 rounded-xl overflow-hidden border border-gold/40 shadow-sm max-h-44 sm:max-h-52">
+                        <img
+                          src={milestone.image}
+                          alt={milestone.heading}
+                          className="w-full h-36 sm:h-44 object-cover hover:scale-105 transition-transform duration-500"
+                        />
+                      </div>
+                    )}
                     <span className="font-cinzel text-xs font-bold text-gold tracking-widest uppercase block mb-1">
                       {milestone.title}
                     </span>

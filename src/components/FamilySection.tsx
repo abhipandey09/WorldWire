@@ -10,7 +10,17 @@ export const FamilySection: React.FC = () => {
 
   return (
     <section id="family" className="relative py-20 bg-[#FFFDF9] border-t border-gold/30 overflow-hidden">
-      <div className="max-w-5xl mx-auto px-4 sm:px-6">
+      {/* Personalized Couple Photo Background: Rings & Blessings Union */}
+      <div className="absolute inset-0 pointer-events-none overflow-hidden">
+        <img
+          src="/assets/couple/couple_ring_closeup.jpg"
+          alt="Sakshi & Abhishek Sacred Rings & Blessings"
+          className="w-full h-full object-cover object-center opacity-25 sm:opacity-15 filter contrast-[1.05]"
+        />
+        <div className="absolute inset-0 bg-gradient-to-b from-[#FFFDF9]/85 via-[#FFFDF9]/70 to-[#FFFDF9]/90" />
+      </div>
+
+      <div className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6">
         {/* Section Header */}
         <div className="text-center max-w-2xl mx-auto mb-14">
           <div className="flex items-center justify-center gap-2 mb-2 text-burgundy font-serif font-bold text-sm tracking-widest uppercase">

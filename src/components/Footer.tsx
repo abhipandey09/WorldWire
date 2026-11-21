@@ -9,6 +9,16 @@ export const Footer: React.FC = () => {
 
   return (
     <footer id="footer" className="relative bg-[#1A0B0F] text-ivory py-16 border-t-2 border-gold/50 overflow-hidden">
+      {/* Personalized Couple Photo Background: Romantic Forever */}
+      <div className="absolute inset-0 pointer-events-none overflow-hidden">
+        <img
+          src="/assets/couple/couple_romantic_embrace.jpg"
+          alt="Sakshi & Abhishek Forever"
+          className="w-full h-full object-cover object-top opacity-15 filter brightness-75 contrast-125"
+        />
+        <div className="absolute inset-0 bg-gradient-to-b from-[#1A0B0F]/90 via-[#1A0B0F]/75 to-[#1A0B0F]" />
+      </div>
+
       {/* Background Golden Glow */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
         <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[320px] sm:w-[600px] h-64 bg-gold/10 rounded-full blur-[80px] sm:blur-[100px]" />

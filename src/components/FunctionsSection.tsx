@@ -17,6 +17,16 @@ export const FunctionsSection: React.FC = () => {
 
   return (
     <section id="ceremonies" className="relative py-20 bg-ivory/60 border-t border-b border-gold/30 overflow-hidden">
+      {/* Personalized Couple Photo Background: Ring Ceremony Celebrations */}
+      <div className="absolute inset-0 pointer-events-none overflow-hidden">
+        <img
+          src="/assets/couple/couple_ring_ceremony_portrait.jpg"
+          alt="Sakshi & Abhishek Ring Ceremony"
+          className="w-full h-full object-cover object-center opacity-25 sm:opacity-15 filter contrast-[1.05]"
+        />
+        <div className="absolute inset-0 bg-gradient-to-b from-[#FFFDF9]/85 via-ivory/70 to-[#FFFDF9]/90" />
+      </div>
+
       {/* Background Ambience */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
         <div className="absolute top-1/3 right-10 w-96 h-96 bg-gold/5 rounded-full blur-3xl" />

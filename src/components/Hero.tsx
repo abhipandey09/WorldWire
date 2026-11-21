@@ -14,9 +14,19 @@ export const Hero: React.FC = () => {
     <section id="hero" className="relative min-h-screen pt-28 pb-16 flex flex-col justify-center items-center overflow-hidden">
       {/* Background Royal Palace Courtyard & Luminous Silk Atmosphere */}
       <div
-        className="absolute inset-0 bg-cover bg-center pointer-events-none opacity-90 transition-opacity duration-1000"
+        className="absolute inset-0 bg-cover bg-center pointer-events-none opacity-60 transition-opacity duration-1000"
         style={{ backgroundImage: `url('/assets/landing_hero_bg.jpg')` }}
       />
+
+      {/* Personalized Couple Photo Background: Romantic Embrace */}
+      <div className="absolute inset-0 pointer-events-none overflow-hidden">
+        <img
+          src="/assets/couple/couple_romantic_embrace.jpg"
+          alt="Sakshi & Abhishek"
+          className="w-full h-full object-cover object-top opacity-30 sm:opacity-20 filter contrast-[1.05]"
+        />
+        <div className="absolute inset-0 bg-gradient-to-b from-[#FFFDF9]/80 via-[#FFFDF9]/55 to-[#FFFDF9]/90" />
+      </div>
 
       {/* Delicate Royal Mandala Watermark Pattern */}
       <div

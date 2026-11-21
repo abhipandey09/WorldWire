@@ -171,19 +171,22 @@ export const STORY_MILESTONES = [
     title: 'The Serendipitous Beginning',
     heading: 'When Destinies Aligned',
     description: 'Like a melody composed by the cosmos, Sakshi and Abhishek first met and discovered a quiet understanding that felt like coming home.',
-    icon: 'heart'
+    icon: 'heart',
+    image: '/assets/couple/couple_heart_lake.jpg'
   },
   {
     title: 'Shared Dreams & Two Families',
     heading: 'A Bond Blessed by Ancestors',
     description: 'With shared laughter, deep respect for family traditions, and unspoken promises, two loving families came together in heart and spirit.',
-    icon: 'home'
+    icon: 'home',
+    image: '/assets/couple/couple_boat_backwaters.jpg'
   },
   {
     title: 'The Sacred Vow',
     heading: 'Two Souls, One Forever',
     description: 'Hand in hand, surrounding the sacred Agni with the divine blessings of Lord Ganesha and Jeen Mata, stepping into eternity as one.',
-    icon: 'infinity'
+    icon: 'infinity',
+    image: '/assets/couple/couple_ring_ceremony_portrait.jpg'
   }
 ];
 
