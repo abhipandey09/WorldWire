@@ -79,8 +79,8 @@ export const WeddingFilmSection: React.FC<WeddingFilmSectionProps> = ({
           <div className="relative aspect-[9/16] max-h-[75vh] w-full flex items-center justify-center">
             <video
               ref={videoRef}
-              src="/assets/wedding_film.mp4"
-              poster="/assets/cards/Slide_01_Welcome.jpg"
+              src="/assets/Sakshi_Abhishek_Wedding.mp4"
+              poster="/assets/ganesh.jpg"
               playsInline
               preload="metadata"
               onPlay={() => {
