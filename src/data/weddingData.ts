@@ -186,7 +186,7 @@ export const STORY_MILESTONES = [
     heading: 'Two Souls, One Forever',
     description: 'Hand in hand, surrounding the sacred Agni with the divine blessings of Lord Ganesha and Jeen Mata, stepping into eternity as one.',
     icon: 'infinity',
-    image: '/assets/couple/couple_ring_ceremony_portrait.jpg'
+    image: '/assets/couple/couple_sunset_proposal.jpg'
   }
 ];
 

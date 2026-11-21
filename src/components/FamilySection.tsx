@@ -10,11 +10,11 @@ export const FamilySection: React.FC = () => {
 
   return (
     <section id="family" className="relative py-20 bg-[#FFFDF9] border-t border-gold/30 overflow-hidden">
-      {/* Personalized Couple Photo Background: Rings & Blessings Union */}
+      {/* Personalized Couple Photo Background: Romantic Sunset Proposal */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
         <img
-          src="/assets/couple/couple_ring_closeup.jpg"
-          alt="Sakshi & Abhishek Sacred Rings & Blessings"
+          src="/assets/couple/couple_sunset_proposal.jpg"
+          alt="Sakshi & Abhishek Romantic Sunset Proposal"
           className="w-full h-full object-cover object-center opacity-25 sm:opacity-15 filter contrast-[1.05]"
         />
         <div className="absolute inset-0 bg-gradient-to-b from-[#FFFDF9]/85 via-[#FFFDF9]/70 to-[#FFFDF9]/90" />

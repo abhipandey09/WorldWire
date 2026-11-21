@@ -90,8 +90,8 @@ export const WeddingFilmSection: React.FC<WeddingFilmSectionProps> = ({
         </div>
 
         {/* Video Player Frame with Gold Filigree Border */}
-        <div className="relative max-w-sm sm:max-w-md mx-auto rounded-3xl overflow-hidden border-2 border-gold/70 shadow-2xl bg-black group">
-          <div className="relative aspect-[9/16] max-h-[75vh] w-full flex items-center justify-center">
+        <div className="relative w-fit mx-auto rounded-3xl overflow-hidden border-2 border-gold/70 shadow-2xl bg-black group">
+          <div className="relative aspect-[9/16] h-[68vh] sm:h-[76vh] max-h-[720px] w-auto max-w-[92vw] flex items-center justify-center bg-black">
             <video
               ref={videoRef}
               src="/assets/Sakshi_Abhishek_Wedding.mp4"
@@ -111,7 +111,7 @@ export const WeddingFilmSection: React.FC<WeddingFilmSectionProps> = ({
                 setIsPlaying(false);
                 onVideoPause?.();
               }}
-              className="w-full h-full object-cover cursor-pointer"
+              className="w-full h-full object-contain cursor-pointer"
             />
 
             {/* Play Overlay Button */}
