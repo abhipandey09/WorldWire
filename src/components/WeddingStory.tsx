@@ -91,11 +91,11 @@ export const WeddingStory: React.FC = () => {
                     }`}
                   >
                     {milestone.image && (
-                      <div className="mb-3.5 rounded-xl overflow-hidden border border-gold/40 shadow-sm max-h-44 sm:max-h-52">
+                      <div className="mb-3.5 rounded-xl overflow-hidden border border-gold/40 shadow-sm bg-champagne/20">
                         <img
                           src={milestone.image}
                           alt={milestone.heading}
-                          className="w-full h-36 sm:h-44 object-cover hover:scale-105 transition-transform duration-500"
+                          className="w-full h-auto object-contain rounded-xl hover:scale-[1.02] transition-transform duration-300"
                         />
                       </div>
                     )}
