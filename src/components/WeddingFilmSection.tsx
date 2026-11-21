@@ -32,9 +32,22 @@ export const WeddingFilmSection: React.FC<WeddingFilmSectionProps> = ({
       setIsPlaying(false);
       onVideoPause?.();
     } else {
-      videoRef.current.play();
-      setIsPlaying(true);
       onVideoPlay?.();
+      const playPromise = videoRef.current.play();
+      if (playPromise !== undefined) {
+        playPromise
+          .then(() => {
+            setIsPlaying(true);
+          })
+          .catch((err) => {
+            console.warn('Video playback requires user gesture or muted policy:', err);
+            if (videoRef.current) {
+              videoRef.current.muted = true;
+              setIsMuted(true);
+              videoRef.current.play().then(() => setIsPlaying(true)).catch(() => {});
+            }
+          });
+      }
     }
   };
 
@@ -85,6 +98,7 @@ export const WeddingFilmSection: React.FC<WeddingFilmSectionProps> = ({
               poster="/assets/ganesh.jpg"
               playsInline
               preload="metadata"
+              onClick={togglePlay}
               onPlay={() => {
                 setIsPlaying(true);
                 onVideoPlay?.();
@@ -97,14 +111,14 @@ export const WeddingFilmSection: React.FC<WeddingFilmSectionProps> = ({
                 setIsPlaying(false);
                 onVideoPause?.();
               }}
-              className="w-full h-full object-cover"
+              className="w-full h-full object-cover cursor-pointer"
             />
 
             {/* Play Overlay Button */}
             {!isPlaying && (
               <div
                 onClick={togglePlay}
-                className="absolute inset-0 bg-black/40 backdrop-blur-[2px] flex items-center justify-center cursor-pointer group-hover:bg-black/30 transition-all"
+                className="absolute inset-0 bg-black/40 backdrop-blur-[2px] flex items-center justify-center cursor-pointer group-hover:bg-black/30 transition-all z-10"
               >
                 <motion.button
                   whileHover={{ scale: 1.1 }}
@@ -119,7 +133,11 @@ export const WeddingFilmSection: React.FC<WeddingFilmSectionProps> = ({
             )}
 
             {/* Video Controls Toolbar */}
-            <div className="absolute bottom-0 inset-x-0 p-4 bg-gradient-to-t from-black/90 via-black/50 to-transparent flex items-center justify-between opacity-0 group-hover:opacity-100 transition-opacity">
+            <div
+              className={`absolute bottom-0 inset-x-0 p-4 bg-gradient-to-t from-black/90 via-black/50 to-transparent flex items-center justify-between transition-opacity z-20 ${
+                isPlaying ? 'opacity-95 sm:opacity-0 sm:group-hover:opacity-100' : 'opacity-0 pointer-events-none'
+              }`}
+            >
               <div className="flex items-center gap-2">
                 <button
                   onClick={togglePlay}
