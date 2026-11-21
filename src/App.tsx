@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { InvitationCover } from './components/InvitationCover';
 import { PetalBackground } from './components/PetalBackground';
 import { Navbar } from './components/Navbar';
@@ -14,6 +14,7 @@ import { MusicPlayer } from './components/MusicPlayer';
 export const App: React.FC = () => {
   const [hasOpenedInvitation, setHasOpenedInvitation] = useState(false);
   const [isPlayingMusic, setIsPlayingMusic] = useState(false);
+  const wasMusicPlayingBeforeVideoRef = useRef(false);
 
   const handleOpenInvitation = () => {
     setHasOpenedInvitation(true);
@@ -22,6 +23,24 @@ export const App: React.FC = () => {
 
   const handleToggleMusic = () => {
     setIsPlayingMusic((prev) => !prev);
+  };
+
+  // When inner wedding video starts playing:
+  // Outer site background music/audio gets paused completely!
+  const handleVideoPlay = () => {
+    if (isPlayingMusic) {
+      wasMusicPlayingBeforeVideoRef.current = true;
+      setIsPlayingMusic(false);
+    }
+  };
+
+  // When inner wedding video is paused or finishes:
+  // Outer site background music resumes if it was previously playing
+  const handleVideoPause = () => {
+    if (wasMusicPlayingBeforeVideoRef.current) {
+      setIsPlayingMusic(true);
+      wasMusicPlayingBeforeVideoRef.current = false;
+    }
   };
 
   return (
@@ -56,8 +75,12 @@ export const App: React.FC = () => {
         {/* 8. Family & Ancestral Blessings */}
         <FamilySection />
 
-        {/* 9. Destination Wedding Film */}
-        <WeddingFilmSection />
+        {/* 9. Destination Wedding Film with Automatic Background Audio Coordination */}
+        <WeddingFilmSection
+          isPlayingSiteMusic={isPlayingMusic}
+          onVideoPlay={handleVideoPlay}
+          onVideoPause={handleVideoPause}
+        />
       </main>
 
       {/* 10. Concluding Royal Footer */}

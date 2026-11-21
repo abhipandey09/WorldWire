@@ -1,20 +1,40 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { Play, Pause, Film, Volume2, VolumeX, Maximize2 } from 'lucide-react';
 
-export const WeddingFilmSection: React.FC = () => {
+interface WeddingFilmSectionProps {
+  isPlayingSiteMusic?: boolean;
+  onVideoPlay?: () => void;
+  onVideoPause?: () => void;
+}
+
+export const WeddingFilmSection: React.FC<WeddingFilmSectionProps> = ({
+  isPlayingSiteMusic = false,
+  onVideoPlay,
+  onVideoPause,
+}) => {
   const videoRef = useRef<HTMLVideoElement | null>(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [isMuted, setIsMuted] = useState(false);
+
+  // If outer site background music starts playing, automatically pause this video
+  useEffect(() => {
+    if (isPlayingSiteMusic && isPlaying && videoRef.current) {
+      videoRef.current.pause();
+      setIsPlaying(false);
+    }
+  }, [isPlayingSiteMusic]);
 
   const togglePlay = () => {
     if (!videoRef.current) return;
     if (isPlaying) {
       videoRef.current.pause();
       setIsPlaying(false);
+      onVideoPause?.();
     } else {
       videoRef.current.play();
       setIsPlaying(true);
+      onVideoPlay?.();
     }
   };
 
@@ -63,8 +83,18 @@ export const WeddingFilmSection: React.FC = () => {
               poster="/assets/cards/Slide_01_Welcome.jpg"
               playsInline
               preload="metadata"
-              onPlay={() => setIsPlaying(true)}
-              onPause={() => setIsPlaying(false)}
+              onPlay={() => {
+                setIsPlaying(true);
+                onVideoPlay?.();
+              }}
+              onPause={() => {
+                setIsPlaying(false);
+                onVideoPause?.();
+              }}
+              onEnded={() => {
+                setIsPlaying(false);
+                onVideoPause?.();
+              }}
               className="w-full h-full object-cover"
             />
 
