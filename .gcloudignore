@@ -2,6 +2,8 @@
 .git
 .gitignore
 node_modules
+dist
 scratch
 previews
-Sakshi_Abhishek_Wedding.mp4
+/Sakshi_Abhishek_Wedding.mp4
+!public/assets/Sakshi_Abhishek_Wedding.mp4

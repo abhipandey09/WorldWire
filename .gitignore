@@ -22,4 +22,5 @@ dist-ssr
 *.njsproj
 *.sln
 *.sw?
-*.mp4
+/Sakshi_Abhishek_Wedding.mp4
+!public/assets/Sakshi_Abhishek_Wedding.mp4
