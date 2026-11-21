@@ -18,7 +18,6 @@ export interface WeddingEvent {
   description: string;
   iconName: 'flower' | 'sparkles' | 'music' | 'sun' | 'ring';
   cardImage: string; // Image in /assets/cards/
-  dressCode?: string;
 }
 
 export interface Venue {

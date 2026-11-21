@@ -80,8 +80,7 @@ export const WEDDING_EVENTS: WeddingEvent[] = [
     quote: '“Celebrating love, laughter, and new beginnings with the deep hues of sacred henna.”',
     description: 'An auspicious morning filled with fresh aromatic mehendi designs, traditional Rajasthani and Bollywood tunes, laughter, and vibrant marigolds by the poolside.',
     iconName: 'flower',
-    cardImage: '/assets/cards/Slide_04_Mehendi.jpg',
-    dressCode: 'Festive Emerald, Vibrant Yellows & Florals'
+    cardImage: '/assets/cards/Slide_04_Mehendi.jpg'
   },
   {
     id: 'bhaat',
@@ -102,8 +101,7 @@ export const WEDDING_EVENTS: WeddingEvent[] = [
     quote: '“Sacred family blessings and cherished traditional customs celebrating eternal maternal bonds.”',
     description: 'A deeply emotional traditional ceremony honoring family heritage, where maternal uncles and grandparents shower the bride and groom with blessings, auspicious gifts, and love.',
     iconName: 'sparkles',
-    cardImage: '/assets/cards/Slide_05_Bhaat.jpg',
-    dressCode: 'Royal Pink, Ivory & Traditional Indian Silks'
+    cardImage: '/assets/cards/Slide_05_Bhaat.jpg'
   },
   {
     id: 'sangeet',
@@ -124,8 +122,7 @@ export const WEDDING_EVENTS: WeddingEvent[] = [
     quote: '“Join us for an evening of music, dance, and endless joy as we celebrate love, laughter, and the beginning of their forever.”',
     description: 'Step into an enchanting evening illuminated by fairy lights, pulsating dholak beats, dazzling family dance performances, and musical celebrations under the starry Bengaluru sky.',
     iconName: 'music',
-    cardImage: '/assets/cards/Slide_06_Sangeet.jpg',
-    dressCode: 'Glamorous Evening Lehengas, Tuxedos & Indo-Western Sparkle'
+    cardImage: '/assets/cards/Slide_06_Sangeet.jpg'
   },
   {
     id: 'haldi',
@@ -146,8 +143,7 @@ export const WEDDING_EVENTS: WeddingEvent[] = [
     quote: '“Join us for a day filled with love, laughter, flower petals, and lots of golden haldi!”',
     description: 'A vibrant courtyard affair where friends and family anoint the couple with fragrant turmeric paste, shower them in marigold rain, and celebrate radiant auspicious beginnings.',
     iconName: 'sun',
-    cardImage: '/assets/cards/Slide_07_Haldi.jpg',
-    dressCode: 'Sunshine Yellows, Saffron & Festive Whites'
+    cardImage: '/assets/cards/Slide_07_Haldi.jpg'
   },
   {
     id: 'wedding',
@@ -168,8 +164,7 @@ export const WEDDING_EVENTS: WeddingEvent[] = [
     quote: '“A ceremonial affair, full of splendour, cherished memories & promises for a lifetime.”',
     description: 'The pinnacle of our celebration beginning with the lively Barat & Swagat, the bride’s enchanting walk under the floral canopy, the sacred Vedic pheras at the royal palace mandap, followed by an exquisite grand dinner reception.',
     iconName: 'ring',
-    cardImage: '/assets/cards/Slide_10_Wedding.jpg',
-    dressCode: 'Royal Indian Formal, Sherwanis, Kanjeevarams & Designer Sarees'
+    cardImage: '/assets/cards/Slide_10_Wedding.jpg'
   }
 ];
 

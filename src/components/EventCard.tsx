@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { Calendar, Clock, MapPin, Eye, Navigation, Sparkles, Shirt } from 'lucide-react';
+import { Calendar, Clock, MapPin, Eye, Navigation, Sparkles } from 'lucide-react';
 import { WeddingEvent } from '../types';
 
 interface EventCardProps {
@@ -99,15 +99,6 @@ export const EventCard: React.FC<EventCardProps> = ({
                 <p className="text-[11px] text-[#785F54]">{event.venueAddress}</p>
               </div>
             </div>
-
-            {event.dressCode && (
-              <div className="flex items-start gap-2.5 pt-1 border-t border-gold/20">
-                <Shirt className="w-4 h-4 text-burgundy/70 shrink-0 mt-0.5" />
-                <span className="text-[11px] text-[#634C42]">
-                  <strong className="text-burgundy">Attire:</strong> {event.dressCode}
-                </span>
-              </div>
-            )}
           </div>
         </div>
 
