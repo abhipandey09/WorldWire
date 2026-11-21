@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Volume2, VolumeX, Menu, X, Calendar, MapPin, Heart } from 'lucide-react';
+import { Volume2, VolumeX, Menu, X } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 interface NavbarProps {
@@ -26,7 +26,6 @@ export const Navbar: React.FC<NavbarProps> = ({ isPlaying, onToggleMusic }) => {
     { label: 'Venues', href: '#venues' },
     { label: 'Family', href: '#family' },
     { label: 'Wedding Film', href: '#film' },
-    { label: 'RSVP', href: '#rsvp' },
   ];
 
   const handleLinkClick = (href: string) => {
@@ -145,14 +144,14 @@ export const Navbar: React.FC<NavbarProps> = ({ isPlaying, onToggleMusic }) => {
               ))}
               <div className="pt-2 flex justify-center">
                 <a
-                  href="#rsvp"
+                  href="#ceremonies"
                   onClick={(e) => {
                     e.preventDefault();
-                    handleLinkClick('#rsvp');
+                    handleLinkClick('#ceremonies');
                   }}
                   className="w-full text-center py-2.5 rounded-full bg-burgundy text-white font-cinzel text-xs font-bold tracking-widest shadow-md"
                 >
-                  SEND YOUR BLESSINGS (RSVP)
+                  EXPLORE CEREMONIES
                 </a>
               </div>
             </div>

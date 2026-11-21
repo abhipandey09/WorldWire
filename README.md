@@ -13,7 +13,7 @@ Designed for deployment at **[mytomboy360.com](https://mytomboy360.com)**.
    - Lord Ganesha illustration (`॥ श्री गणेशाय नमः ॥`) with golden borders.
    - Interactive **"OPEN WEDDING INVITATION"** button triggering smooth unfolding animation, gold & rose confetti burst, and background shehnai music.
 2. **Main Hero Section:**
-   - Romantic typography: *Sakshi & Abhishek* with classical calligraphy.
+   - Romantic typography: *Sakshi & Abhishek* with classical calligraphy (**Alex Brush** with prominent capital **A**).
    - Auspicious wedding dates (*26 & 27 January 2027*) & venue location (*Bengaluru, Karnataka*).
 3. **Live Dynamic Countdown (`Countdown`):**
    - Real-time countdown (Days, Hours, Minutes, Seconds) in **Asia/Kolkata (IST)** timezone.
@@ -30,18 +30,15 @@ Designed for deployment at **[mytomboy360.com](https://mytomboy360.com)**.
    - One-click **"Get Directions"** linking directly to Google Maps navigation.
    - **"View Card"** modal displaying high-resolution authentic illustrated wedding cards.
 5. **Interactive Venues Section (`VenuesSection`):**
-   - Detailed cards for both **Imperial Jenukaal Suits** (Kasavanahalli) and **ICON PREMIER HOTEL** (Bellandur).
+   - Detailed cards for both **Imperial Jenukaal Suits** (Kasavanahalli) and **ICON PREMIER HOTEL** (Bellandur) with direct Google Maps navigation.
 6. **Family Blessings (`FamilySection`):**
    - Honoring Pushpa Devi & Shri Ram Sikaria (Bride's family) and Smt. Sunita & Sri Maheshwar Pandey (Groom's family).
 7. **Cinematic Destination Wedding Film (`WeddingFilmSection`):**
-   - Direct inline playback of the 71-second destination wedding invitation video with music.
-8. **RSVP & Hospitality Desk (`RSVPSection`):**
-   - Contact Person: **Dipesh Sikaria** (`+91 70594 11938`).
-   - One-click Call and WhatsApp RSVP message builder.
-9. **Floating Background Music Player (`MusicPlayer`):**
+   - Direct inline playback of the destination wedding invitation video with music.
+8. **Floating Background Music Player (`MusicPlayer`):**
    - Traditional Indian wedding background music with play/pause and spinning mandala animation.
-10. **Credits:**
-    - *"Design & Developed by Abhishek"*
+9. **Credits:**
+   - *"Design & Developed by Abhishek"*
 
 ---
 
@@ -52,7 +49,7 @@ Designed for deployment at **[mytomboy360.com](https://mytomboy360.com)**.
 - **Styling:** Tailwind CSS 3 with custom royal wedding theme
 - **Animations:** Framer Motion & Canvas Confetti
 - **Icons:** Lucide React
-- **Fonts:** Great Vibes, Cinzel, Cormorant Garamond, Montserrat
+- **Fonts:** Alex Brush (Classical Capital 'A'), Cinzel, Cormorant Garamond, Montserrat
 
 ---
 

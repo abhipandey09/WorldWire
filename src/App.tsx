@@ -8,7 +8,6 @@ import { WeddingStory } from './components/WeddingStory';
 import { VenuesSection } from './components/VenuesSection';
 import { FamilySection } from './components/FamilySection';
 import { WeddingFilmSection } from './components/WeddingFilmSection';
-import { RSVPSection } from './components/RSVPSection';
 import { Footer } from './components/Footer';
 import { MusicPlayer } from './components/MusicPlayer';
 
@@ -59,15 +58,12 @@ export const App: React.FC = () => {
 
         {/* 9. Destination Wedding Film */}
         <WeddingFilmSection />
-
-        {/* 10. RSVP & Hospitality Contacts */}
-        <RSVPSection />
       </main>
 
-      {/* 11. Concluding Royal Footer */}
+      {/* 10. Concluding Royal Footer */}
       <Footer />
 
-      {/* 12. Floating Background Music Player */}
+      {/* 11. Floating Background Music Player */}
       <MusicPlayer
         isPlaying={isPlayingMusic}
         onToggle={handleToggleMusic}

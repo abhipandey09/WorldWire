@@ -51,7 +51,7 @@ export default {
         }
       },
       fontFamily: {
-        script: ['"Great Vibes"', 'cursive'],
+        script: ['"Alex Brush"', '"Great Vibes"', 'cursive'],
         cinzel: ['"Cinzel"', 'serif'],
         cormorant: ['"Cormorant Garamond"', 'serif'],
         playfair: ['"Playfair Display"', 'serif'],

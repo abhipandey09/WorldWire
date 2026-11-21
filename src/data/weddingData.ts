@@ -10,13 +10,8 @@ export const WEDDING_COUPLE = {
   invitationText: 'Together with their families, cordially invite you to celebrate the auspicious wedding of their children.',
   weddingDate: '26 & 27 January 2027',
   location: 'Bengaluru, Karnataka',
-  rsvpContact: {
-    name: 'Dipesh Sikaria',
-    phone: '+91 70594 11938',
-    cleanPhone: '+917059411938'
-  },
   closingBlessing: '“Your gracious presence will blossom our celebrations into cherished memories for a lifetime.”',
-  credit: 'Designed & Developed with love by Abhishek'
+  credit: 'Design & Developed by Abhishek'
 };
 
 export const FAMILY_DETAILS = {
@@ -202,13 +197,12 @@ export const STORY_MILESTONES = [
 // Helper: Format Dates for Google Calendar URL
 export function getGoogleCalendarUrl(event: WeddingEvent): string {
   const start = new Date(event.isoDateTime);
-  // Default duration ~ 3 hours for calendar event
   const end = new Date(start.getTime() + 3 * 60 * 60 * 1000);
   
   const toUtcString = (d: Date) => d.toISOString().replace(/-|:|\.\d\d\d/g, '');
   
   const title = encodeURIComponent(`${event.name} - Sakshi & Abhishek Wedding`);
-  const details = encodeURIComponent(`${event.subtitle}\n\n${event.description}\n\nVenue: ${event.venueName}\nAddress: ${event.venueAddress}\n\nRSVP: Dipesh Sikaria (${WEDDING_COUPLE.rsvpContact.phone})`);
+  const details = encodeURIComponent(`${event.subtitle}\n\n${event.description}\n\nVenue: ${event.venueName}\nAddress: ${event.venueAddress}`);
   const location = encodeURIComponent(`${event.venueName}, ${event.venueAddress}`);
   
   return `https://calendar.google.com/calendar/render?action=TEMPLATE&text=${title}&dates=${toUtcString(start)}/${toUtcString(end)}&details=${details}&location=${location}&sf=true&output=xml`;
