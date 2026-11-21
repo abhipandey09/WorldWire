@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { InvitationCover } from './components/InvitationCover';
 import { PetalBackground } from './components/PetalBackground';
 import { Navbar } from './components/Navbar';
@@ -10,11 +10,27 @@ import { FamilySection } from './components/FamilySection';
 import { WeddingFilmSection } from './components/WeddingFilmSection';
 import { Footer } from './components/Footer';
 import { MusicPlayer } from './components/MusicPlayer';
+import { ScrollCompanion } from './components/ScrollCompanion';
 
 export const App: React.FC = () => {
   const [hasOpenedInvitation, setHasOpenedInvitation] = useState(false);
   const [isPlayingMusic, setIsPlayingMusic] = useState(false);
   const wasMusicPlayingBeforeVideoRef = useRef(false);
+
+  // Lock background scroll when the digital invitation cover is closed
+  useEffect(() => {
+    if (!hasOpenedInvitation) {
+      document.body.style.overflow = 'hidden';
+      document.documentElement.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = '';
+      document.documentElement.style.overflow = '';
+    }
+    return () => {
+      document.body.style.overflow = '';
+      document.documentElement.style.overflow = '';
+    };
+  }, [hasOpenedInvitation]);
 
   const handleOpenInvitation = () => {
     setHasOpenedInvitation(true);
@@ -44,7 +60,7 @@ export const App: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-[#FFFDF9] text-[#2D1E18] relative selection:bg-gold selection:text-white">
+    <div className="min-h-screen bg-[#FFFDF9] text-[#2D1E18] relative selection:bg-gold selection:text-white overflow-x-hidden w-full max-w-full">
       {/* 1. Opening Digital Invitation Card / Envelope */}
       {!hasOpenedInvitation && (
         <InvitationCover onOpen={handleOpenInvitation} />
@@ -91,6 +107,9 @@ export const App: React.FC = () => {
         isPlaying={isPlayingMusic}
         onToggle={handleToggleMusic}
       />
+
+      {/* 12. Floating Quick Scroll Companion */}
+      <ScrollCompanion />
     </div>
   );
 };

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Sparkles, Flower2, Music, Sun, HeartHandshake } from 'lucide-react';
+import { Sparkles, Flower2, Music, Sun, HeartHandshake, ChevronDown } from 'lucide-react';
 import { WEDDING_EVENTS } from '../data/weddingData';
 import { WeddingEvent } from '../types';
 import { EventCard } from './EventCard';
@@ -11,8 +11,12 @@ export const FunctionsSection: React.FC = () => {
   const [selectedEventForCard, setSelectedEventForCard] = useState<WeddingEvent | null>(null);
   const [selectedEventForCal, setSelectedEventForCal] = useState<WeddingEvent | null>(null);
 
+  const scrollToStory = () => {
+    document.querySelector('#story')?.scrollIntoView({ behavior: 'smooth' });
+  };
+
   return (
-    <section id="ceremonies" className="relative py-20 bg-ivory/60 border-t border-b border-gold/30">
+    <section id="ceremonies" className="relative py-20 bg-ivory/60 border-t border-b border-gold/30 overflow-hidden">
       {/* Background Ambience */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden">
         <div className="absolute top-1/3 right-10 w-96 h-96 bg-gold/5 rounded-full blur-3xl" />
@@ -86,7 +90,7 @@ export const FunctionsSection: React.FC = () => {
         </div>
 
         {/* Day 2: Wednesday, 27 January 2027 Group */}
-        <div>
+        <div className="mb-8">
           <div className="flex items-center gap-3 mb-6">
             <div className="w-3 h-3 rotate-45 bg-gold" />
             <h3 className="font-cinzel font-bold text-lg sm:text-xl text-burgundy tracking-wide">
@@ -108,6 +112,19 @@ export const FunctionsSection: React.FC = () => {
               />
             ))}
           </div>
+        </div>
+
+        {/* Scroll Option to Next Section: Our Journey */}
+        <div className="mt-14 flex justify-center">
+          <button
+            onClick={scrollToStory}
+            className="flex flex-col items-center gap-1.5 text-burgundy/80 hover:text-burgundy transition-colors group cursor-pointer"
+          >
+            <span className="font-cinzel text-xs font-semibold tracking-widest uppercase">
+              Continue to Our Journey
+            </span>
+            <ChevronDown className="w-4 h-4 animate-bounce text-gold" />
+          </button>
         </div>
       </div>
 

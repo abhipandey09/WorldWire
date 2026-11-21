@@ -42,8 +42,7 @@ export const WEDDING_VENUES: Venue[] = [
     cityStateZip: 'Bengaluru – 560035 (Karnataka)',
     fullAddress: '15, Kasavanahalli Main Road, Owners Court Layout, Kasavanahalli, Bengaluru – 560035, Karnataka',
     mapsUrl: 'https://www.google.com/maps/search/?api=1&query=Imperial+Jenukaal+Suits+15+Kasavanahalli+Main+Road+Bengaluru+560035',
-    embedQuery: 'Imperial Jenukaal Suits Kasavanahalli Bengaluru',
-    highlights: ['Lush Poolside Deck', 'Royal Banquet Hall', 'Ample Guest Parking', 'Serene Greenery']
+    embedQuery: 'Imperial Jenukaal Suits Kasavanahalli Bengaluru'
   },
   {
     id: 'icon',
@@ -55,8 +54,7 @@ export const WEDDING_VENUES: Venue[] = [
     cityStateZip: 'Bengaluru – 560103 (Karnataka)',
     fullAddress: '57, 1A, Outer Ring Road, Opp. Sakra World Hospital, Devarabisanahalli, Bellandur, Bengaluru – 560103, Karnataka',
     mapsUrl: 'https://www.google.com/maps/search/?api=1&query=ICON+Premier+Hotel+Outer+Ring+Road+Bellandur+Bengaluru+560103',
-    embedQuery: 'ICON Premier Hotel Bellandur Outer Ring Road Bengaluru',
-    highlights: ['Grand Crystal Ballroom', 'Luxurious Palace Decor', 'Opp. Sakra World Hospital', 'Central Outer Ring Road']
+    embedQuery: 'ICON Premier Hotel Bellandur Outer Ring Road Bengaluru'
   }
 ];
 

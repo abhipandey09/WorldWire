@@ -22,12 +22,12 @@ export const PetalBackground: React.FC = () => {
     if (!ctx) return;
 
     let animationFrameId: number;
-    let width = (canvas.width = window.innerWidth);
+    let width = (canvas.width = Math.min(window.innerWidth, document.documentElement.clientWidth || window.innerWidth));
     let height = (canvas.height = window.innerHeight);
 
     const handleResize = () => {
       if (!canvas) return;
-      width = canvas.width = window.innerWidth;
+      width = canvas.width = Math.min(window.innerWidth, document.documentElement.clientWidth || window.innerWidth);
       height = canvas.height = window.innerHeight;
     };
 
@@ -104,7 +104,7 @@ export const PetalBackground: React.FC = () => {
   return (
     <canvas
       ref={canvasRef}
-      className="fixed inset-0 pointer-events-none z-20"
+      className="fixed inset-0 pointer-events-none z-20 w-full h-full max-w-full overflow-hidden"
       style={{ opacity: 0.85 }}
     />
   );

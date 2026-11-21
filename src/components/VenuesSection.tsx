@@ -1,13 +1,17 @@
 import React, { useState } from 'react';
 import { motion } from 'framer-motion';
-import { MapPin, Navigation, ExternalLink, Calendar, CheckCircle2 } from 'lucide-react';
+import { MapPin, Navigation, ExternalLink, Calendar, CheckCircle2, ChevronDown } from 'lucide-react';
 import { WEDDING_VENUES } from '../data/weddingData';
 
 export const VenuesSection: React.FC = () => {
   const [activeVenueTab, setActiveVenueTab] = useState<'imperial' | 'icon'>('imperial');
 
+  const scrollToFamily = () => {
+    document.querySelector('#family')?.scrollIntoView({ behavior: 'smooth' });
+  };
+
   return (
-    <section id="venues" className="relative py-20 bg-[#FFFDF9]">
+    <section id="venues" className="relative py-20 bg-[#FFFDF9] border-t border-gold/30 overflow-hidden">
       <div className="max-w-6xl mx-auto px-4 sm:px-6">
         {/* Section Header */}
         <div className="text-center max-w-2xl mx-auto mb-12">
@@ -62,16 +66,16 @@ export const VenuesSection: React.FC = () => {
                 </p>
 
                 {/* Physical Address */}
-                <div className="p-4 rounded-xl bg-champagne/40 border border-gold/40 text-xs sm:text-sm text-[#423129] my-4 leading-relaxed">
+                <div className="p-3.5 rounded-xl bg-champagne/40 border border-gold/30 text-xs text-[#523E35] mb-5">
                   <p className="font-semibold text-burgundy">{venue.addressLine1}</p>
                   <p>{venue.addressLine2}</p>
-                  <p className="font-semibold">{venue.cityStateZip}</p>
+                  <p className="font-medium text-[#2E1E17] mt-1">{venue.cityStateZip}</p>
                 </div>
 
-                {/* Ceremonies Hosted at this venue */}
-                <div className="my-4">
-                  <span className="font-cinzel text-xs font-bold tracking-wider text-burgundy uppercase block mb-2">
-                    Ceremonies Hosted Here:
+                {/* Ceremonies Hosted */}
+                <div className="mb-4">
+                  <span className="font-cinzel text-xs font-bold text-burgundy uppercase tracking-wider block mb-2">
+                    Ceremonies Celebrated Here:
                   </span>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
                     {venue.eventsHosted.map((evName) => (
@@ -84,18 +88,6 @@ export const VenuesSection: React.FC = () => {
                       </div>
                     ))}
                   </div>
-                </div>
-
-                {/* Highlights */}
-                <div className="flex flex-wrap gap-1.5 my-3">
-                  {venue.highlights.map((item) => (
-                    <span
-                      key={item}
-                      className="text-[11px] px-2.5 py-0.5 rounded-full bg-gold/15 text-[#634B28] font-sans"
-                    >
-                      &bull; {item}
-                    </span>
-                  ))}
                 </div>
               </div>
 
@@ -123,6 +115,19 @@ export const VenuesSection: React.FC = () => {
               </div>
             </motion.div>
           ))}
+        </div>
+
+        {/* Scroll Option to Next Section: Family */}
+        <div className="mt-14 sm:mt-16 flex justify-center">
+          <button
+            onClick={scrollToFamily}
+            className="flex flex-col items-center gap-1.5 text-burgundy/80 hover:text-burgundy transition-colors group cursor-pointer"
+          >
+            <span className="font-cinzel text-xs font-semibold tracking-widest uppercase">
+              Meet the Families &amp; Blessings
+            </span>
+            <ChevronDown className="w-4 h-4 animate-bounce text-gold" />
+          </button>
         </div>
       </div>
     </section>

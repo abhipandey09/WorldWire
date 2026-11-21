@@ -32,7 +32,6 @@ export interface Venue {
   mapsUrl: string;
   embedQuery: string;
   image?: string;
-  highlights: string[];
 }
 
 export interface FamilyMember {

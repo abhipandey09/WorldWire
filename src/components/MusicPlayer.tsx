@@ -38,7 +38,7 @@ export const MusicPlayer: React.FC<MusicPlayerProps> = ({ isPlaying, onToggle })
       />
 
       {/* Floating Bottom-Right Music Controller */}
-      <div className="fixed bottom-6 right-6 z-40">
+      <div className="fixed bottom-6 right-3 sm:right-6 z-40">
         <motion.button
           onClick={onToggle}
           whileHover={{ scale: 1.08 }}

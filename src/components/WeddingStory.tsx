@@ -1,6 +1,6 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Heart, Sparkles, Infinity, Home } from 'lucide-react';
+import { Heart, Sparkles, Infinity, Home, ChevronDown } from 'lucide-react';
 import { STORY_MILESTONES, WEDDING_COUPLE } from '../data/weddingData';
 
 export const WeddingStory: React.FC = () => {
@@ -16,8 +16,12 @@ export const WeddingStory: React.FC = () => {
     }
   };
 
+  const scrollToVenues = () => {
+    document.querySelector('#venues')?.scrollIntoView({ behavior: 'smooth' });
+  };
+
   return (
-    <section id="story" className="relative py-20 bg-ivory/40 border-t border-gold/30">
+    <section id="story" className="relative py-20 bg-ivory/40 border-t border-gold/30 overflow-hidden">
       <div className="max-w-4xl mx-auto px-4 sm:px-6">
         {/* Section Header */}
         <div className="text-center max-w-xl mx-auto mb-14">
@@ -35,7 +39,7 @@ export const WeddingStory: React.FC = () => {
             Sakshi &amp; Abhishek
           </p>
 
-          <p className="font-cormorant italic text-sm sm:text-base text-[#6E4F41] mt-2">
+          <p className="font-cormorant italic text-sm sm:text-base text-[#6E4F41] mt-2 font-medium">
             “You took my hand for a dance... and I chose you for a lifetime.”
           </p>
 
@@ -72,7 +76,7 @@ export const WeddingStory: React.FC = () => {
 
                   {/* Content Card */}
                   <div
-                    className={`ml-14 sm:ml-0 w-full sm:w-[calc(50%-2.5rem)] p-6 rounded-2xl bg-ivory border border-gold/50 shadow-md hover:shadow-gold-glow transition-all duration-300 ${
+                    className={`ml-11 sm:ml-0 w-[calc(100%-2.75rem)] sm:w-[calc(50%-2.5rem)] p-5 sm:p-6 rounded-2xl bg-ivory border border-gold/50 shadow-md hover:shadow-gold-glow transition-all duration-300 ${
                       isEven ? 'sm:mr-auto sm:text-right' : 'sm:ml-auto sm:text-left'
                     }`}
                   >
@@ -90,6 +94,19 @@ export const WeddingStory: React.FC = () => {
               );
             })}
           </div>
+        </div>
+
+        {/* Scroll Option to Next Section: Venues */}
+        <div className="mt-14 sm:mt-16 flex justify-center">
+          <button
+            onClick={scrollToVenues}
+            className="flex flex-col items-center gap-1.5 text-burgundy/80 hover:text-burgundy transition-colors group cursor-pointer"
+          >
+            <span className="font-cinzel text-xs font-semibold tracking-widest uppercase">
+              Explore Wedding Venues
+            </span>
+            <ChevronDown className="w-4 h-4 animate-bounce text-gold" />
+          </button>
         </div>
       </div>
     </section>

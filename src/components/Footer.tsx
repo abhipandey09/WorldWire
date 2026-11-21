@@ -8,10 +8,10 @@ export const Footer: React.FC = () => {
   };
 
   return (
-    <footer className="relative bg-[#1A0B0F] text-ivory py-16 border-t-2 border-gold/50 overflow-hidden">
+    <footer id="footer" className="relative bg-[#1A0B0F] text-ivory py-16 border-t-2 border-gold/50 overflow-hidden">
       {/* Background Golden Glow */}
-      <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[600px] h-64 bg-gold/10 rounded-full blur-[100px]" />
+      <div className="absolute inset-0 pointer-events-none overflow-hidden">
+        <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[320px] sm:w-[600px] h-64 bg-gold/10 rounded-full blur-[80px] sm:blur-[100px]" />
       </div>
 
       <div className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 text-center flex flex-col items-center">

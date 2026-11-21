@@ -25,9 +25,9 @@ export const Hero: React.FC = () => {
       />
 
       {/* Ambient Lighting & Top Golden Radiance */}
-      <div className="absolute inset-0 pointer-events-none">
-        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[900px] h-[550px] bg-gold/20 rounded-full blur-[140px]" />
-        <div className="absolute bottom-10 left-1/4 w-[500px] h-[500px] bg-burgundy/10 rounded-full blur-[120px]" />
+      <div className="absolute inset-0 pointer-events-none overflow-hidden">
+        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[340px] sm:w-[900px] h-[350px] sm:h-[550px] bg-gold/20 rounded-full blur-[90px] sm:blur-[140px]" />
+        <div className="absolute bottom-10 left-1/4 w-[280px] sm:w-[500px] h-[280px] sm:h-[500px] bg-burgundy/10 rounded-full blur-[80px] sm:blur-[120px]" />
       </div>
 
       <div className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 text-center flex flex-col items-center">

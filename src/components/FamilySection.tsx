@@ -1,11 +1,15 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { Sparkles, Heart } from 'lucide-react';
+import { Sparkles, Heart, ChevronDown } from 'lucide-react';
 import { FAMILY_DETAILS, WEDDING_COUPLE } from '../data/weddingData';
 
 export const FamilySection: React.FC = () => {
+  const scrollToFilm = () => {
+    document.querySelector('#film')?.scrollIntoView({ behavior: 'smooth' });
+  };
+
   return (
-    <section id="family" className="relative py-20 bg-[#FFFDF9] border-t border-gold/30">
+    <section id="family" className="relative py-20 bg-[#FFFDF9] border-t border-gold/30 overflow-hidden">
       <div className="max-w-5xl mx-auto px-4 sm:px-6">
         {/* Section Header */}
         <div className="text-center max-w-2xl mx-auto mb-14">
@@ -19,7 +23,7 @@ export const FamilySection: React.FC = () => {
             With Love &amp; Gratitude
           </h2>
 
-          <p className="font-cormorant italic text-base sm:text-lg text-[#6E4F41] mt-2">
+          <p className="font-cormorant italic text-base sm:text-lg text-[#6E4F41] mt-2 font-medium">
             “We request your gracious presence &amp; blessings on the auspicious occasion of the wedding celebration of our beloved children.”
           </p>
 
@@ -31,11 +35,11 @@ export const FamilySection: React.FC = () => {
         </div>
 
         {/* Two Families Arched Cards */}
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-stretch">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-stretch overflow-hidden">
           {/* Bride's Family (Sikaria Family) */}
           <motion.div
-            initial={{ opacity: 0, x: -30 }}
-            whileInView={{ opacity: 1, x: 0 }}
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.7 }}
             className="relative rounded-2xl p-7 sm:p-9 bg-ivory border-2 border-gold/60 shadow-xl text-center flex flex-col justify-between"
@@ -80,8 +84,8 @@ export const FamilySection: React.FC = () => {
 
           {/* Groom's Family (Pandey Family) */}
           <motion.div
-            initial={{ opacity: 0, x: 30 }}
-            whileInView={{ opacity: 1, x: 0 }}
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
             transition={{ duration: 0.7 }}
             className="relative rounded-2xl p-7 sm:p-9 bg-ivory border-2 border-gold/60 shadow-xl text-center flex flex-col justify-between"
@@ -123,6 +127,19 @@ export const FamilySection: React.FC = () => {
               {FAMILY_DETAILS.groom.blessingQuote}
             </p>
           </motion.div>
+        </div>
+
+        {/* Scroll Option to Next Section: Film */}
+        <div className="mt-14 sm:mt-16 flex justify-center">
+          <button
+            onClick={scrollToFilm}
+            className="flex flex-col items-center gap-1.5 text-burgundy/80 hover:text-burgundy transition-colors group cursor-pointer"
+          >
+            <span className="font-cinzel text-xs font-semibold tracking-widest uppercase">
+              Watch The Wedding Film
+            </span>
+            <ChevronDown className="w-4 h-4 animate-bounce text-gold" />
+          </button>
         </div>
       </div>
     </section>

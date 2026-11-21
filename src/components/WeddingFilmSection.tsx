@@ -1,6 +1,6 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { Play, Pause, Film, Volume2, VolumeX, Maximize2 } from 'lucide-react';
+import { Play, Pause, Film, Volume2, VolumeX, Maximize2, ChevronDown } from 'lucide-react';
 
 interface WeddingFilmSectionProps {
   isPlayingSiteMusic?: boolean;
@@ -54,7 +54,9 @@ export const WeddingFilmSection: React.FC<WeddingFilmSectionProps> = ({
   return (
     <section id="film" className="relative py-20 bg-gradient-to-b from-[#1C0D11] via-[#2A1117] to-[#12070A] text-white overflow-hidden">
       {/* Golden Stage Glow */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[700px] h-[500px] bg-gold/10 rounded-full blur-[140px] pointer-events-none" />
+      <div className="absolute inset-0 pointer-events-none overflow-hidden">
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[340px] sm:w-[700px] h-[340px] sm:h-[500px] bg-gold/10 rounded-full blur-[90px] sm:blur-[140px]" />
+      </div>
 
       <div className="relative z-10 max-w-4xl mx-auto px-4 sm:px-6 text-center">
         {/* Section Header */}
@@ -143,9 +145,18 @@ export const WeddingFilmSection: React.FC<WeddingFilmSectionProps> = ({
           </div>
         </div>
 
-        <p className="font-cormorant italic text-xs sm:text-sm text-gold/70 mt-4">
-          Featuring &ldquo;Mangal Rang&rdquo; &bull; Directed for Sakshi &amp; Abhishek
-        </p>
+        {/* Scroll Option to Next Section: Footer / Blessings */}
+        <div className="mt-12 flex justify-center">
+          <button
+            onClick={() => document.querySelector('#footer')?.scrollIntoView({ behavior: 'smooth' })}
+            className="flex flex-col items-center gap-1.5 text-gold/80 hover:text-gold transition-colors group cursor-pointer"
+          >
+            <span className="font-cinzel text-xs font-semibold tracking-widest uppercase">
+              Closing Blessings &amp; Family Love
+            </span>
+            <ChevronDown className="w-4 h-4 animate-bounce text-gold" />
+          </button>
+        </div>
       </div>
     </section>
   );
