@@ -1,73 +1,77 @@
-# 🌐 WorldWire — International News Portal
+# Sakshi & Abhishek — Premium Digital Wedding Invitation
 
-**WorldWire** is a real-time, consumer-facing international news portal built with an editorial design inspired by **BBC News** and **Reuters**, powered behind the scenes by **Google Gemini** with live Google Search Grounding and **Neon Serverless PostgreSQL**.
+An interactive, responsive, luxury traditional Indian royal wedding invitation website for **Sakshi & Abhishek**.
 
-The website is consumer-facing with high-standard editorial design. An editorial news-gathering pipeline assists in tracking breaking and trending international events from primary press agencies. Stories are reviewed, fact-checked, and approved by the lead editor in the dedicated Editorial Admin Portal before public dissemination.
-
----
-
-## 🌟 Key Reader & System Features
-
-- **Consumer-First News Experience (BBC / Reuters Style)**:
-  - Clean editorial masthead with global edition date bar.
-  - Live **BREAKING NEWS** red banner ticker.
-  - **Lead / Splash Story**: Prominent hero card with high-resolution photo, headline, executive summary, and byline.
-  - **Category Navigation**: *Top Stories*, *World*, *Technology*, *Business & Economy*, *Science*, *Geopolitics*, *Politics*.
-  - **Distraction-Free Reader Mode**: Click "Read Full Story" on any dispatch to open a serif reader layout with full multi-paragraph reporting, photo captions, and original press citations.
-  - Clean public media footer (Editorial guidelines, Privacy Policy, Terms, Contact).
-- **Editorial Review & Publishing Pipeline**:
-  - Lead editor dashboard (`?page=admin`) with password-authenticated access (`abhishek`).
-  - Wire stories are queued into an "In Review" staging pipeline for human review, editing, and authorization.
-  - Ability to compose original dispatches directly through the editorial desk.
-- **Silent Background Synchronization**:
-  - Automatically updates on browser refresh without manual intervention.
-  - Silent background auto-polling every 60 seconds keeps the reader's screen live and up to date.
-- **Zero Hardcoded Secrets**:
-  - All credentials (`DATABASE_URL` and `GOOGLE_GEMINI_API_KEY`) are read strictly from `.env`.
+Designed for deployment at **[mytomboy360.com](https://mytomboy360.com)**.
 
 ---
 
-## 🏛️ System Architecture
+## 🌟 Key Features
 
-```mermaid
-flowchart TD
-    subgraph Editorial Newsroom Engine
-        SCHED["⏱️ APScheduler Wire Intake"] --> AGENT["📰 Primary Wire Intelligence"]
-        AGENT --> QUEUE[("🗄️ In-Review Queue (news_articles)")]
-        QUEUE --> ADMIN["✍️ Human Editorial Approval (Abhishek Pandey)"]
-    end
-
-    subgraph Consumer-Facing News Portal
-        ADMIN --> PUB[("🗄️ Published Dispatches")]
-        PUB --> UI["📰 WorldWire Reader Portal (mytomboy360.com)"]
-        UI --> AUTO["🔄 Silent 60s Auto-Sync"]
-    end
-```
+1. **Digital Opening Experience (`InvitationCover`):**
+   - Fullscreen digital royal invitation envelope/card.
+   - Lord Ganesha illustration (`॥ श्री गणेशाय नमः ॥`) with golden borders.
+   - Interactive **"OPEN WEDDING INVITATION"** button triggering smooth unfolding animation, gold & rose confetti burst, and background shehnai music.
+2. **Main Hero Section:**
+   - Romantic typography: *Sakshi & Abhishek* with classical calligraphy.
+   - Auspicious wedding dates (*26 & 27 January 2027*) & venue location (*Bengaluru, Karnataka*).
+3. **Live Dynamic Countdown (`Countdown`):**
+   - Real-time countdown (Days, Hours, Minutes, Seconds) in **Asia/Kolkata (IST)** timezone.
+   - Automatically tracks and advances to the next upcoming ceremony:
+     1. Mehendi Ceremony (26 Jan, 9:00 AM)
+     2. Bhaat Ceremony (26 Jan, 12:30 PM)
+     3. Tilak & Sangeet Ceremony (26 Jan, 6:00 PM)
+     4. Haldi Ceremony (27 Jan, 9:00 AM)
+     5. The Wedding & Reception (27 Jan, 7:00 PM)
+   - Automatically displays *"The Celebration Has Begun! ✨"* when festivities start.
+4. **Dedicated Themed Ceremony Cards (`FunctionsSection` & `EventCard`):**
+   - Each event features its own authentic color palette, dress code, quote, and venue details.
+   - One-click **"Add to Calendar"** supporting Google Calendar, Apple Calendar (.ics), and Microsoft Outlook.
+   - One-click **"Get Directions"** linking directly to Google Maps navigation.
+   - **"View Card"** modal displaying high-resolution authentic illustrated wedding cards.
+5. **Interactive Venues Section (`VenuesSection`):**
+   - Detailed cards for both **Imperial Jenukaal Suits** (Kasavanahalli) and **ICON PREMIER HOTEL** (Bellandur).
+6. **Family Blessings (`FamilySection`):**
+   - Honoring Pushpa Devi & Shri Ram Sikaria (Bride's family) and Smt. Sunita & Sri Maheshwar Pandey (Groom's family).
+7. **Cinematic Destination Wedding Film (`WeddingFilmSection`):**
+   - Direct inline playback of the 71-second destination wedding invitation video with music.
+8. **RSVP & Hospitality Desk (`RSVPSection`):**
+   - Contact Person: **Dipesh Sikaria** (`+91 70594 11938`).
+   - One-click Call and WhatsApp RSVP message builder.
+9. **Floating Background Music Player (`MusicPlayer`):**
+   - Traditional Indian wedding background music with play/pause and spinning mandala animation.
+10. **Credits:**
+    - *"Design & Developed by Abhishek"*
 
 ---
 
-## 📁 Project Structure
+## 🛠️ Technology Stack
 
-- `app.py`: Clean, consumer-facing Streamlit website (no admin dials, pure reader UI).
-- `database.py`: Neon PostgreSQL connection manager with cold-start retry mechanisms.
-- `news_agent.py`: Gemini search grounding, article structuring, and image generation.
-- `scheduler.py`: 5-hour background scheduler daemon.
-- `requirements.txt`: Python dependencies.
-- `.env`: Environment variables (API key and Database connection string).
-- `.gitignore`: Excludes `.env` and compiled cache files.
+- **Framework:** React 18 with TypeScript
+- **Bundler:** Vite 5
+- **Styling:** Tailwind CSS 3 with custom royal wedding theme
+- **Animations:** Framer Motion & Canvas Confetti
+- **Icons:** Lucide React
+- **Fonts:** Great Vibes, Cinzel, Cormorant Garamond, Montserrat
 
 ---
 
-## 🚀 Running WorldWire
+## 🚀 Development & Build Commands
 
-1. Ensure `.env` is configured:
-```env
-GOOGLE_GEMINI_API_KEY=your_key
-DATABASE_URL=postgresql://neondb_owner:...@...neon.tech/neondb?sslmode=require
-```
-
-2. Start the site:
 ```bash
-streamlit run app.py
+# Install dependencies
+npm install
+
+# Start local development server
+npm run dev
+
+# Build for production (output to dist/)
+npm run build
+
+# Preview production build locally
+npm run preview
 ```
-Open **[http://localhost:8501](http://localhost:8501)** in your browser.
+
+---
+
+*Design & Developed with love by Abhishek for Sakshi & Abhishek's Wedding (2027).*
