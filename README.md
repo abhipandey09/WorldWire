@@ -25,7 +25,7 @@ Designed for deployment at **[mytomboy360.com](https://mytomboy360.com)**.
      5. The Wedding & Reception (27 Jan, 7:00 PM)
    - Automatically displays *"The Celebration Has Begun! ✨"* when festivities start.
 4. **Dedicated Themed Ceremony Cards (`FunctionsSection` & `EventCard`):**
-   - Each event features its own authentic color palette, dress code, quote, and venue details.
+   - Each event features its own authentic color palette, quote, and venue details.
    - One-click **"Add to Calendar"** supporting Google Calendar, Apple Calendar (.ics), and Microsoft Outlook.
    - One-click **"Get Directions"** linking directly to Google Maps navigation.
    - **"View Card"** modal displaying high-resolution authentic illustrated wedding cards.
