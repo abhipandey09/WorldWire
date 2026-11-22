@@ -55,8 +55,12 @@ export const Navbar: React.FC<NavbarProps> = ({ isPlaying, onToggleMusic }) => {
             }}
             className="flex items-center gap-2 group"
           >
-            <div className="w-9 h-9 rounded-full border border-gold/70 flex items-center justify-center bg-burgundy shadow-sm group-hover:scale-105 transition-transform">
-              <span className="font-script text-gold text-lg leading-none">S&amp;A</span>
+            <div className="w-10 h-10 rounded-full border border-gold/70 overflow-hidden shadow-sm group-hover:scale-105 transition-transform flex items-center justify-center bg-[#3D0A14]">
+              <img
+                src="/assets/logos/sa_logo.jpg"
+                alt="SA Monogram"
+                className="w-full h-full object-cover"
+              />
             </div>
             <div className="flex flex-col">
               <span className="font-cinzel font-bold text-xs sm:text-sm tracking-widest text-burgundy">

@@ -31,8 +31,12 @@ export const Footer: React.FC = () => {
         </div>
 
         {/* Monogram */}
-        <div className="w-14 h-14 rounded-full border border-gold flex items-center justify-center bg-burgundy/80 shadow-gold-glow mb-4">
-          <span className="font-script text-gold text-2xl">S&amp;A</span>
+        <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-full border-2 border-gold/80 overflow-hidden shadow-gold-glow mb-4 flex items-center justify-center bg-[#3D0A14]">
+          <img
+            src="/assets/logos/sa_logo.jpg"
+            alt="SA Monogram"
+            className="w-full h-full object-cover"
+          />
         </div>
 
         {/* Couple Names */}
